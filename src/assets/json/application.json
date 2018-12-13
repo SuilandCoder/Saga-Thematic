@@ -1,0 +1,651 @@
+[
+  {
+    "Version": "1.0",
+    "author": "Various authors.",
+    "library_description": "Some Grid Analysis Tools.",
+    "library_name": "grid_analysis",
+    "tools": [
+      {
+        "author": "V. Olaya (c) 2005",
+        "oid": "5b90e7bbd15d75093cb58715",
+        "stateId": "3947A980-9C75-415e-B49E-A87D53025643",
+        "descriptionPath": "html/grid_analysis_7.html",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "INPUT",
+                "name": "Grids",
+                "optional": "false",
+                "type": "Grid list (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "RESULT",
+                "name": "Covered Distance",
+                "optional": "false",
+                "type": "Grid (output)"
+              }
+            ]
+          },
+          {
+            "optionals": []
+          }
+        ],
+        "tool_description": "",
+        "tool_id": "7",
+        "tool_name": "Covered Distance"
+      },
+      {
+        "author": "Copyrights (c) 2004 by Victor Olaya",
+        "oid": "5b90e7bbd15d75093cb58716",
+        "stateId": "613CF7E4-382D-457a-A388-64325046BBAB",
+        "descriptionPath": "html/grid_analysis_8.html",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "INPUT",
+                "name": "Input Grid",
+                "optional": "false",
+                "type": "Grid (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "RELATIVE",
+                "name": "Relative Richness",
+                "optional": "false",
+                "type": "Grid (output)"
+              },
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "DIVERSITY",
+                "name": "Diversity",
+                "optional": "false",
+                "type": "Grid (output)"
+              },
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "DOMINANCE",
+                "name": "Dominance",
+                "optional": "false",
+                "type": "Grid (output)"
+              },
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "FRAGMENTATION",
+                "name": "Fragmentation",
+                "optional": "false",
+                "type": "Grid (output)"
+              },
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "NDC",
+                "name": "Number of Different Classes",
+                "optional": "false",
+                "type": "Grid (output)"
+              },
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "CVN",
+                "name": "Center Versus Neighbours",
+                "optional": "false",
+                "type": "Grid (output)"
+              }
+            ]
+          },
+          {
+            "optionals": [
+              {
+                "constraints": "Available Choices:\n[0] 3 X 3\n[1] 5 X 5\n[2] 7 X 7\nDefault: 0",
+                "description": "",
+                "identifier": "WINSIZE",
+                "name": "Size of Analysis Window",
+                "type": "Choice"
+              },
+              {
+                "constraints": "Default: 10",
+                "description": "Maximum number of classes in entire grid.",
+                "identifier": "MAXNUMCLASS",
+                "name": "Max. Number of Classes",
+                "type": "Integer"
+              }
+            ]
+          }
+        ],
+        "tool_description": "(c) 2004 by Victor Olaya. Pattern Analysis",
+        "tool_id": "8",
+        "tool_name": "Pattern Analysis"
+      }
+    ]
+  },
+  {
+    "Version": "1.0",
+    "author": "SAGA User Group Associaton, HfT Stuttgart (c) 2002-14",
+    "library_description": "Tools for the manipulation of gridded data.",
+    "library_name": "grid_filter",
+    "library_name_title": "Grid Filter",
+    "tools": [
+      {
+        "author": "Copyrights (c) 2003 by Andre Ringeler",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "INPUT",
+                "name": "Grid",
+                "optional": "false",
+                "type": "Grid (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "RESULT",
+                "name": "Filtered Grid",
+                "optional": "false",
+                "type": "Grid (output)"
+              },
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "STDDEV",
+                "name": "Minimum Standard Deviation",
+                "optional": "true",
+                "type": "Grid (optional output)"
+              },
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "DIR",
+                "name": "Direction of Minimum Standard Deviation",
+                "optional": "true",
+                "type": "Grid (optional output)"
+              }
+            ]
+          },
+          {
+            "optionals": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "PARAMETERS_GRID_SYSTEM",
+                "name": "Grid system",
+                "type": "Grid system"
+              },
+              {
+                "constraints": "Default: 1.000000",
+                "description": "Estimated noise in units of input data",
+                "identifier": "NOISE_ABS",
+                "name": "Estimated Noise (absolute)",
+                "type": "Floating point"
+              },
+              {
+                "constraints": "Default: 1.000000",
+                "description": "Estimated noise relative to mean standard deviation",
+                "identifier": "NOISE_REL",
+                "name": "Estimated Noise (relative)",
+                "type": "Floating point"
+              },
+              {
+                "constraints": "Default: 1",
+                "description": "",
+                "identifier": "WEIGHTED",
+                "name": "Weighted",
+                "type": "Boolean"
+              },
+              {
+                "constraints": "Available Choices:\n[0] noise variance given as absolute value\n[1] noise variance given relative to mean standard deviation\n[2] original calculation (Ringeler)\nDefault: 1",
+                "description": "",
+                "identifier": "METHOD",
+                "name": "Method",
+                "type": "Choice"
+              }
+            ]
+          }
+        ],
+        "tool_description": "The tool searches for the minimum variance within 16 directions and applies a Lee Filter in the direction of minimum variance. The filter is edge-preserving and can be used to remove speckle noise from SAR images or to smooth DTMs. Applied to DTMs, this filter will preserve slope breaks and narrow valleys.\n\nFor more details, please refer to:\nLee, J.S. (1980): Digital image enhancement and noise filtering by use of local statistics. IEEE Transactions on Pattern Analysis and Machine Intelligence, PAMI-2: 165-168\n\nLee, J.S., Papathanassiou, K.P., Ainsworth, T.L., Grunes, M.R., Reigber, A. (1998): A New Technique for Noise Filtering of SAR Interferometric Phase Images. IEEE Transactions on Geosciences and Remote Sensing 36(5): 1456-1465.\n\nSelige, T., Böhner, J., Ringeler, A. (2006): Processing of SRTM X-SAR Data to correct interferometric elevation models for land surface process applications. In: Böhner, J., McCloy, K.R., Strobl, J. [Eds.]: SAGA - Analysis and Modelling Applications. Göttinger Geographische Abhandlungen, Vol. 115: 97-104 <a href=\"http://downloads.sourceforge.net/saga-gis/gga115_09.pdf\">&lt;PDF&gt;</a>\n\n\n",
+        "tool_id": "3",
+        "tool_name": "Multi Direction Lee Filter",
+        "oid": "5b90e7bbd15d75093cb58739",
+        "stateId": "A265351D-89E2-4264-95DB-3329F9164877",
+        "descriptionPath": "html/grid_filter_3.html"
+      },
+      {
+        "author": "",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "GRID",
+                "name": "Input Grid",
+                "optional": "false",
+                "type": "Grid (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "OUTPUT",
+                "name": "Filtered Grid",
+                "optional": "false",
+                "type": "Grid (output)"
+              }
+            ]
+          },
+          {
+            "optionals": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "PARAMETERS_GRID_SYSTEM",
+                "name": "Grid system",
+                "type": "Grid system"
+              },
+              {
+                "constraints": "Default: 10",
+                "description": "Min. Size (Cells)",
+                "identifier": "THRESHOLD",
+                "name": "Min. Size",
+                "type": "Integer"
+              }
+            ]
+          }
+        ],
+        "tool_description": "(c) 2004 by Victor Olaya. Filter Clumps",
+        "tool_id": "5",
+        "tool_name": "Filter Clumps",
+        "oid": "5b90e7bbd15d75093cb5873b",
+        "stateId": "58EF0FF6-5230-4c24-9D3C-4321B3EF0170",
+        "descriptionPath": "html/grid_filter_5.html"
+      },
+      {
+        "author": "Volker Wichmann (c) 2010, LASERDATA GmbH",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "The grid to filter.",
+                "identifier": "INPUT",
+                "name": "Grid to filter",
+                "optional": "false",
+                "type": "Grid (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "Filtered DTM",
+                "identifier": "GROUND",
+                "name": "Bare Earth",
+                "optional": "false",
+                "type": "Grid (output)"
+              },
+              {
+                "constraints": "",
+                "description": "Objects removed from input grid",
+                "identifier": "NONGROUND",
+                "name": "Removed Objects",
+                "optional": "false",
+                "type": "Grid (output)"
+              }
+            ]
+          },
+          {
+            "optionals": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "PARAMETERS_GRID_SYSTEM",
+                "name": "Grid system",
+                "type": "Grid system"
+              },
+              {
+                "constraints": "Minimum: 1\nDefault: 2",
+                "description": "Search radius of kernel in cells.",
+                "identifier": "RADIUS",
+                "name": "Search Radius",
+                "type": "Integer"
+              },
+              {
+                "constraints": "Minimum: 0.000000\nDefault: 30.000000",
+                "description": "Approximate Terrain Slope [%]",
+                "identifier": "TERRAINSLOPE",
+                "name": "Approx. Terrain Slope",
+                "type": "Floating point"
+              },
+              {
+                "constraints": "Default: 0",
+                "description": "Use 5 percent confidence interval",
+                "identifier": "STDDEV",
+                "name": "Use Confidence Interval",
+                "type": "Boolean"
+              }
+            ]
+          }
+        ],
+        "tool_description": "The tool can be used to filter a digital surface model (DSM), i.e. to classify its cells into bare earth and object cells (ground and nonground cells).\n\nThe tool uses concepts described by VOSSELMAN (2000) and is based on the assumption that a large height difference between two nearby cells is unlikely to be caused by a steep slope in the terrain. The probability that the higher cell could be a ground point decreases if the distance between the two cells decreases. Therefore the filter defines the acceptable height difference between two cells as a function of the distance between the cells. A cell is classified as terrain if there is no other cell within the kernel search radius such that the height difference between these cells is larger than the allowed maximum height difference at the distance between these cells.\n\nThe approximate terrain slope parameter is used to modify the filter function to match the overall slope in the study area. A confidence interval may be used to reject outliers.\n\nReference:\nVOSSELMAN, G. (2000): Slope based filtering of laser altimetry data. IAPRS, Vol. XXXIII, Part B3, Amsterdam, The Netherlands. pp. 935-942\n\n",
+        "tool_id": "7",
+        "tool_name": "DTM Filter (slope-based)",
+        "oid": "5b90e7bbd15d75093cb5873d",
+        "stateId": "D693C51C-7F77-4190-8487-59A14BFE19D1",
+        "descriptionPath": "html/grid_filter_7.html"
+      },
+      {
+        "author": "O.Conrad (c) 2012",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "GRID",
+                "name": "Grid",
+                "optional": "false",
+                "type": "Grid (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "LOPASS",
+                "name": "Low Pass Filter",
+                "optional": "false",
+                "type": "Grid (output)"
+              },
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "HIPASS",
+                "name": "High Pass Filter",
+                "optional": "false",
+                "type": "Grid (output)"
+              }
+            ]
+          },
+          {
+            "optionals": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "PARAMETERS_GRID_SYSTEM",
+                "name": "Grid system",
+                "type": "Grid system"
+              },
+              {
+                "constraints": "Minimum: 1.000000\nDefault: 10.000000",
+                "description": "",
+                "identifier": "SCALE",
+                "name": "Scale Factor",
+                "type": "Floating point"
+              }
+            ]
+          }
+        ],
+        "tool_description": "Resampling filter for grids. Resamples in a first step the given grid to desired resampling cell size, expressed as multiple of the original cell size (scale factor). This is an up-scaling through which cell values are aggregated as cell area weighted means. Second step is the down-scaling to original cell size using spline interpolation. Specially for larger search distances this is a comparably fast alternative for simple low and high pass filter operations. ",
+        "tool_id": "11",
+        "tool_name": "Resampling Filter",
+        "oid": "5b90e7bbd15d75093cb58730",
+        "stateId": "B3CA2F23-7AAB-42b3-BAE7-07D30F8020C0",
+        "descriptionPath": "html/grid_filter_11.html"
+      }
+    ]
+  },
+  {
+    "Version": "1.0",
+    "author": "O. Conrad, V. Olaya, V. Wichmann (c) 2002-11",
+    "library_description": "Tools for the manipulation of gridded data.",
+    "library_name": "grid_tools",
+    "library_name_title": "Grid Tools",
+    "tools": [
+      {
+        "author": "V.Olaya (c) 2005",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "INPUT",
+                "name": "Grid",
+                "optional": "false",
+                "type": "Grid (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "OUTPUT",
+                "name": "Aggregated Grid",
+                "optional": "true",
+                "type": "Data Object Grid (optional output)"
+              }
+            ]
+          },
+          {
+            "optionals": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "PARAMETERS_GRID_SYSTEM",
+                "name": "Grid system",
+                "type": "Grid system"
+              },
+              {
+                "constraints": "Minimum: 2\nDefault: 2",
+                "description": "",
+                "identifier": "SIZE",
+                "name": "Aggregation Size",
+                "type": "Integer"
+              },
+              {
+                "constraints": "Available Choices:\n[0] Sum\n[1] Minimum\n[2] Maximum\n[3] Median\n[4] Mean\nDefault: 0",
+                "description": "",
+                "identifier": "METHOD",
+                "name": "Method",
+                "type": "Choice"
+              }
+            ]
+          }
+        ],
+        "tool_description": "Resamples a raster layer to a lower resolution, aggregatingthe values of a group of cells. This should be used in any case in which a normalresampling will result in wrong values in the resulting layer, such as, for instance,the number of elements of a given class in each cell.",
+        "tool_id": "1",
+        "tool_name": "Aggregate",
+        "oid": "5b90e7bbd15d75093cb58753",
+        "stateId": "8745370A-1F29-47a4-9D87-73F56F770561",
+        "descriptionPath": "html/grid_tools_1.html"
+      },
+      {
+        "author": "Victor Olaya (c) 2004",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "GRID",
+                "name": "Grid",
+                "optional": "false",
+                "type": "Grid (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "INDEX",
+                "name": "Index",
+                "optional": "false",
+                "type": "Grid (output)"
+              }
+            ]
+          },
+          {
+            "optionals": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "PARAMETERS_GRID_SYSTEM",
+                "name": "Grid system",
+                "type": "Grid system"
+              },
+              {
+                "constraints": "Available Choices:\n[0] ascending\n[1] descending\nDefault: 0",
+                "description": "",
+                "identifier": "ORDER",
+                "name": "Sorting Order",
+                "type": "Choice"
+              }
+            ]
+          }
+        ],
+        "tool_description": "Creates an index grid according to the cell values either in ascending or descending order.",
+        "tool_id": "21",
+        "tool_name": "Grid Cell Index",
+        "oid": "5b90e7bbd15d75093cb5875e",
+        "stateId": "19BB88CD-6A0F-45fd-855B-0F0F147E96CB",
+        "descriptionPath": "html/grid_tools_21.html"
+      },
+      {
+        "author": "O.Conrad (c) 2016",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "GRID",
+                "name": "Grid",
+                "optional": "false",
+                "type": "Grid (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "COPY",
+                "name": "Copy",
+                "optional": "false",
+                "type": "Grid (output)"
+              }
+            ]
+          },
+          {
+            "optionals": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "PARAMETERS_GRID_SYSTEM",
+                "name": "Grid system",
+                "type": "Grid system"
+              }
+            ]
+          }
+        ],
+        "tool_description": "Copy a grid. ",
+        "tool_id": "33",
+        "tool_name": "Copy Grid",
+        "oid": "5b90e7bbd15d75093cb5876b",
+        "stateId": "39DC6A4D-6324-47ea-8138-3E228D847ABA",
+        "descriptionPath": "html/grid_tools_33.html"
+      },
+      {
+        "author": "O.Conrad (c) 2016",
+        "parameters": [
+          {
+            "inputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "GRID",
+                "name": "Grid",
+                "optional": "false",
+                "type": "Grid (input)"
+              }
+            ]
+          },
+          {
+            "outputs": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "MIRROR",
+                "name": "Mirror Grid",
+                "optional": "true",
+                "type": "Grid (optional output)"
+              }
+            ]
+          },
+          {
+            "optionals": [
+              {
+                "constraints": "",
+                "description": "",
+                "identifier": "PARAMETERS_GRID_SYSTEM",
+                "name": "Grid system",
+                "type": "Grid system"
+              },
+              {
+                "constraints": "Available Choices:\n[0] horizontally\n[1] vertically\n[2] both\nDefault: 0",
+                "description": "",
+                "identifier": "METHOD",
+                "name": "Method",
+                "type": "Choice"
+              }
+            ]
+          }
+        ],
+        "tool_description": "Mirror a grid at its center axes', either vertically, horizontally or both. If the target is not set, the changes will be stored to the original grid. ",
+        "tool_id": "35",
+        "tool_name": "Mirror Grid",
+        "oid": "5b90e776284bd30a040db531",
+        "stateId": "007D65D5-FC57-4136-944E-0F6180715F2C",
+        "descriptionPath": "html/grid_tools_35.html"
+      }
+    ]
+  }
+]
+

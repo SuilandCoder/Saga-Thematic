@@ -1,0 +1,20 @@
+<div class="row" id="model_tools">
+  <div class="col-xs-6 col-sm-6 col-md-3 col-lg-2 card wrapper-margin" *ngFor="let model of library_info.tools">
+    <div class="modelThumbnailTitle">
+      <p></p>
+    </div>
+    <div class="modelThumbnail">
+      <ul class="modelNav clearfix">
+        <li class="pull-right"><a href="javascript:void(0)" (click)="toCalculatePage()"><i class="fa fa-tasks"></i></a></li>
+      </ul><a href="javascript:void(0)" (click)="toModelInfoPage_child(library_info.library_name,model,model.tool_path)">
+        <div class="picPanel">
+          <img src="/assets/images/common/commen.jpeg">
+        </div>
+        <div class="modelDetail"></div>
+      </a>
+      <ul class="modelNav clearfix">
+        <li class="pull-left model_name" title={{model.tool_name}}>{{model.tool_name}}</li>
+      </ul>
+    </div>
+  </div>
+</div>

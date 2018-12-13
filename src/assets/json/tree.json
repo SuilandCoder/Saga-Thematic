@@ -1,0 +1,49 @@
+{
+  "Climate": {
+    "Tools": "json/modelInfo/climate_tools.json"
+  },
+  "Grid": {
+    "Analysis": "json/modelInfo/grid_analysis.json",
+    "Calculus": "json/modelInfo/grid_calculus.json",
+    "Filter": "json/modelInfo/grid_filter.json",
+    "Gridding": "json/modelInfo/grid_gridding.json",
+    "Tools": "json/modelInfo/grid_tools.json"
+  },
+  "Projection": {
+    "GeoTRANS": "json/modelInfo/pj_geotrans.json",
+    "Georeferencing": "json/modelInfo/pj_georeference.json",
+    "Proj.4": "json/modelInfo/pj_proj4.json"
+  },
+  "Shapes": {
+    "Grid Tools": "json/modelInfo/shapes_grid.json",
+    "Lines": "json/modelInfo/shapes_lines.json",
+    "Points": "json/modelInfo/shapes_points.json",
+    "Polygons": "json/modelInfo/shapes_polygons.json",
+    "Tools": "json/modelInfo/shapes_tools.json",
+    "Transects": "json/modelInfo/shapes_transect.json"
+  },
+  "Simulation": {
+    "Cellular Automata": "json/modelInfo/sim_cellular_automata.json",
+    "Erosion": "json/modelInfo/sim_erosion.json",
+    "Fire Spreading Analysis": "json/modelInfo/sim_fire_spreading.json",
+    "Hydrology": "json/modelInfo/sim_hydrology.json",
+    "Hydrology:IHACRES": "json/modelInfo/sim_ihacres.json",
+    "RivFlow": "json/modelInfo/sim_rivflow.json"
+  },
+  "Spatial and Geostatistics": {
+    "Grids": "json/modelInfo/statistics_grid.json",
+    "Kriging": "json/modelInfo/statistics_kriging.json",
+    "Points": "json/modelInfo/statistics_points.json",
+    "Regression": "json/modelInfo/statistics_regression.json"
+  },
+  "Terrain Analysis": {
+    "Channels": "json/modelInfo/ta_channels.json",
+    "Compound Analyses": "json/modelInfo/ta_compound.json",
+    "Hydrology": "json/modelInfo/ta_hydrology.json",
+    "Lighting,Visibility": "json/modelInfo/ta_lighting.json",
+    "Morphometry": "json/modelInfo/ta_morphometry.json",
+    "Preprocessing": "json/modelInfo/ta_preprocessor.json",
+    "Profiles": "json/modelInfo/ta_profiles.json",
+    "Slope Stability": "json/modelInfo/ta_slope_stability.json"
+  }
+}

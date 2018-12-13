@@ -1,20 +1,93 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="page-container">
+  <div class="left-item">
+    <div class="logo-panel">
+      <a href="http://www.saga-gis.org/en/index.html" target="_blank">
+        <img src="../assets/images/model/logo_saga.png" style="width: 150px;height: 150px" />
+        <img src="../assets/images/logo/saga_detail.png" style="margin: 0;width: 90%" alt="">
+        <img src="" alt="">
+      </a>
+      <h2>SAGA</h2>
+    </div>
+    <div class="navbar-panel">
+      <ul class="navigation">
+        <!--Theme Info-->
+        <li>
+          <a routerLink="/theme-info" id="themeInfo">
+            <i class="fa fa-info-circle fa-fw"></i>
+            <span>Theme info</span>
+          </a>
+        </li>
 
+        <!--Models-->
+        <li>
+          <a [routerLink]="['/models-info','json/modelInfo/climate_tools.json']"  id="models" (click)="showModuleTree()">
+            <i class="fa fa-th-large fa-fw"></i>
+            <span>Models</span>
+          </a>
+          <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="example-tree" id="module_tree">
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+              <li class="mat-tree-node" title={{node.type}}>
+                <button mat-icon-button disabled ></button>
+                <a [routerLink]="['/models-info',node.type]">{{node.filename}}</a>
+              </li>
+            </mat-tree-node>
+          
+            <mat-nested-tree-node *matTreeNodeDef="let node; when: hasNestedChild">
+              <li>
+                <div class="mat-tree-node">
+                  <button mat-icon-button matTreeNodeToggle
+                          [attr.aria-label]="'toggle ' + node.filename">
+                    <mat-icon class="mat-icon-rtl-mirror">
+                      {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </mat-icon>
+                  </button>
+                  {{node.filename}}
+                </div>
+                <ul [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
+                  <ng-container matTreeNodeOutlet></ng-container>
+                </ul>
+              </li>
+            </mat-nested-tree-node>
+          </mat-tree>
+        </li>
+
+        <!--data-->
+        <li>
+          <a href="javascript:void(0)" id="datas" (click)="showDataList()">
+            <i class="fa fa-database fa-fw"></i>
+            <span>Data</span>
+          </a>
+
+          <ul class="subNavbar" id="dataContainer">
+            <li >
+              <a href="javascript:void(0)">Grid</a>
+            </li>
+            <li >
+              <a href="javascript:void(0)">Grid List</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)" >Shapes</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">Shapes List</a>
+            </li>
+          </ul>
+        </li>
+
+        <!--Applications-->
+        <li>
+          <a href="javascript:void(0)"id="apps">
+            <i class="fa fa-cubes fa-fw"></i>
+            <span>Applications</span>
+          </a>
+          <ul class="subNavbar" id="application_container">
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+  <div class="right-item" id="right-item">
+    <app-pages></app-pages>
+  </div>
+</div>

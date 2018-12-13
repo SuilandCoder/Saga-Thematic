@@ -1,0 +1,96 @@
+.page-container{
+  display: flex;
+  height: 100%;
+}
+.left-item {
+  flex:1;
+  padding-left: 5px;
+  padding-right: 7px;
+  min-width: 250px;
+  flex-shrink: 0;
+  border-right: 1px solid #dddddd;
+  position: relative;
+}
+.right-item{
+  flex: 6;
+}
+
+.logo-panel {
+  text-align: center;
+}
+
+.logo-panel>a>img {
+  width: 60%;
+  margin: 30px 0 20px;
+}
+
+.logo-panel>h2 {
+  font-weight: 500;
+  font-size: 30px;
+  margin: 0;
+}
+
+.navbar-panel {
+  /*border-bottom: #ddd 1px solid;*/
+  // padding: 50px 0 10px;
+  padding-left: 30px;
+  padding-top: 20px;
+  margin-left: 10px;
+}
+
+.navbar-panel .navigation {
+  padding: 0;
+  list-style: none;
+}
+
+.navbar-panel .navigation>li {
+  font-size: 16px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.navbar-panel .navigation li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.navbar-panel .navigation li a span {
+  padding-left: 10px;
+}
+
+.navbar-panel .navigation li a:hover {
+  color: #1890ff;
+}
+
+.navbar-panel .navigation li .arrow {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.navbar-panel .navigation li .subNavbar {
+  padding-left: 24px;
+}
+
+.navbar-panel .navigation li .subNavbar li {
+  margin: 10px 0 0 20px;
+}
+
+
+.example-tree-invisible {
+  display: none;
+}
+
+.example-tree ul,
+.example-tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+.example-tree{
+    display: none;
+}
+
+.mat-tree-node>button {
+  background: 0 0;
+}

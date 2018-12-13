@@ -1,0 +1,436 @@
+{
+  "Version": "1.0",
+  "author": "O. Conrad (c) 2001, V. Wichmann (c) 2003",
+  "library_description": "Tools for the preprocessing of digital terrain models.",
+  "library_name": "ta_preprocessor",
+  "library_name_title": "Ta Preprocessor",
+  "tools": [
+    {
+      "author": "O.Conrad (c) 2010",
+      "parameters": [
+        {
+          "inputs": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "DEM",
+              "name": "DEM",
+              "optional": "false",
+              "type": "Grid (input)"
+            }
+          ]
+        },
+        {
+          "outputs": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "NOFLATS",
+              "name": "No Flats",
+              "optional": "true",
+              "type": "Grid (optional output)"
+            },
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "FLATS",
+              "name": "Flat Areas",
+              "optional": "true",
+              "type": "Grid (optional output)"
+            }
+          ]
+        },
+        {
+          "optionals": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "PARAMETERS_GRID_SYSTEM",
+              "name": "Grid system",
+              "type": "Grid system"
+            },
+            {
+              "constraints": "Available Choices:\n[0] elevation\n[1] enumeration\nDefault: 0",
+              "description": "",
+              "identifier": "FLAT_OUTPUT",
+              "name": "Flat Area Values",
+              "type": "Choice"
+            }
+          ]
+        }
+      ],
+      "tool_description": "",
+      "tool_id": "0",
+      "tool_name": "Flat Detection"
+    },
+    {
+      "author": "O. Conrad (c) 2001",
+      "parameters": [
+        {
+          "inputs": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "ELEVATION",
+              "name": "Elevation",
+              "optional": "false",
+              "type": "Grid (input)"
+            }
+          ]
+        },
+        {
+          "outputs": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "SINKROUTE",
+              "name": "Sink Route",
+              "optional": "false",
+              "type": "Grid (output)"
+            }
+          ]
+        },
+        {
+          "optionals": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "PARAMETERS_GRID_SYSTEM",
+              "name": "Grid system",
+              "type": "Grid system"
+            },
+            {
+              "constraints": "Default: 0",
+              "description": "",
+              "identifier": "THRESHOLD",
+              "name": "Threshold",
+              "type": "Boolean"
+            },
+            {
+              "constraints": "Default: 100.000000",
+              "description": "",
+              "identifier": "THRSHEIGHT",
+              "name": "Threshold Height",
+              "type": "Floating point"
+            }
+          ]
+        }
+      ],
+      "tool_description": "",
+      "tool_id": "1",
+      "tool_name": "Sink Drainage Route Detection"
+    },
+    {
+      "author": "O. Conrad (c) 2001",
+      "parameters": [
+        {
+          "inputs": [
+            {
+              "constraints": "",
+              "description": "Digital Elevation Model that has to be processed",
+              "identifier": "DEM",
+              "name": "DEM",
+              "optional": "false",
+              "type": "Grid (input)"
+            },
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "SINKROUTE",
+              "name": "Sink Route",
+              "optional": "true",
+              "type": "Grid (optional input)"
+            }
+          ]
+        },
+        {
+          "outputs": [
+            {
+              "constraints": "",
+              "description": "Preprocessed DEM. If this is not set changes will be stored in the original DEM grid.",
+              "identifier": "DEM_PREPROC",
+              "name": "Preprocessed DEM",
+              "optional": "true",
+              "type": "Grid (optional output)"
+            }
+          ]
+        },
+        {
+          "optionals": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "PARAMETERS_GRID_SYSTEM",
+              "name": "Grid system",
+              "type": "Grid system"
+            },
+            {
+              "constraints": "Available Choices:\n[0] Deepen Drainage Routes\n[1] Fill Sinks\nDefault: 1",
+              "description": "",
+              "identifier": "METHOD",
+              "name": "Method",
+              "type": "Choice"
+            },
+            {
+              "constraints": "Default: 0",
+              "description": "",
+              "identifier": "THRESHOLD",
+              "name": "Threshold",
+              "type": "Boolean"
+            },
+            {
+              "constraints": "Default: 100.000000",
+              "description": "The parameter describes the maximum depth of a sink to be considered for removal [map units]. This makes it possible to exclude deeper sinks from filling.",
+              "identifier": "THRSHEIGHT",
+              "name": "Threshold Height",
+              "type": "Floating point"
+            }
+          ]
+        }
+      ],
+      "tool_description": "",
+      "tool_id": "2",
+      "tool_name": "Sink Removal"
+    },
+    {
+      "author": "Copyrights (c) 2003 by Volker Wichmann",
+      "parameters": [
+        {
+          "inputs": [
+            {
+              "constraints": "",
+              "description": "digital elevation model [m]",
+              "identifier": "DEM",
+              "name": "DEM",
+              "optional": "false",
+              "type": "Grid (input)"
+            }
+          ]
+        },
+        {
+          "outputs": [
+            {
+              "constraints": "",
+              "description": "processed DEM",
+              "identifier": "RESULT",
+              "name": "Filled DEM",
+              "optional": "false",
+              "type": "Grid (output)"
+            }
+          ]
+        },
+        {
+          "optionals": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "PARAMETERS_GRID_SYSTEM",
+              "name": "Grid system",
+              "type": "Grid system"
+            },
+            {
+              "constraints": "Minimum: 0.000000\nDefault: 0.010000",
+              "description": "minimum slope angle preserved from one cell to the next, zero results in flat areas [Degree]",
+              "identifier": "MINSLOPE",
+              "name": "Minimum Slope [Degree]",
+              "type": "Floating point"
+            }
+          ]
+        }
+      ],
+      "tool_description": "Depression filling algorithm after Olivier Planchon & Frederic Darboux (2001)\n\n\nReferences:\nPlanchon, O. & F. Darboux (2001): A fast, simple and versatile algorithm to fill the depressions of digital elevation models. Catena 46: 159-176\n\n",
+      "tool_id": "3",
+      "tool_name": "Fill Sinks (Planchon/Darboux, 2001)"
+    },
+    {
+      "author": "Copyrights (c) 2007 by Volker Wichmann",
+      "parameters": [
+        {
+          "inputs": [
+            {
+              "constraints": "",
+              "description": "Digital elevation model",
+              "identifier": "ELEV",
+              "name": "DEM",
+              "optional": "false",
+              "type": "Grid (input)"
+            }
+          ]
+        },
+        {
+          "outputs": [
+            {
+              "constraints": "",
+              "description": "Depression-free digital elevation model",
+              "identifier": "FILLED",
+              "name": "Filled DEM",
+              "optional": "false",
+              "type": "Grid (output)"
+            },
+            {
+              "constraints": "",
+              "description": "Computed flow directions, 0=N, 1=NE, 2=E, ... 7=NW",
+              "identifier": "FDIR",
+              "name": "Flow Directions",
+              "optional": "false",
+              "type": "Grid (output)"
+            },
+            {
+              "constraints": "",
+              "description": "Delineated watershed basins",
+              "identifier": "WSHED",
+              "name": "Watershed Basins",
+              "optional": "false",
+              "type": "Grid (output)"
+            }
+          ]
+        },
+        {
+          "optionals": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "PARAMETERS_GRID_SYSTEM",
+              "name": "Grid system",
+              "type": "Grid system"
+            },
+            {
+              "constraints": "Minimum: 0.000000\nDefault: 0.100000",
+              "description": "Minimum slope gradient to preserve from cell to cell; with a value of zero sinks are filled up to the spill elevation (which results in flat areas). Unit [Degree]",
+              "identifier": "MINSLOPE",
+              "name": "Minimum Slope [Degree]",
+              "type": "Floating point"
+            }
+          ]
+        }
+      ],
+      "tool_description": "This tool uses an algorithm proposed by Wang & Liu to identify and fill surface depressions in digital elevation models.\nThe method was enhanced to allow the creation of hydrologic sound elevation models, i.e. not only to fill the depression(s) but also to preserve a downward slope along the flow path. If desired, this is accomplished by preserving a minimum slope gradient (and thus elevation difference) between cells.\nThis is the fully featured version of the tool creating a depression less DEM, a flow path grid and a grid with watershed basins. If you encounter problems processing large data sets (e.g. LIDAR data) with this tool try the basic version (Fill Sinks XXL).\n\n\nReferences:\nWang, L. & H. Liu (2006): An efficient method for identifying and filling surface depressions in digital elevation models for hydrologic analysis and modelling. International Journal of Geographical Information Science, Vol. 20, No. 2: 193-213.\n",
+      "tool_id": "4",
+      "tool_name": "Fill Sinks (Wang & Liu)"
+    },
+    {
+      "author": "Copyrights (c) 2007 by Volker Wichmann",
+      "parameters": [
+        {
+          "inputs": [
+            {
+              "constraints": "",
+              "description": "Digital elevation model",
+              "identifier": "ELEV",
+              "name": "DEM",
+              "optional": "false",
+              "type": "Grid (input)"
+            }
+          ]
+        },
+        {
+          "outputs": [
+            {
+              "constraints": "",
+              "description": "Depression-free digital elevation model",
+              "identifier": "FILLED",
+              "name": "Filled DEM",
+              "optional": "false",
+              "type": "Grid (output)"
+            }
+          ]
+        },
+        {
+          "optionals": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "PARAMETERS_GRID_SYSTEM",
+              "name": "Grid system",
+              "type": "Grid system"
+            },
+            {
+              "constraints": "Minimum: 0.000000\nDefault: 0.100000",
+              "description": "Minimum slope gradient to preserve from cell to cell; with a value of zero sinks are filled up to the spill elevation (which results in flat areas). Unit [Degree]",
+              "identifier": "MINSLOPE",
+              "name": "Minimum Slope [Degree]",
+              "type": "Floating point"
+            }
+          ]
+        }
+      ],
+      "tool_description": "This tool uses an algorithm proposed by Wang & Liu to identify and fill surface depressions in digital elevation models.\nThe method was enhanced to allow the creation of hydrologic sound elevation models, i.e. not only to fill the depression(s) but also to preserve a downward slope along the flow path. If desired, this is accomplished by preserving a minimum slope gradient (and thus elevation difference) between cells.\nThis version of the tool is designed to work on large data sets (e.g. LIDAR data), with smaller datasets you might like to check out the fully featured standard version of the tool.\n\n\nReferences:\nWang, L. & H. Liu (2006): An efficient method for identifying and filling surface depressions in digital elevation models for hydrologic analysis and modelling. International Journal of Geographical Information Science, Vol. 20, No. 2: 193-213.\n",
+      "tool_id": "5",
+      "tool_name": "Fill Sinks XXL (Wang & Liu)"
+    },
+    {
+      "author": "O.Conrad (c) 2011",
+      "parameters": [
+        {
+          "inputs": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "DEM",
+              "name": "DEM",
+              "optional": "false",
+              "type": "Grid (input)"
+            },
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "STREAM",
+              "name": "Streams",
+              "optional": "false",
+              "type": "Grid (input)"
+            },
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "FLOWDIR",
+              "name": "Flow Direction",
+              "optional": "false",
+              "type": "Grid (input)"
+            }
+          ]
+        },
+        {
+          "outputs": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "BURN",
+              "name": "Processed DEM",
+              "optional": "true",
+              "type": "Grid (optional output)"
+            }
+          ]
+        },
+        {
+          "optionals": [
+            {
+              "constraints": "",
+              "description": "",
+              "identifier": "PARAMETERS_GRID_SYSTEM",
+              "name": "Grid system",
+              "type": "Grid system"
+            },
+            {
+              "constraints": "Available Choices:\n[0] simply decrease cell's value by epsilon\n[1] lower cell's value to neighbours minimum value minus epsilon\n[2] trace stream network downstream\nDefault: 0",
+              "description": "",
+              "identifier": "METHOD",
+              "name": "Method",
+              "type": "Choice"
+            },
+            {
+              "constraints": "Minimum: 0.000000\nDefault: 1.000000",
+              "description": "",
+              "identifier": "EPSILON",
+              "name": "Epsilon",
+              "type": "Floating point"
+            }
+          ]
+        }
+      ],
+      "tool_description": "Burns a stream network into a Digital Elevation Model (DEM). Stream cells have to be coded with valid data values, all other cells should be set to no data value. First two methods decrease . The third method ensures a steady downstream gradient. An elevation decrease is only applied, if a downstream cell is equally high or higher. You should provide a grid with flow directions for determination of downstream cells. The 'Sink Drainage Route Detection' tool offers such flow directions. ",
+      "tool_id": "6",
+      "tool_name": "Burn Stream Network into DEM"
+    }
+  ]
+}
+

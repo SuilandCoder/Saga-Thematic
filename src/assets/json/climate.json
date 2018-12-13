@@ -1,0 +1,114 @@
+[
+  {
+    "id": "0",
+    "name": "Multi Level to Surface Interpolation",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "false",
+    "detail": ""
+  },
+  {
+    "id": "1",
+    "name": "Multi Level to Points Interpolation",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": ""
+  },
+  {
+    "id": "2",
+    "name": "Earth's Orbital Parameters",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "Orbital parameters used here are based on the work of Andre L. Berger and its implementation from the NASA Goddard Institute for Space Studies (GISS). Berger's orbital parameters are considered to be valid for approximately 1 million years.\nReferences:\n- Berger, A.L. (1978): Long Term Variations of Daily Insolation and Quaternary Climatic Changes. Journal of the Atmospheric Sciences, volume 35(12), 2362-2367.\n- Berger, A.L. (1978): A Simple Algorithm to Compute Long Term Variations of Daily or Monthly Insolation. Institut d'Astronomie et de Geophysique, Universite Catholique de Louvain, Louvain-la-Neuve, No. 18.\n- NASA/GISS' implementation can be found as part of an Atmosphere-Ocean Model at <a target=\"_blank\" href=\"http://aom.giss.nasa.gov/srorbpar.html\">Determination of the Earth's Orbital Parameters</a>"
+  },
+  {
+    "id": "3",
+    "name": "Annual Course of Daily Insolation",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "Orbital parameters used here are based on the work of Andre L. Berger and its implementation from the NASA Goddard Institute for Space Studies (GISS). Berger's orbital parameters are considered to be valid for approximately 1 million years.\nReferences:\n- Berger, A.L. (1978): Long Term Variations of Daily Insolation and Quaternary Climatic Changes. Journal of the Atmospheric Sciences, volume 35(12), 2362-2367.\n- Berger, A.L. (1978): A Simple Algorithm to Compute Long Term Variations of Daily or Monthly Insolation. Institut d'Astronomie et de Geophysique, Universite Catholique de Louvain, Louvain-la-Neuve, No. 18.\n- NASA/GISS' implementation can be found as part of an Atmosphere-Ocean Model at <a target=\"_blank\" href=\"http://aom.giss.nasa.gov/srorbpar.html\">Determination of the Earth's Orbital Parameters</a>"
+  },
+  {
+    "id": "4",
+    "name": "Daily Insolation over Latitude",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "Orbital parameters used here are based on the work of Andre L. Berger and its implementation from the NASA Goddard Institute for Space Studies (GISS). Berger's orbital parameters are considered to be valid for approximately 1 million years.\nReferences:\n- Berger, A.L. (1978): Long Term Variations of Daily Insolation and Quaternary Climatic Changes. Journal of the Atmospheric Sciences, volume 35(12), 2362-2367.\n- Berger, A.L. (1978): A Simple Algorithm to Compute Long Term Variations of Daily or Monthly Insolation. Institut d'Astronomie et de Geophysique, Universite Catholique de Louvain, Louvain-la-Neuve, No. 18.\n- NASA/GISS' implementation can be found as part of an Atmosphere-Ocean Model at <a target=\"_blank\" href=\"http://aom.giss.nasa.gov/srorbpar.html\">Determination of the Earth's Orbital Parameters</a>"
+  },
+  {
+    "id": "5",
+    "name": "Monthly Global by Latitude",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "Orbital parameters used here are based on the work of Andre L. Berger and its implementation from the NASA Goddard Institute for Space Studies (GISS). Berger's orbital parameters are considered to be valid for approximately 1 million years.\nReferences:\n- Berger, A.L. (1978): Long Term Variations of Daily Insolation and Quaternary Climatic Changes. Journal of the Atmospheric Sciences, volume 35(12), 2362-2367.\n- Berger, A.L. (1978): A Simple Algorithm to Compute Long Term Variations of Daily or Monthly Insolation. Institut d'Astronomie et de Geophysique, Universite Catholique de Louvain, Louvain-la-Neuve, No. 18.\n- NASA/GISS' implementation can be found as part of an Atmosphere-Ocean Model at <a target=\"_blank\" href=\"http://aom.giss.nasa.gov/srorbpar.html\">Determination of the Earth's Orbital Parameters</a>"
+  },
+  {
+    "id": "6",
+    "name": "ETpot (after Hargreaves, Table)",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "Estimation of daily potential evapotranspiration from daily average, minimum and maximum temperatures using Hargreave's empirical equation. In order to estimate extraterrestrial net radiation geographic latitude of observation and Julian day have to be supplied too. "
+  },
+  {
+    "id": "7",
+    "name": "Daily to Hourly ETpot",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "Derive hourly from daily evapotranspiration using sinusoidal distribution. "
+  },
+  {
+    "id": "8",
+    "name": "ETpot (after Hargreaves, Grid)",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "Estimation of daily potential evapotranspiration from daily average, minimum and maximum temperatures using Hargreave's empirical equation. In order to estimate extraterrestrial net radiation geographic latitude of observation and Julian day have to be supplied too. "
+  },
+  {
+    "id": "9",
+    "name": "Sunrise and Sunset",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": ""
+  },
+  {
+    "id": "10",
+    "name": "Bioclimatic Variables",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "This tool calculates biogically meaningful variables from monthly climate data (mean, minimum and maximum temperature and precipitation), as provided e.g. by the <a href=\"http://worldclim.org\">WorldClim - Global Climate Data</a> project.\n<p>The implementation follows the definitions given by Jeremy van der Wal at <a href=\"https://rforge.net/doc/packages/climates/bioclim.html\">BioClim - Bioclimatic Variables</a>:<ol><li><b>Annual Mean Temperature:</b> The mean of all the monthly mean temperatures. Each monthly mean temperature is the mean of that month's maximum and minimum temperature.</li><li><b>Mean Diurnal Range:</b> The annual mean of all the monthly diurnal temperature ranges. Each monthly diurnal range is the difference between that month's maximum and minimum temperature.</li><li><b>Isothermality:</b> The mean diurnal range (parameter 2) divided by the annual temperature range (parameter 7).</li><li><b>Temperature Seasonality:</b> returns either<ul><li> the temperature coefficient of variation as the standard deviation of the monthly mean temperatures expressed as a percentage of the mean of those temperatures (i.e. the annual mean). For this calculation, the mean in degrees Kelvin is used. This avoids the possibility of having to divide by zero, but does mean that the values are usually quite small.</li><li> the standard deviation of the monthly mean temperatures.</li></ul><li><b>Maximum Temperature of Warmest Period:</b> The highest temperature of any monthly maximum temperature.</li><li><b>Minimum Temperature of Coldest Period:</b> The lowest temperature of any monthly minimum temperature.</li><li><b>Temperature Annual Range:</b> The difference between the Maximum Temperature of Warmest Period and the Minimum Temperature of Coldest Period.</li><li><b>Mean Temperature of Wettest Quarter:</b> The wettest quarter of the year is determined (to the nearest month), and the mean temperature of this period is calculated.</li><li><b>Mean Temperature of Driest Quarter:</b> The driest quarter of the year is determined (to the nearest month), and the mean temperature of this period is calculated.</li><li><b>Mean Temperature of Warmest Quarter:</b> The warmest quarter of the year is determined (to the nearest month), and the mean temperature of this period is calculated.</li><li><b>Mean Temperature of Coldest Quarter:</b> The coldest quarter of the year is determined (to the nearest month), and the mean temperature of this period is calculated.</li><li><b>Annual Precipitation:</b> The sum of all the monthly precipitation estimates.</li><li><b>Precipitation of Wettest Period:</b> The precipitation of the wettest month.</li><li><b>Precipitation of Driest Period:</b> The precipitation of the driest month.</li><li><b>Precipitation Seasonality:</b> The Coefficient of Variation is the standard deviation of the monthly precipitation estimates expressed as a percentage of the mean of those estimates (i.e. the annual mean).</li><li><b>Precipitation of Wettest Quarter:</b> The wettest quarter of the year is determined (to the nearest month), and the total precipitation over this period is calculated.</li><li><b>Precipitation of Driest Quarter:</b> The driest quarter of the year is determined (to the nearest month), and the total precipitation over this period is calculated.</li><li><b>Precipitation of Warmest Quarter:</b> The warmest quarter of the year is determined (to the nearest month), and the total precipitation over this period is calculated.</li><li><b>Precipitation of Coldest Quarter:</b> The coldest quarter of the year is determined (to the nearest month), and the total precipitation over this period is calculated.</li></ol></p><p>The quarterly parameters are not aligned to any calendar quarters. BioClim's definition of a quarter is any consecutive 3 months. For example, the driest quarter will be the 3 consecutive months that are drier than any other set of 3 consecutive months.</p>"
+  },
+  {
+    "id": "11",
+    "name": "Tree Growth Season",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "The 'Tree Growth Season' tool estimates the potential number of days suitable for tree growth as well as the average temperature for these days. The estimation needs monthly data of mean, minimum, and maximum temperature and precipitation. Internally a soil water balance model is run on a daily basis. Using the given thresholds a relative tree line height can optionally be estimated."
+  },
+  {
+    "id": "12",
+    "name": "Soil Water Balance",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "This tool calculates the water balance for the selected position on a daily basis. Needed input is monthly data of mean, minimum, and maximum temperature as well as precipitation."
+  },
+  {
+    "id": "13",
+    "name": "Wind Effect Correction",
+    "path": "",
+    "img": "images/model/thumb.png",
+    "available": "true",
+    "detail": "Wind effect correction using generalized logistic functions."
+  }
+]

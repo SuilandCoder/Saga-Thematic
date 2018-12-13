@@ -23,18 +23,19 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -123,5 +124,39 @@
       }
     }
   },
-  "defaultProject": "Saga-Thematic"
+  "defaultProject": "Saga-Thematic",
+  "schematics": {
+    "@schematics/angular:class": {
+      "spec": false
+    },
+    "@schematics/angular:component": {
+      "spec": false,
+      "index": true, 
+      "styleext": "scss"
+    },
+    "@schematics/angular:directive": {
+      "flat": true,
+      "spec": false
+    },
+    "@schematics/angular:guard": {
+      "flat": true,
+      "spec": false
+    },
+    "@schematics/angular:interface": {
+      "prefix": ""
+    },
+    "@schematics/angular:module": {
+      "flat": false,
+      "spec": false,
+      "routing": true
+    },
+    "@schematics/angular:pipe": {
+      "flat": true,
+      "spec": false
+    },
+    "@schematics/angular:service": {
+      "flat": true,
+      "spec": false
+    }
+  }
 }

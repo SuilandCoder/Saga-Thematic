@@ -1,0 +1,10 @@
+<div class="infoPanel container-fluid modelPanel">
+  <div class="title text-center">
+    <h3>
+      <span id="model_library_name">{{library_info.library_name_title}}</span>
+    </h3>
+  </div>
+  <div class="info clearfix">
+        <app-photo-card [library_info]="library_info" (toModelInfoPage) = "toModelInfoPage($event)"></app-photo-card> 
+  </div>
+</div>
