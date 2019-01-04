@@ -1,0 +1,67 @@
+.modal-title{
+    text-align: left;
+}
+.modal-content {
+    min-width: 780px;
+    max-width: 780px;
+    border-radius: 0px;
+    border: none;
+}
+.modal-body {
+    height: 400px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding:0px 15px;
+}
+
+.modal-dialog {
+    top: 110px;
+    left: 0px;
+}
+
+.modal-content {
+    min-width: 780px;
+    max-width: 780px;
+    border-radius: 0px;
+    border: none;
+}
+
+.tab-list{
+    background-color: #f5f5f5;
+    color:#777;
+}
+
+.tab-list,.tab-body{
+    position: relative;
+    height: 400px;
+    min-height: 400px;
+    max-height: 400px;
+    overflow: auto;
+    padding: 0px;
+}
+.tab-body{
+    display: none;
+}
+.tab-body.active{
+    display: block;
+}
+
+.tab-list ul{
+    padding: 0px 0px 0px 0px;
+    margin-top: 10px;
+}
+.tab-list li{
+    padding: 10px 10px 10px 15px; 
+    color: #204967;
+}
+.tab-list li:hover{
+    cursor: pointer;
+     color: #86BBD8;
+}
+.tab-list li.active{
+    background: #fff;
+    color: #86BBD8;
+}
+nz-row{
+    clear: both;
+}

@@ -1,0 +1,44 @@
+.mb_0{
+  margin-bottom: 0px;
+}
+
+nz-tabset {
+  text-align: center;
+  height: 100%;
+  overflow-y: auto;
+}
+
+app-tool-setting {
+  padding: 20px 0 0 20px;
+}
+
+#tool_description {
+  text-align: initial;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  // max-height: 800px;
+  overflow: hidden;
+}
+
+#tool_settings{
+    overflow-x: auto;
+}
+
+@media screen {
+  #ifr_des {
+    height: 700px;
+  }
+}
+
+@media screen and (max-width:1600px) {
+  #ifr_des {
+    height: 600px;
+  }
+}
+
+@media screen and (max-width:1300px) {
+  #ifr_des {
+    height: 500px;
+  }
+}

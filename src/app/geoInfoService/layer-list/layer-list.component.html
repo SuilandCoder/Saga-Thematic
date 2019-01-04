@@ -1,0 +1,38 @@
+<div class="panel-body layers-list-body" >
+                <ul [sortablejs]="LayerItems"  [sortablejsOptions]="LayerListOptions">
+                <li class="layer-item" *ngFor="let layer of LayerItems"  
+                    [class.active]="SelectedLayerItemId===layer.dataId" 
+                    [id]="layer.dataId" 
+                    (click)="onLayerItemClick(layer)">       
+                        <span class="layer-name" [title]="layer.name">
+                            <i  (click)="onEyeClicked(layer,$event)" class="fa" 
+                            [class.fa-eye]="layer.visible"
+                            [class.fa-eye-slash]="!layer.visible"
+                            [class.layer-show]="layer.visible"></i>
+                        {{layer.name}}</span>
+      
+                        <span class="icon-menu" (click)="showPopup(layer,$event)">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>                                   
+                        </span>  
+                                                  
+                    </li>
+                </ul>
+                <!-- layer popup menu -->
+         <app-popup *ngIf="popupShowed" 
+         [popupContent]="popupContent"
+         [nameField]="nameField"
+         [bgColor]="bgColor"
+         [pos]="popupPos"
+         [show]="popupShowed"
+         (onSelected)="onPopupItemSelected($event)"
+         (onClosed)="onPopupClosed($event)"
+         ></app-popup>       
+                <!-- layer setting panel -->
+    <app-layer-settings *ngIf="clickItem && clickItem.id ==='PROPERTIES'" [LayerItem]="SelectedLayerItem" (onClosed)="onClosed()"></app-layer-settings>
+                <!-- export data panel -->
+    <app-export-data></app-export-data>
+                <!-- attr table -->
+    <app-attributes-table *ngIf="clickItem && clickItem.id ==='TABLE'" [attrTableVisible] = "'true'" [LayerItem]="SelectedLayerItem" (onClosed)="onClosed()"></app-attributes-table>
+              
+</div>
+

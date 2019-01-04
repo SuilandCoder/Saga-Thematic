@@ -1,0 +1,13 @@
+<div class="input-group mt-10">
+  <input type="text" readonly class="form-control zindex_1" [value]="fileName">
+  <div class="input-group-btn">
+    <button type="button" class="btn btn-default dropdown-toggle mb-30" aria-haspopup="true" aria-expanded="false" (click)="openDialog()">
+      <span class="caret"></span>
+    </button>
+  </div>
+  <!-- /input-group -->
+  <label class="upload-button">
+    <input type="file" ngFileSelect accept="application/zip" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple="multiple"/> 
+    <span class="btn btn-default" style="margin-bottom:25px"> file</span>
+  </label>
+</div>

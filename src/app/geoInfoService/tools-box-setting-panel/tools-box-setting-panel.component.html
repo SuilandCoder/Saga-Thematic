@@ -1,0 +1,39 @@
+<div class="setting-panel">
+
+    <div nz-row >
+        <div nz-col class="gutter-row btn-group"  [nzSpan]="3">
+            <ul>
+                <li><i class="fa fa-pencil"
+                  [class.active]="CurrentHandle===HandleOptions.Edit"
+                  (click)="chooseHandleType(HandleOptions.Edit)" aria-hidden="true"></i></li>
+                <li><i class="fa fa-plus" 
+                  [class.active]="CurrentHandle===HandleOptions.Add"
+                  (click)="chooseHandleType(HandleOptions.Add)" aria-hidden="true"></i></li>
+                <li><i class="fa fa-minus"
+                  [class.active]="CurrentHandle===HandleOptions.Delete"
+                  (click)="chooseHandleType(HandleOptions.Delete)"
+                  (click)="onDeleteClicked()"
+                  aria-hidden="true"></i></li>
+              </ul>
+        </div>
+        <div nz-col class="gutter-row" [nzOffset]="1" [nzSpan]="18" >
+            <div *ngIf="CurrentHandle===HandleOptions.Edit" class="form-group">
+                <label for="toolName">TOOL NAME to edit</label>
+                <input type="text" #toolName [value]="TreeNode.value?TreeNode.value:''" class="form-control" id="toolName" placeholder="">
+                <br/>
+                <label for="toolId">TOOL ID to edit</label>
+                <input type="text" #toolId [value]="TreeNode.modelId?TreeNode.modelId:''" class="form-control" id="toolId" placeholder="">
+                <button class="btn btn-default save-btn" (click)="onSaveClicked(toolName.value,toolId.value)">Save</button>
+              </div>
+              <div *ngIf="CurrentHandle===HandleOptions.Add" class="form-group">
+                  <label for="toolNameToAdd">TOOL NAME to add </label>
+                  <input type="text" #toolNameToAdd class="form-control" id="toolNameToAdd" placeholder="input name">
+                  <br/>
+                  <label for="toolIdToAdd">TOOL ID to add</label>
+                  <input type="text" #toolIdToAdd class="form-control" id="toolIdToAdd" placeholder="input tool id">
+                  <button class="btn btn-default add-btn" (click)="onAddClicked(toolNameToAdd.value,toolIdToAdd.value)">Add</button>
+                </div>
+        </div>
+      </div>
+
+</div>

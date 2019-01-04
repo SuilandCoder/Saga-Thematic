@@ -1,0 +1,109 @@
+<div class="style-setting">
+
+  <div *ngIf="CurrentLayersItem && CurrentLayersItem.type==='tif'">
+
+    <div class="row">
+      <div class="col col-md-3 item-name">
+        <b>Color Band</b>
+      </div>
+      <div class="col col-md-5">
+        <input readonly (click)="onChooseBandClick($event)" [style.background-image]="CurrentColorBand?CurrentColorBand.ImageUrl:''"
+        />
+        <app-color-band (onColorBandChanged)="onBandChanged($event)" [class.show]="showColorBand"></app-color-band>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="CurrentLayersItem && CurrentLayersItem.type==='shp'">
+
+    <div *ngIf="ElemsVisible.FillColor" class="row">
+      <div class="col col-md-3 item-name">
+        <b>Fill</b>
+      </div>
+      <div class="col col-md-5">
+        <input readonly type="text" [(colorPicker)]="VectorStyle.FillColor" [style.background]="VectorStyle.FillColor" [cpPosition]="'right'"
+        />
+      </div>
+    </div>
+
+    <div *ngIf="ElemsVisible.StrokeColor" class="row">
+      <div class="col col-md-3 item-name">
+        <b>Out Line</b>
+      </div>
+      <div class="col col-md-5">
+        <input readonly type="text" [(colorPicker)]="VectorStyle.StrokeColor" [style.background]="VectorStyle.StrokeColor" [cpPosition]="'right'"
+        />
+      </div>
+    </div>
+
+    <div *ngIf="ElemsVisible.StrokeWidth" class="row">
+      <div class="col col-md-3 item-name">
+        <b>Line Width</b>
+      </div>
+      <div class="col col-md-5">
+        <input [(ngModel)]="VectorStyle.StrokeWidth" />
+      </div>
+    </div>
+
+    <div *ngIf="ElemsVisible.ImageFillColor" class="row">
+      <div class="col col-md-3 item-name">
+        <b>Point Fill</b>
+      </div>
+      <div class="col col-md-5">
+        <input readonly type="text" [(colorPicker)]="VectorStyle.ImageFillColor" [style.background]="VectorStyle.ImageFillColor"
+          [cpPosition]="'right'" />
+      </div>
+    </div>
+
+    <div *ngIf="ElemsVisible.ImageStrokeColor" class="row">
+      <div class="col col-md-3 item-name">
+        <b>Point Line</b>
+      </div>
+      <div class="col col-md-5">
+        <input readonly type="text" [(colorPicker)]="VectorStyle.ImageStrokeColor" [style.background]="VectorStyle.ImageStrokeColor"
+          [cpPosition]="'right'" />
+      </div>
+    </div>
+
+    <div *ngIf="ElemsVisible.ImageStrokeWidth" class="row">
+      <div class="col col-md-3 item-name">
+        <b>Point Line Width</b>
+      </div>
+      <div class="col col-md-5">
+        <input [(ngModel)]="VectorStyle.ImageStrokeWidth" />
+      </div>
+    </div>
+
+    <div *ngIf="ElemsVisible.ImageRadius" class="row">
+      <div class="col col-md-3 item-name">
+        <b>Point Radius</b>
+      </div>
+      <div class="col col-md-5">
+        <input [(ngModel)]="VectorStyle.ImageRadius" />
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="CurrentLayersItem">
+    <div *ngIf="ElemsVisible.Opacity" class="row ">
+      <div class="col col-md-3 item-name">
+        <b>Opacity</b>
+      </div>
+      <div class="col col-md-5">
+        <!-- <input [(ngModel)]="layerSetting.Opacity" /> -->
+        <!-- <el-slider [min]="0" [max]="100" (click)="onClickSlider($event)" [(model)]="layerSetting.Opacity">  </el-slider>-->
+        <nz-row>
+          <nz-col nzSpan="24">
+            <nz-slider [nzMin]="0" [nzTipFormatter]="formatValue" [nzMax]="100" [(ngModel)]="layerSetting.Opacity"></nz-slider>
+          </nz-col>
+        </nz-row>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

@@ -32,6 +32,5 @@ export class MenuService {
         resolve(data);
       });
     })
-    
   }
 }

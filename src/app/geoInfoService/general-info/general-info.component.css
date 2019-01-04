@@ -1,0 +1,10 @@
+.info-item{
+    margin: 15px 0px;
+}
+.info-item-name{
+    text-align: left;
+}
+.info-item-content{
+    text-align:center; 
+}
+

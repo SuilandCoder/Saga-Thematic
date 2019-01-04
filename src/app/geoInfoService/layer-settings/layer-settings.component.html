@@ -1,0 +1,49 @@
+<!-- Button trigger modal -->
+<button type="button" id="ShowLayerSetting" (click)="onShowDialog()" style="display:none" data-toggle="modal" data-target="#LayerSettingModal">
+</button>
+<!-- Modal -->
+<div class="modal fade" id="LayerSettingModal" data-dismiss="modal"  tabindex="-1" role="dialog"
+  aria-labelledby="LayerSettingModalLabel">
+  <div class="modal-dialog" role="document" [style.left]="(currentMoveDistance.X).toString()+'px'" [style.top]="(currentMoveDistance.Y).toString()+'px'">
+     
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span data-dismiss="modal" aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="LayerSettingModalLabel">Layer Properties</h4>
+       
+      </div>
+      <div class="modal-body">
+        <!-- -->
+        <div class="row">
+          <div class="col col-md-2 tab-list scrollbar noselect">
+            <ul>
+              <li *ngFor="let Tab of TabList" [class.active]="ActiveTab===Tab.id" (click)="ActiveTab=Tab.id">{{Tab.name}}</li>
+            </ul>
+          </div>
+          <div class="col col-md-10  scrollbar tab-body" [class.active]="ActiveTab==='0'">
+            <app-general-info [LayerItem]="CurrentLayerItem"></app-general-info>
+          </div>
+          <div class="col col-md-10  scrollbar tab-body" [class.active]="ActiveTab==='1'">
+            <app-set-style  [LayerItem]="CurrentLayerItem"></app-set-style>
+          </div>
+          <div class="col col-md-10  scrollbar tab-body" [class.active]="ActiveTab==='2'">
+            <app-set-labels *ngIf="CurrentLayerItem.type==='shp'"  [LayerItem]="CurrentLayerItem"></app-set-labels>
+          </div>
+          <div class="col col-md-10  scrollbar tab-body" [class.active]="ActiveTab==='3'">
+              Field
+         
+            
+            </div>
+        </div>
+        <!-- -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onApply()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<h4 class="title">{{title}}</h4>
+<div class="list-container scrollbar">
+  <ul>
+    <li *ngFor="let projection of ProjectionList"
+    (click)="onProjectionItemClick(projection)">
+      {{projection.proj?projection.proj.name:"Unknown projection"}}
+    </li>
+  </ul>
+</div>

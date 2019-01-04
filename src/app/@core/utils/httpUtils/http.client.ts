@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class _HttpClient {
-    headers: HttpHeaders = new HttpHeaders();
+    headers: HttpHeaders;
 
     constructor(
         private http: HttpClient,
@@ -72,9 +72,15 @@ export class _HttpClient {
         body: any | null,
         options: any = {}, 
         parseRes?: boolean,
-        withRequestProgress?: boolean
+        withRequestProgress?: boolean,
+        headers?:HttpHeaders
     ): Observable<any> {
-        this.headers = new HttpHeaders().append("X-HTTP-Method-Override","post");
+        if(headers!=null || headers!=undefined){
+            this.headers = headers;
+        }else{
+            this.headers = new HttpHeaders();
+        }
+        // this.headers.set("X-HTTP-Method-Override","post");
         return this.resInterceptor(this.http.post(url, body, {
             ...options, 
             headers: this.headers

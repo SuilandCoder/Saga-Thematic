@@ -1,0 +1,44 @@
+.app_container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+
+.example-card {
+  width: 300px; 
+  height: 300px;
+  margin: 10px 50px;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12); 
+}
+
+.img{
+  width: 300px;
+  height: 250px;
+  overflow: hidden;
+}
+
+.application-name{
+  text-align: center; 
+}
+
+h4{
+  height: 3rem;
+  line-height: 3rem;
+}
+
+ div img{
+   width: 100%;
+  -webkit-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+}
+
+ div img:hover{
+  max-width: 110%;
+  width: 110%;
+}

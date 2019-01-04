@@ -1,0 +1,40 @@
+<div class="toolsbar noselect">
+  <div class="tools-group">
+    <span>
+      <app-add-layer></app-add-layer>
+    </span>
+  </div>
+
+  <div class="tools-group">
+    <span [class.selected]="SelectIsActive">
+      <app-select></app-select>
+    </span>
+    <span>
+      <app-full-extent></app-full-extent>
+    </span>
+    <span [class.selected]="IdentifyIsActive">
+      <app-identify></app-identify>
+    </span>
+  </div>
+  <div class="tools-group">
+    <span>
+      <app-tools-box></app-tools-box>
+    </span>
+    <span>
+      <app-tools-box-setting></app-tools-box-setting>
+    </span>
+  </div>
+  <div class="tools-group">
+    <span>
+      <app-online-map-tool> </app-online-map-tool>
+    </span>
+  </div>
+  <!-- <div class="tools-group">
+      <span>
+        <app-tools-box-new></app-tools-box-new>
+      </span>
+    </div> -->
+
+
+
+</div>

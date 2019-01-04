@@ -1,0 +1,15 @@
+<div class="panel panel-default layer-container scrollbar mb_0" [style.height]="LayersListHeight.toString()+'px'" *ngIf="toolInfo">
+  <nz-tabset (nzSelectChange)="onTabChanged($event)">
+
+    <nz-tab [nzTitle]="TabItems[0]">
+      <!-- <iframe id="ifr_des" [src]="truest(descriptionPath)" style="width: 100%;transform: scale(0.9)"
+        frameborder="0"></iframe> -->
+      <div id="tool_description" [innerHTML]="descriptionHtml"></div>
+    </nz-tab>
+
+    <nz-tab [nzTitle]="TabItems[1]" id="tool_settings">
+      <app-tool-setting [toolInfo]="this.toolInfo"></app-tool-setting>
+    </nz-tab>
+
+  </nz-tabset>
+</div>

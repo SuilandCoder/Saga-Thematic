@@ -1,0 +1,11 @@
+<div  
+class="popup-container"
+[style.display]="this.show?'block':'none'"
+[style.background-color]="bgColor"
+[style.left]="pos.X.toString()+'px'" [style.top]="pos.Y.toString()+'px'" >
+   <div [class]="'trangle '+(popupClass?popupClass:'')"  [style.border-color]="trangleBgColor"></div>
+    <ul class="popup-items">
+      <li class="popup-item" *ngFor="let item of popupContent" (click)="onClick(item)">{{nameField?item[nameField]:item}}</li>
+    </ul>
+   
+</div>

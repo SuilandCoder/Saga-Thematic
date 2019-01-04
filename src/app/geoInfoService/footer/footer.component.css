@@ -1,0 +1,67 @@
+.app-footer {
+    position: relative;
+    text-align: left;
+    padding-left: 40px;
+    box-shadow: 0px 1px 1px #777;
+    background-color: #f5f5f5;
+    padding: 4px 15px;
+}
+
+div[nz-col] {
+    text-align: left;
+}
+
+div[nz-col].State {
+    white-space: nowrap;
+    border-radius: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+
+div[nz-col].Coordinates {
+    white-space: nowrap;
+    border-radius: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.crs-icon{
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.crs-text {
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+   max-width: 180px;
+    cursor: pointer;
+}
+
+.download-map i {
+    cursor: pointer;
+}
+
+app-projection-list {
+    position: absolute;
+    z-index: 9;
+    top: auto;
+    bottom: 100%;
+    margin: 0px 0px 10px 0px;
+    background-color: #fff;
+    box-shadow: 4px 4px 4px #ddd;
+    display: none;
+}
+
+app-projection-list .show {
+    display: block;
+}
+
+:host ::ng-deep nz-spin>div {
+    display: inline-block;
+}
+
+.state-text {
+    display: inline-block;
+}

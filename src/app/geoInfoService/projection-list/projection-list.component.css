@@ -1,0 +1,28 @@
+.list-container{
+    min-width: 210px;
+    max-width: 210px;
+    max-height: 200px;
+    min-height: 200px;
+    overflow-y: auto;
+    border: solid 1px #ddd;
+}
+.title{
+    text-align: left;
+    background-color: #F7F8F1;
+    margin: 0px;
+    padding: 8px 2px 5px 4px;
+}
+ul{
+    padding: 2px 2px 2px 5px;
+    margin: 0px;
+    
+}
+ul li{
+    list-style: none;
+    padding: 4px 2px 2px 3px;
+}
+ul li:hover{
+    cursor: pointer;
+    background-color: #86BBD8;
+    color: #fff;
+}

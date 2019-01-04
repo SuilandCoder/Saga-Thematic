@@ -1,0 +1,26 @@
+<nz-modal [(nzVisible)]="_isVisible" [(nzStyle)]="_style" [nzWidth]="_width" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel($event)">
+  <ng-template #modalTitle>
+    <div #modalHead class="head noselect" (mousedown)="modalHeaderMousedown($event)"
+      (mouseup)="modalHeaderMouseup($event)">
+      <span>{{_title}}</span>
+    </div>
+  </ng-template>
+  <ng-template #defaultContent>
+    {{_content}}
+  </ng-template>
+  <ng-template #modalContent>
+    <ng-template [ngTemplateOutlet]="_contentTpl ||defaultContent"></ng-template>
+  </ng-template>
+  <ng-template #defaultFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
+      {{_cancelText}}
+    </button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleOk($event)">
+      {{_okText}}
+    </button>
+  </ng-template>
+  <ng-template #modalFooter>
+    <ng-template [ngTemplateOutlet]="_footerTpl ||defaultFooter"></ng-template>
+  </ng-template>
+</nz-modal>

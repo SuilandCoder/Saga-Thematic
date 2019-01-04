@@ -1,0 +1,6 @@
+<div class="row info-item" *ngFor="let LayerInfo of LayerInfoArray">
+    <div class="col-md-3 info-item-name">
+      <b>{{LayerInfo.itemName}}</b>
+    </div>
+    <div class="col-md-8 info-item-content">{{LayerInfo.itemContent?LayerInfo.itemContent:'Unknown'}}</div>
+  </div>

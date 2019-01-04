@@ -1,0 +1,33 @@
+<div id="mapview" [style.height]="MapHeight.toString()+'px'">
+</div>
+<div *ngIf="IdentifyFlag" class="identify scrollbar">
+    <div class="table-wrap">
+        <div class="table-head">
+            <div class="table-head-wrap">
+                <table class="table table-head">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span>Field</span>
+                            </th>
+                            <th>
+                                <span>Value</span>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div *ngIf="identifyInfo" class="table-content scrollbar">
+            <table class="table table-striped table-bordered">
+                <tbody>
+                    <tr *ngFor="let Field of identifyInfo.FieldArray">
+                        <td>{{Field}}</td>
+                        <td>{{identifyInfo.ValueObject[Field]}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+
+.layer-container {
+    min-width: 100px;
+    overflow: auto;
+    border: solid 1px #ddd;
+    border-radius: 0px;
+}
+
+.hidelist {
+    width: 10px!important;
+}
+
+.layers-list-body {
+    overflow: auto;
+}
+
+.layers-list-body ul li {
+    text-align: left;
+    padding: 6px 4px 6px 6px;
+    margin-bottom: 5px;
+    height: 33px;
+}
+
+.layers-list-body ul li input {
+    zoom: 1.2;
+    padding-top: 20px;
+}
+
+.layers-list-body ul li:hover {
+    cursor: default;
+    box-shadow: 4px 4px 4px #ccc;
+}
+
+.active {
+    background-color: #86BBD8;
+    color: #fff;
+}
+
+.active .layer-show {
+    color: #fff;
+}
+
+span i {
+    color: #5F7387;
+}
+
+.layer-name {
+    float: left;
+    max-width: 100px;
+    min-width: 100px;
+    white-space: nowrap;
+    border-radius: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.icon-menu {
+    position: relative;
+    float: right;
+    margin-right: 10px;
+    padding: 0px 6px 0px 6px;
+}
+
+.icon-menu:hover {
+    cursor: pointer;
+}
+
+.active i {
+    color: #fff;
+}
+
+.layer-item {
+    position: relative;
+}
+
+.icon-list {
+    position: absolute;
+    border: solid 1px red;
+    top:100%;
+    right:0px;
+    z-index: 9999;
+}

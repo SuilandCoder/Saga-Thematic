@@ -1,0 +1,51 @@
+#mapview {
+    border: solid 1px #ddd;
+}
+
+.ol-dragbox {
+    background-color: rgba(255, 255, 255, 0.4);
+    border-color: rgba(100, 150, 0, 1);
+}
+
+#mapview>>>.ol-button i {
+    color: inherit;
+}
+
+#mapview>>>.hello {
+    right: 50%;
+    top: 0.5em;
+}
+
+#mapview>>>.save {
+    left: 50%;
+    top: 0.5em;
+}
+
+#mapview>>>.text {
+    left: 50%;
+    top: 2.5em;
+}
+
+.identify {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    min-width: 185px;
+    min-height: 200px;
+    background: #fff;
+    overflow: auto;
+    border: solid 1px #ddd;
+}
+
+table {
+    text-align: left;
+}
+
+.table-content {
+    min-height: 200px;
+    max-height: 400px;
+    overflow: auto;
+}
+.table-head {
+    margin-bottom: 0%;
+}

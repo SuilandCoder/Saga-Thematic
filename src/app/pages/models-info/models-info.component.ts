@@ -11,6 +11,7 @@ import * as $ from "jquery";
 export class ModelsInfoComponent implements OnInit {
   private library_info={};
   private modelList;
+  LayersListHeight: number;
   constructor(
     private routeInfo:ActivatedRoute,
     private menuService: MenuService,
@@ -18,6 +19,10 @@ export class ModelsInfoComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.LayersListHeight = window.innerHeight * 0.88;
+    window.addEventListener('resize', () => {
+      this.LayersListHeight = window.innerHeight * 0.88;
+    })
     // this.jsonPath = this.routeInfo.snapshot.params['path'];
     this.routeInfo.params.forEach(params=>{
       //* 拿到路径

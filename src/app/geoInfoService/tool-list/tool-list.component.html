@@ -1,0 +1,6 @@
+<div [style.display]="CurrentIndex===1?'block':'none'" class="tools-tree">
+  <tree [tree]="tree" [settings]="settings" (nodeSelected)="onNodeSelected($event)" #ToolsTree></tree>
+</div>
+
+
+

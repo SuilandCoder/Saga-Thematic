@@ -15,4 +15,9 @@ console.log(JSON.stringify(tools));
 var d = {"aa":123,"bb":123};
 ({aa,bb}=d);
 
-console.log("aa"+aa)
+console.log("aa"+aa);                       
+var a = {"tools":[
+    {"b":123},
+    {"c":345},
+    {"d":4664},
+]};

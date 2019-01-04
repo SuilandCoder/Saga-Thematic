@@ -1,0 +1,15 @@
+<div class="panel-body list-body">
+    <ul>
+    <li *ngFor="let ListItem of ListItems"  
+        [class.active]="SelectedListItemId===ListItem.dataId" 
+        [id]="ListItem.dataId" 
+        (click)="onDataItemClick(ListItem)">       
+            <span class="item-name" [title]="ListItem.name">
+            {{ListItem.name}}</span>
+            <span class="download"(click)="onDownload(ListItem,$event)" >
+                <i class="fa fa-download" ></i>                
+                </span>                              
+        </li>
+    </ul>
+</div>
+

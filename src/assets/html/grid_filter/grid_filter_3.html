@@ -1,0 +1,16 @@
+<h4>Tool</h4><table border="0"><tr><td valign="top"><b>Name</b></td><td valign="top">Multi Direction Lee Filter</td></tr><tr><td valign="top"><b>ID</b></td><td valign="top">3</td></tr><tr><td valign="top"><b>Author</b></td><td valign="top">Copyrights (c) 2003 by Andre Ringeler</td></tr><tr><td valign="top"><b>Specification</b></td><td valign="top">grid</td></tr></table><hr><h4>Description</h4>The tool searches for the minimum variance within 16 directions and applies a Lee Filter in the direction of minimum variance. The filter is edge-preserving and can be used to remove speckle noise from SAR images or to smooth DTMs. Applied to DTMs, this filter will preserve slope breaks and narrow valleys.
+
+For more details, please refer to:
+Lee, J.S. (1980): Digital image enhancement and noise filtering by use of local statistics. IEEE Transactions on Pattern Analysis and Machine Intelligence, PAMI-2: 165-168
+
+Lee, J.S., Papathanassiou, K.P., Ainsworth, T.L., Grunes, M.R., Reigber, A. (1998): A New Technique for Noise Filtering of SAR Interferometric Phase Images. IEEE Transactions on Geosciences and Remote Sensing 36(5): 1456-1465.
+
+Selige, T., Böhner, J., Ringeler, A. (2006): Processing of SRTM X-SAR Data to correct interferometric elevation models for land surface process applications. In: Böhner, J., McCloy, K.R., Strobl, J. [Eds.]: SAGA - Analysis and Modelling Applications. Göttinger Geographische Abhandlungen, Vol. 115: 97-104 <a href="http://downloads.sourceforge.net/saga-gis/gga115_09.pdf">&lt;PDF&gt;</a>
+
+
+<hr><h4>Parameters</h4><table border="1" width="100%" valign="top" cellpadding="5" rules="all"><tr><th>Name</th><th>Type</th><th>Identifier</th><th>Description</th><th>Constraints</th></tr>
+<tr><th colspan="5">Input</th></tr><tr><td>Grid </td><td>Grid (input)</td><td>INPUT</td><td></td><td></td></tr><tr><th colspan="5">Output</th></tr><tr><td>Filtered Grid</td><td>Grid (output)</td><td>RESULT</td><td></td><td></td></tr><tr><td>Minimum Standard Deviation (*)</td><td>Grid (optional output)</td><td>STDDEV</td><td></td><td></td></tr><tr><td>Direction of Minimum Standard Deviation (*)</td><td>Grid (optional output)</td><td>DIR</td><td></td><td></td></tr><tr><th colspan="5">Options</th></tr><tr><td>Estimated Noise (absolute)</td><td>Floating point</td><td>NOISE_ABS</td><td>Estimated noise in units of input data</td><td>Default: 1.000000</td></tr><tr><td>Estimated Noise (relative)</td><td>Floating point</td><td>NOISE_REL</td><td>Estimated noise relative to mean standard deviation</td><td>Default: 1.000000</td></tr><tr><td>Weighted</td><td>Boolean</td><td>WEIGHTED</td><td></td><td>Default: 1</td></tr><tr><td>Method</td><td>Choice</td><td>METHOD</td><td></td><td>Available Choices:
+[0] noise variance given as absolute value
+[1] noise variance given relative to mean standard deviation
+[2] original calculation (Ringeler)
+Default: 1</td></tr></table>(*) <i>optional</i>

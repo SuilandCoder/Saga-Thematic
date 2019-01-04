@@ -1,0 +1,31 @@
+.headline {
+    float: left;
+    margin: 0px 10px 2px 0px;
+    background-color: #312c2c;
+    padding: 2px 2px 4px 2px;
+    width: 100%;
+    color: #fff;
+}
+
+.layer-list-containter {
+    width: 400px;
+    padding: 0px;
+    margin: 0px 0px 0px 0px;
+    position: absolute;
+    left: 0;
+    /* top: 50px; */
+}
+
+.map-view {
+    padding: 0px;
+    margin: 0px 0px 0px 400px;
+
+}
+
+.tool-info{
+    min-width: 500px;
+}
+
+app-footer{
+    width:100%;
+}

@@ -1,0 +1,7 @@
+<div class="color-band-container scrollbar">
+  <ul >
+    <li *ngFor="let imageUrl of imageUrlArray" 
+    [style.background-image]="imageUrl.ImageUrl" 
+    (click)="onColorBandClick(imageUrl)"></li>
+  </ul>
+</div>

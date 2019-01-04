@@ -1,0 +1,72 @@
+<div class="table_container">
+  <table id="table_settings" class="col-lg-11" border="1">
+    <thead>
+      <tr>
+        <th style="text-align: center;">name</th>
+        <th style="text-align: center;">type</th>
+        <th style="text-align: center;">data</th>
+        <th style="text-align: center;">tips</th>
+      </tr>
+    </thead>
+    <thead *ngIf="inputParams">
+      <tr>
+        <th style="text-align: center;" colspan="4">
+          <span>INPUT</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody id="input_body" *ngIf="inputParams">
+      <tr *ngFor="let input of inputParams">
+        <td>{{input.name}}</td>
+        <td>{{input.type}}</td>
+        <td colspan="2">
+          <!-- <input type="file" accept="application/zip"> -->
+          <app-list-input *ngIf="input.type.includes('list');else single_input" [eventName]="input.identifier" [layerItems]="this.layerItems" [inputType]="input.type" (inputData)="inputListHandler($event)"></app-list-input>
+          <ng-template #single_input>
+            <app-single-input [eventName]="input.identifier" [layerItems]="layerItems" (inputData)="inputDataHandler($event)"></app-single-input>
+          </ng-template> 
+        </td>
+      </tr>
+    </tbody>
+    <thead id="options_head" *ngIf="optionsParams">
+      <tr>
+        <th style="text-align: center;" colspan="4">
+          OPTIONS
+        </th>
+      </tr>
+    </thead>
+    <tbody id="options_body" *ngIf="optionsParams">
+      <tr *ngFor="let option of optionsParams">
+        <td>{{option.name}}</td>
+        <td>{{option.type}}</td>
+        <td>
+          <select class="form-control" *ngIf="option.type=='Choice'">
+            <option value="{{i}}" *ngFor="let op of option.op_datas let i = index">{{op}}</option>
+          </select>
+          <input type="text" class="form-control" *ngIf="option.type!=='Choice'" value="{{option.default_d}}">
+        </td>
+        <td>{{option.constraints}}</td>
+      </tr>
+    </tbody>
+
+    <!-- <thead *ngIf="outputParams">
+      <tr>
+        <th style="text-align: center;" colspan="4">
+          OUTPUT
+        </th>
+      </tr>
+    </thead>
+    <tbody id="output_body" *ngIf="outputParams">
+      <tr *ngFor="let output of outputParams">
+        <td>{{output.name}}</td>
+        <td>{{output.type}}</td>
+        <td><a class="btn btn-danger disabled" id="output.identifier">download</a></td>
+        <td>{{output.description}}</td> 
+      </tr>
+    </tbody> -->
+  </table>
+  <button type="button" style="float: right;margin-top: 20px;margin-right: 30px;width: 100px;tab-size: 28px" class="btn btn-success"
+    (click)="runModel()">Run
+  </button>
+
+</div>

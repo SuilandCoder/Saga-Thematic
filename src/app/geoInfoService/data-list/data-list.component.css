@@ -1,0 +1,35 @@
+ul{
+    list-style: none;
+    padding: 2px 4px 3px 4px;
+    
+}
+ul li{
+    text-align: center;
+    white-space: nowrap;
+}
+.list-body{
+    overflow: auto;
+}
+.list-body ul li{
+    text-align: left;
+    padding: 6px 4px 6px 6px;
+    margin-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.item-name{
+    max-width: 100px;
+    display: inline-block;
+    white-space: nowrap;
+    border-radius: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.active{
+    background-color: #86BBD8;
+    color:#fff;
+}
+.download{
+    float:right;
+}

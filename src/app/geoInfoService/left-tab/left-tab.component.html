@@ -1,0 +1,23 @@
+<div class="panel panel-default layer-container scrollbar" [style.height]="LayersListHeight.toString()+'px'">
+  <nz-tabset (nzSelectChange)="onTabChanged($event)">
+    <nz-tab [nzTitle]="TabItems[2]">
+      <span>
+        <app-tool-list></app-tool-list>
+      </span>
+    </nz-tab>
+
+    <nz-tab [nzTitle]="TabItems[0]">
+      <span>
+        <app-layer-list></app-layer-list>
+      </span>
+    </nz-tab>
+
+    <nz-tab [nzTitle]="TabItems[1]">
+      <span>
+        <app-data-list></app-data-list>
+      </span>
+    </nz-tab>
+
+  </nz-tabset>
+
+</div>

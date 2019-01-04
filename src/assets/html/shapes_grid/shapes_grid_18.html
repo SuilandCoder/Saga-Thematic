@@ -1,0 +1,8 @@
+<h4>Tool</h4><table border="0"><tr><td valign="top"><b>Name</b></td><td valign="top">Grid Classes Area for Polygons</td></tr><tr><td valign="top"><b>ID</b></td><td valign="top">18</td></tr><tr><td valign="top"><b>Author</b></td><td valign="top">O.Conrad (c) 2016</td></tr><tr><td valign="top"><b>Specification</b></td><td valign="top">grid</td></tr></table><hr><h4>Description</h4>Calculates for each polygon the area covered by each grid class.<hr><h4>Parameters</h4><table border="1" width="100%" valign="top" cellpadding="5" rules="all"><tr><th>Name</th><th>Type</th><th>Identifier</th><th>Description</th><th>Constraints</th></tr>
+<tr><th colspan="5">Input</th></tr><tr><td>Polygons </td><td>Shapes (input)</td><td>POLYGONS</td><td></td><td></td></tr><tr><td>Grid </td><td>Grid (input)</td><td>GRID</td><td></td><td></td></tr><tr><td>Look-up Table (*)</td><td>Table (optional input)</td><td>GRID_LUT</td><td></td><td></td></tr><tr><th colspan="5">Output</th></tr><tr><td>Result (*)</td><td>Shapes (optional output)</td><td>RESULT</td><td></td><td></td></tr><tr><th colspan="5">Options</th></tr><tr><td>Method</td><td>Choice</td><td>METHOD</td><td></td><td>Available Choices:
+[0] cell center
+[1] cell area
+Default: 0</td></tr><tr><td>Value Interpretation</td><td>Choice</td><td>GRID_VALUES</td><td></td><td>Available Choices:
+[0] values are class identifiers
+[1] use look-up table
+Default: 1</td></tr><tr><td>Value</td><td>Table field</td><td>GRID_LUT_MIN</td><td></td><td></td></tr><tr><td>Value (Maximum)</td><td>Table field</td><td>GRID_LUT_MAX</td><td></td><td></td></tr><tr><td>Name</td><td>Table field</td><td>GRID_LUT_NAM</td><td></td><td></td></tr></table>(*) <i>optional</i>

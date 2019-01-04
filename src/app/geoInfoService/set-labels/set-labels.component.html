@@ -1,0 +1,206 @@
+<div class="container item-container">
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Show Label</b>
+    </div>
+    <div class="col col-md-5 item-value">
+      <nz-switch [(ngModel)]="layerSetting.ShowLabel">
+        <i class=" anticon anticon-check" checked></i>
+        <i class=" anticon anticon-cross" unchecked></i>
+      </nz-switch>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Label Field</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-select style="width: 200px;" [(ngModel)]="layerSetting.VectorStyle.TextField" >
+        <nz-option *ngFor="let Field of FieldArray" [nzLabel]="Field" [nzValue]="Field">
+        </nz-option>
+      </nz-select>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Align</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-select style="width: 200px;" [nzPlaceHolder]="'Select Align'" [(ngModel)]="layerSetting.VectorStyle.TextStyle.Align" >
+        <nz-option *ngFor="let TextAlign of TextAligns" [nzLabel]="TextAlign|upperCaseFirst"  [nzValue]="TextAlign">
+        </nz-option>
+      </nz-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Base Line</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-select style="width: 200px;" [(ngModel)]="layerSetting.VectorStyle.TextStyle.BaseLine" >
+        <nz-option *ngFor="let Baseline of Baselines" [nzLabel]="Baseline|upperCaseFirst" [nzValue]="Baseline">
+        </nz-option>
+      </nz-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Color</b>
+    </div>
+    <div class="col col-md-5">
+      <input readonly class="ant-input-number-input" type="text" [(colorPicker)]="layerSetting.VectorStyle.TextStyle.Color" [style.background]="layerSetting.VectorStyle.TextStyle.Color"
+        [cpPosition]="'right'" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Exceed Length</b>
+    </div>
+    <div class="col col-md-5 item-value">
+      <nz-switch [(ngModel)]="layerSetting.VectorStyle.TextStyle.ExceedLen">
+          <i class=" anticon anticon-check" checked></i>
+          <i class=" anticon anticon-cross" unchecked></i>
+        </nz-switch>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Font</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-select style="width: 200px;" [(ngModel)]="layerSetting.VectorStyle.TextStyle.Font" >
+        <nz-option *ngFor="let Font of Fonts" [nzLabel]="Font|upperCaseFirst" [nzValue]="Font">
+        </nz-option>
+      </nz-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Max Angle</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-input-number style="width: 200px;" [(ngModel)]="layerSetting.VectorStyle.TextStyle.MaxAngle" [nzFormatter]="formatterAngle" [nzParser]="parserAngle"  [nzMin]="0" [nzMax]="360" [nzStep]="10" ></nz-input-number>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Max Resolution</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-select style="width: 200px;" [(ngModel)]="layerSetting.VectorStyle.TextStyle.MaxResolution" >
+        <nz-option *ngFor="let MaxResolution of MaxResolutions" [nzLabel]="MaxResolution|upperCaseFirst" [nzValue]="MaxResolution">
+        </nz-option>
+      </nz-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Offset X</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-input-number style="width: 200px;" [nzFormatter]="formatterPixel" [nzParser]="parserPixel" [(ngModel)]="layerSetting.VectorStyle.TextStyle.OffsetX" [nzStep]="1" ></nz-input-number>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Offset Y</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-input-number style="width: 200px;" [nzFormatter]="formatterPixel" [nzParser]="parserPixel"  [(ngModel)]="layerSetting.VectorStyle.TextStyle.OffsetY" [nzStep]="1"></nz-input-number>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Out Line Color</b>
+    </div>
+    <div class="col col-md-5">
+      <input class="ant-input-number-input" style="width: 200px;" readonly type="text" [(colorPicker)]="layerSetting.VectorStyle.TextStyle.OutLineColor" [style.background]="layerSetting.VectorStyle.TextStyle.OutLineColor"
+        [cpPosition]="'right'" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Out Line Width</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-input-number style="width: 200px;" [nzFormatter]="formatterPixel" [nzParser]="parserPixel" [(ngModel)]="layerSetting.VectorStyle.TextStyle.OutLineWidth" [nzStep]="1" [nzMin]="0" ></nz-input-number>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Placement</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-select style="width: 200px;" [(ngModel)]="layerSetting.VectorStyle.TextStyle.Placement" >
+        <nz-option *ngFor="let Placement of Placements" [nzLabel]="Placement|upperCaseFirst" [nzValue]="Placement">
+        </nz-option>
+      </nz-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Rotation</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-input-number style="width: 200px;" [nzFormatter]="formatterAngle" [nzParser]="parserPixel" [(ngModel)]="layerSetting.VectorStyle.TextStyle.Rotation" [nzStep]="45" [nzMin]="0" [nzMax]="360" ></nz-input-number>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Size</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-input-number style="width: 200px;" [nzFormatter]="formatterPixel" [nzParser]="parserPixel" [(ngModel)]="layerSetting.VectorStyle.TextStyle.Size" [nzStep]="1" [nzMin]="0" ></nz-input-number>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Type</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-select style="width: 200px;" [(ngModel)]="layerSetting.VectorStyle.TextStyle.Type" >
+        <nz-option *ngFor="let TextOption of TextOptions" [nzLabel]="TextOption|upperCaseFirst" [nzValue]="TextOption">
+        </nz-option>
+      </nz-select>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-4 item-name">
+      <b>Weight</b>
+    </div>
+    <div class="col col-md-5">
+      <nz-select style="width: 200px;" [(ngModel)]="layerSetting.VectorStyle.TextStyle.Weight" >
+        <nz-option *ngFor="let Weight of Weights" [nzLabel]="Weight|upperCaseFirst" [nzValue]="Weight">
+        </nz-option>
+      </nz-select>
+
+    </div>
+  </div>
+
+
+
+
+
+
+</div>

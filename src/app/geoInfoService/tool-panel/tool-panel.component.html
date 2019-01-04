@@ -1,0 +1,23 @@
+<form #ToolForm="ngForm" enctype="multipart/form-data">
+  <div class="form-group form-inline" *ngFor="let inputdata of inputDataArray">
+
+    <div class="input-group">
+      <input type="text" readonly class="form-control" [id]="inputdata.name" [value]="DataForPost.get(inputdata.name)?DataForPost.get(inputdata.name).name:''"
+        placeholder="please select {{inputdata.name}}">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li class="list-item-for-selection" *ngFor="let layer of LayerItems" (click)="onInputItemSelected(layer,inputdata.name)">{{layer.name}}</li>
+        </ul>
+      </div>
+      <!-- /btn-group -->
+    </div>
+    <!-- /input-group -->
+    <label class="upload-button">
+      <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event,inputdata.name)" [uploadInput]="uploadInput">
+      <span  class="btn btn-default"> file</span>
+    </label>
+  </div>
+</form>

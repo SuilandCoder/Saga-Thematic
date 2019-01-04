@@ -1,0 +1,44 @@
+<!-- Button trigger modal -->
+<i class="fa fa-cog tool-btn" aria-hidden="true" title="Tool Box Settings" data-toggle="modal" (click)="onClick()" data-target="#ToolsBoxSettingModal"></i>
+
+<!-- Modal -->
+<div class="modal fade" #ToolsBoxSettingModal id="ToolsBoxSettingModal" tabindex="-1" data-dismiss="modal" role="dialog"
+  aria-labelledby="ToolsBoxSettingModalLabel">
+  <div class="modal-dialog" [style.left]="(MoveDistance.X).toString()+'px'" [style.top]="(MoveDistance.Y).toString()+'px'"
+    role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <span aria-hidden="true" class="close" data-dismiss="modal">&times;</span>
+        <h4 class="modal-title" id="ToolsBoxSettingModalLabel">Tools settings</h4>
+      </div>
+      <div class="modal-body">
+
+        <div nz-row [nzGutter]="8">
+          <div nz-col class="gutter-row" [nzSpan]="10">
+              <div class="tools-tree" id="SettingTree" draggable="false">
+                  <tree [tree]="SettingTree" [settings]="settings" (nodeSelected)="onNodeSelected($event)" #ToolsTree></tree>
+                </div>
+          </div>
+          <div nz-col class="gutter-row" [nzSpan]="12">
+              <app-tools-box-setting-panel></app-tools-box-setting-panel>
+          </div>
+        </div>
+
+       
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--contextmenu -->
+<div id="contextmenu" class="context-menu fade" [class.show]="contextMenuShowed" [style.left]="contextMenuX" [style.top]="contextMenuY">
+  <ul>
+    <li>delete</li>
+    <li>add</li>
+  </ul>
+</div>

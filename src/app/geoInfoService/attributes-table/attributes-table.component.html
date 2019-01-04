@@ -1,0 +1,26 @@
+<app-modal [visible]="isVisible" [title]="title" [modalBodyWidth]="700" [modalContent]="modalContent" [modalFooter]="modalFooter"
+  (onCancelClick)="onCancelClick($event)">
+
+  <ng-template #modalContent>
+    <nz-table #nzTable [nzData]="fieldValues" [nzPageSize]="8" [nzSize]="'small'" [nzScroll]="{ x:scrollX+'px',y: '240px' }">
+      <thead>
+        <tr>
+          <th [width]="itemWidth" *ngFor="let field of fieldArray;let i = index" [nzLeft]="i===0?'0px':null">
+            {{field}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fieldValue of nzTable.data">
+          <td [width]="itemWidth"  *ngFor="let Field of fieldArray;let i = index" [nzLeft]="i===0?'0px':null">
+            {{fieldValue[Field]}}
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+  <ng-template #modalFooter>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleOk($event)">
+      OK
+    </button>
+  </ng-template>
+</app-modal>

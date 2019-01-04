@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>选择输入数据：</h1>
+<div mat-dialog-content>
+    <nz-transfer
+    [nzDataSource]="list"
+    [nzTitles]="['Source', 'Target']"
+    (nzSelectChange)="select($event)"
+    (nzChange)="change($event)">
+  </nz-transfer>
+</div>
+<div mat-dialog-actions style="float:right">
+    <button mat-stroked-button color="primary" [mat-dialog-close]="rightList" cdkFocusInitial>Ok</button>
+</div> 

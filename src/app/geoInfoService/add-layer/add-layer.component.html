@@ -1,0 +1,9 @@
+
+<!-- <ng4-files-click (filesSelect)="filesSelect($event)" name="myfiles" >
+        <i class="fa fa-plus tool-btn" aria-hidden="true" title="add layer"></i>
+      </ng4-files-click> -->
+        <label class="upload-button">
+          <input type="file" ngFileSelect #fileInput (uploadOutput)="onUploadOutput($event,fileInput)"  (beforeUpload)='beforeFileUpload($event)'>
+          <i class="fa fa-plus tool-btn" aria-hidden="true" title="add layer"></i>
+          
+        </label>

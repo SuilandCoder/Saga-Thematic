@@ -1,18 +1,29 @@
-import { ModelsInfoModule } from './models-info/models-info.module';
-import { ThemeInfoModule } from './theme-info/theme-info.module';
+import { PagesComponent } from './pages.component';
+import { ModelsInfoModule } from './models-info/models-info.module'; 
 import { PagesRoutingModule } from './pages-routing.module';
 import { NgModule } from '@angular/core'; 
-const PAGES_COMPONENTS = [
-];
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatIconModule,
+} from '@angular/material';
+import { MatTreeModule } from '@angular/material/tree';
+import { ThemeInfoComponent } from './theme-info/theme-info.component';
+import { ApplicationComponent } from './application/application.component'; 
 
 @NgModule({
   imports: [
     PagesRoutingModule,
-    ThemeInfoModule,
-    ModelsInfoModule
+    ModelsInfoModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatTreeModule, 
   ],
   declarations: [
-  ],
+    PagesComponent,
+    ThemeInfoComponent, 
+  ApplicationComponent],
 })
 export class PagesModule {
 }
