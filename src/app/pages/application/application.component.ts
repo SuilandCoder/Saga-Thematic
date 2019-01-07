@@ -15,4 +15,8 @@ export class ApplicationComponent implements OnInit {
   goTools(){
     // window.open("http://localhost:4222/ws");
   }
+
+  goIntegration(){
+    
+  }
 }

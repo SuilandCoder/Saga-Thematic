@@ -100,6 +100,8 @@ export class ToolSettingComponent implements OnInit {
           console.log(data);
         });
       }).catch(reason => {
+        this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+        this.toastr.error("Run Model Failed.","error");
         console.log(reason);
       })
     } else {

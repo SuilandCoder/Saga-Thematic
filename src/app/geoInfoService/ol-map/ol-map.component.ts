@@ -111,10 +111,10 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     //初始化变量
     this.MouseMovePosition = new Point(0, 0);
-    this.MapHeight = window.innerHeight * 0.88;
+    this.MapHeight = window.innerHeight * 0.9;
 
     window.addEventListener('resize', () => {
-      this.MapHeight = window.innerHeight* 0.88;
+      this.MapHeight = window.innerHeight* 0.9;
       setImmediate(()=>{
         //防止放在map实例化之后，不起效果
         this.MapObject.updateSize();

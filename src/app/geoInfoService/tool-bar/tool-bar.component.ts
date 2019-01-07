@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DataTransmissionService } from '../../_common'
 @Component({
   selector: 'app-tool-bar',
@@ -7,8 +7,12 @@ import { DataTransmissionService } from '../../_common'
 })
 export class ToolBarComponent implements OnInit {
 
+  @Output()
+  leftOpenState: EventEmitter<any> = new EventEmitter();
   SelectIsActive: boolean = false;
   IdentifyIsActive: boolean = false;
+
+  leftOpen:boolean = false;
   constructor(private dataTransmissionService: DataTransmissionService) { }
 
   ngOnInit() {
@@ -19,7 +23,11 @@ export class ToolBarComponent implements OnInit {
       this.IdentifyIsActive = IdentifyActive;
     })
 
+  }
 
+  leftSideToogle(){
+    this.leftOpen = !this.leftOpen;
+    this.leftOpenState.emit(this.leftOpen);
   }
 
 }

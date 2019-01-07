@@ -1,5 +1,4 @@
-[
-  {
+[{
   "value": "Climate",
   "id": "Climate",
   "settings": {
@@ -436,8 +435,8 @@
     }]
   }]
 }, {
-  "value": "Projection",
-  "id": "Projection",
+  "value": "Imagery",
+  "id": "Imagery",
   "settings": {
     "cssClasses": {
       "expanded": "fa fa-caret-down",
@@ -452,130 +451,128 @@
     "isCollapsedOnInit": true
   },
   "children": [{
-    "value": "GeoTRANS",
-    "id": "json/modelInfo/pj_geotrans.json",
+    "value": "Classification",
+    "id": "json/modelInfo/imagery_classification.json",
     "children": [{
       "id": "0",
-      "value": "GeoTrans (Shapes)"
+      "value": "Supervised Classification for Grids"
     }, {
       "id": "1",
-      "value": "GeoTrans (Grid)"
-    }]
-  }, {
-    "value": "Georeferencing",
-    "id": "json/modelInfo/pj_georeference.json",
-    "children": [{
-      "id": "0",
-      "value": "Create Reference Points"
-    }, {
-      "id": "1",
-      "value": "Rectify Grid"
+      "value": "K-Means Clustering for Grids"
     }, {
       "id": "2",
-      "value": "Warping Shapes"
+      "value": "Confusion Matrix (Two Grids)"
     }, {
       "id": "3",
-      "value": "Move Grid"
+      "value": "Decision Tree"
     }, {
       "id": "4",
-      "value": "Direct Georeferencing of Airborne Photographs"
+      "value": "Supervised Classification for Shapes"
     }, {
       "id": "5",
-      "value": "Define Georeference for Grids"
+      "value": "Supervised Classification for Tables"
     }, {
       "id": "6",
-      "value": "World File from Flight and Camera Settings"
+      "value": "Confusion Matrix (Polygons / Grid)"
     }]
   }, {
-    "value": "Proj.4",
-    "id": "json/modelInfo/pj_proj4.json",
+    "value": "ISODATA Clustering",
+    "id": "json/modelInfo/imagery_isocluster.json",
     "children": [{
       "id": "0",
-      "value": "Set Coordinate Reference System"
+      "value": "ISODATA Clustering for Grids"
+    }]
+  }, {
+    "value": "Maximum Entropy",
+    "id": "json/modelInfo/imagery_maxent.json",
+    "children": [{
+      "id": "0",
+      "value": "Maximum Entropy Classifcation"
     }, {
       "id": "1",
-      "value": "Coordinate Transformation (Shapes List)"
+      "value": "Maximum Entropy Presence Prediction"
+    }]
+  }, {
+    "value": "Photogrammetry",
+    "id": "json/modelInfo/imagery_photogrammetry.json",
+    "children": [{
+      "id": "0",
+      "value": "Resection (Terrestrial)"
+    }, {
+      "id": "1",
+      "value": "Colorisation (PC)"
+    }]
+  }, {
+    "value": "SVM",
+    "id": "json/modelInfo/imagery_svm.json",
+    "children": [{
+      "id": "0",
+      "value": "SVM Classification"
+    }]
+  }, {
+    "value": "Segmentation",
+    "id": "json/modelInfo/imagery_segmentation.json",
+    "children": [{
+      "id": "0",
+      "value": "Watershed Segmentation"
+    }, {
+      "id": "1",
+      "value": "Grid Skeletonization"
     }, {
       "id": "2",
-      "value": "Coordinate Transformation (Shapes)"
+      "value": "Seed Generation"
     }, {
       "id": "3",
-      "value": "Coordinate Transformation (Grid List)"
+      "value": "Seeded Region Growing"
+    }]
+  }, {
+    "value": "Tools",
+    "id": "json/modelInfo/imagery_tools.json",
+    "children": [{
+      "id": "0",
+      "value": "Vegetation Index (Distance Based)"
+    }, {
+      "id": "1",
+      "value": "Vegetation Index (Slope Based)"
+    }, {
+      "id": "2",
+      "value": "Enhanced Vegetation Index"
+    }, {
+      "id": "3",
+      "value": "Tasseled Cap Transformation"
     }, {
       "id": "4",
-      "value": "Coordinate Transformation (Grid)"
+      "value": "IHS Sharpening"
     }, {
       "id": "5",
-      "value": "[deprecated] Proj.4 (Command Line Arguments, Shapes)"
+      "value": "Colour Normalized Brovey Sharpening"
     }, {
       "id": "6",
-      "value": "[deprecated] Proj.4 (Dialog, Shapes)"
+      "value": "Colour Normalized Spectral Sharpening"
     }, {
       "id": "7",
-      "value": "[deprecated] Proj.4 (Command Line Arguments, Grid)"
+      "value": "Principle Components Based Image Sharpening"
     }, {
       "id": "8",
-      "value": "[deprecated] Proj.4 (Dialog, Grid)"
+      "value": "Top of Atmosphere Reflectance"
     }, {
       "id": "9",
-      "value": "[deprecated] Proj.4 (Command Line Arguments, List of Shapes Layers)"
+      "value": "Automated Cloud Cover Assessment"
     }, {
       "id": "10",
-      "value": "[deprecated] Proj.4 (Dialog, List of Shapes Layers)"
+      "value": "Landsat Import with Options"
     }, {
       "id": "11",
-      "value": "[deprecated] Proj.4 (Command Line Arguments, List of Grids)"
+      "value": "Textural Features"
     }, {
       "id": "12",
-      "value": "[deprecated] Proj.4 (Dialog, List of Grids)"
+      "value": "Local Statistical Measures"
     }, {
       "id": "13",
-      "value": "Change Longitudinal Range for Grids"
+      "value": "Universal Image Quality Index"
     }, {
       "id": "14",
-      "value": "Latitude/Longitude Graticule"
-    }, {
-      "id": "15",
-      "value": "Coordinate Reference System Picker"
-    }, {
-      "id": "16",
-      "value": "Tissot's Indicatrix"
-    }, {
-      "id": "17",
-      "value": "Geographic Coordinate Grids"
-    }, {
-      "id": "18",
-      "value": "Coordinate Transformation (Point Cloud List)"
-    }, {
-      "id": "19",
-      "value": "Coordinate Transformation (Point Cloud)"
-    }, {
-      "id": "20",
-      "value": "Geographic Distances"
-    }, {
-      "id": "21",
-      "value": "Geographic Distances (Pair of Coordinates)"
-    }, {
-      "id": "22",
-      "value": "Geographic Distances"
-    }, {
-      "id": "23",
-      "value": "UTM Projection (Grid List)"
-    }, {
-      "id": "24",
-      "value": "UTM Projection (Grid)"
-    }, {
-      "id": "25",
-      "value": "UTM Projection (Shapes List)"
-    }, {
-      "id": "26",
-      "value": "UTM Projection (Shapes)"
-    }, {
-      "id": "27",
-      "value": "UTM Projection (Point Cloud List)"
-    }, {
-      "id": "28",
-      "value": "UTM Projection (Point Cloud)"
+      "value": "Import Landsat Scene"
     }]
   }]
 }, {

@@ -9,10 +9,14 @@
     "Gridding": "json/modelInfo/grid_gridding.json",
     "Tools": "json/modelInfo/grid_tools.json"
   },
-  "Projection": {
-    "GeoTRANS": "json/modelInfo/pj_geotrans.json",
-    "Georeferencing": "json/modelInfo/pj_georeference.json",
-    "Proj.4": "json/modelInfo/pj_proj4.json"
+  "Imagery": {
+    "Classification": "json/modelInfo/imagery_classification.json",
+    "ISODATA Clustering": "json/modelInfo/imagery_isocluster.json",
+    "Maximum Entropy": "json/modelInfo/imagery_maxent.json",
+    "Photogrammetry":"json/modelInfo/imagery_photogrammetry.json",
+    "SVM":"json/modelInfo/imagery_svm.json",
+    "Segmentation":"json/modelInfo/imagery_segmentation.json",
+    "Tools":"json/modelInfo/imagery_tools.json"
   },
   "Shapes": {
     "Grid Tools": "json/modelInfo/shapes_grid.json",

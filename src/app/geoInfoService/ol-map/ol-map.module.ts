@@ -1,10 +1,9 @@
 import { NgModule } from "@angular/core";
 import { SharedModule, ImageProcessing } from "../../_common";
-import { OlMapComponent } from "./ol-map.component";
-
+import { OlMapComponent } from "./ol-map.component"; 
 @NgModule({
     imports: [
-        SharedModule
+        SharedModule, 
     ],
     declarations: [
         OlMapComponent

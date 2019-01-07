@@ -1,5 +1,5 @@
 /**
- *  * 该脚本用来获取所以模型在模型门户的地址，并将模型地址更新进 Json 文件中
+ *  * 该脚本用来获取所you模型在模型门户的地址，并将模型地址更新进 Json 文件中
  */
 var fs = require("fs");
 var path = require("path");

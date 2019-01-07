@@ -21,8 +21,6 @@ export class ToolListComponent implements OnInit {
   CurrentSelected: any;
   public ButtonText = 'Next';
   public tree: TreeModel;
-  animal: string = "cat";
-  name: string = "zrm";
   private treeJSONPath = "../../../assets/json/ng2tree.json"
   @ViewChild('ToolsTree')
   public ToolsTree: any;
@@ -63,7 +61,7 @@ export class ToolListComponent implements OnInit {
       console.log(e.node.parent.id + "   " + e.node.id);
       var path = e.node.parent.id;
       var id = e.node.id;
-      this.modelService.sendMessage(path,id);
+      this.modelService.sendModelInfoMessage(path,id);
     } else {
       this.CurrentSelected = undefined;
       const thisControl = this.ToolsTree.getControllerByNodeId(e.node.id);
@@ -72,34 +70,6 @@ export class ToolListComponent implements OnInit {
       //? this.modelService.clearMessage?  移除右侧的模型信息?
       
     }
-  }
-
-
-  openToolDialog(): void {
-    const dialogRef = this.dialog.open(ToolDialog, {
-      width: '300px',
-      data: { name: this.name, animal: this.animal }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.animal = result;
-    })
-  }
-}
-
-
-@Component({
-  selector: 'tool-dialog',
-  templateUrl: 'tool-dialog.html',
-})
-export class ToolDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<ToolDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 
 }

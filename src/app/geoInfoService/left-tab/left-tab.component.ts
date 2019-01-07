@@ -16,9 +16,9 @@ export class LeftTabComponent implements OnInit {
 
   ngOnInit() {
 
-    this.LayersListHeight = window.innerHeight * 0.88;
+    this.LayersListHeight = window.innerHeight * 0.9;
     window.addEventListener('resize', () => {
-      this.LayersListHeight = window.innerHeight * 0.88;
+      this.LayersListHeight = window.innerHeight * 0.9;
     })
 
     this.TabItems = ['Layers', 'Data','Tools'];

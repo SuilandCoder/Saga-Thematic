@@ -4,9 +4,7 @@ import { Injectable } from '@angular/core';
 import * as $ from "jquery";
 import { _HttpClient } from '../utils/httpUtils';
 import {Observable} from 'rxjs';
-import { Subject } from 'rxjs';
-import { formatDate } from '@angular/common';
-import { reject } from 'q';
+import { Subject } from 'rxjs'; 
 @Injectable({
     providedIn: 'root'
 })
@@ -80,18 +78,27 @@ export class ModelService {
     }
 
 
-    private subject = new Subject<any>();
+    private modelInfoSubject = new Subject<any>();
+    private rightSideSubject = new Subject<any>();
 
-    sendMessage(path,id){
-        this.subject.next({"path":path,"id":id});
+    sendModelInfoMessage(path,id){
+        this.modelInfoSubject.next({"path":path,"id":id});
     }
 
     clearMessage(){
-        this.subject.next();
+        this.modelInfoSubject.next();
     }
 
-    getMessage():Observable<any>{
-        return this.subject.asObservable();
+    getModelInfoMessage():Observable<any>{
+        return this.modelInfoSubject.asObservable();
+    }
+
+    sendRightSideMessage(){
+        this.rightSideSubject.next();
+    }
+
+    getRightSideMessage(){
+        return this.rightSideSubject.asObservable();
     }
 
 }

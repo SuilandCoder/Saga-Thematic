@@ -4,8 +4,7 @@
   "library_description": "Tools for weather and climate data.",
   "library_name": "climate_tools",
   "library_name_title": "Climate Tools",
-  "tools": [
-    {
+  "tools": [{
     "author": "O.Conrad (c) 2012",
     "parameters": [{
       "inputs": [{
@@ -100,7 +99,7 @@
     "tool_description": "",
     "tool_id": "0",
     "tool_name": "Multi Level to Surface Interpolation",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NWY1ZWIzMDEtZjhjOS00ZTQ4LTkwZTItYWQ2MDI0YTQ2MmUxN2U=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NWY1ZWIzMDEtZjhjOS00ZTQ4LTkwZTItYWQ2MDI0YTQ2MmUxYjM=",
     "oid": "5b90e7bbd15d75093cb586bf",
     "stateId": "AF3EDED6-95E9-4e58-85DE-C38D65F75FEF"
   }, {
@@ -204,7 +203,7 @@
     "tool_description": "",
     "tool_id": "1",
     "tool_name": "Multi Level to Points Interpolation",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?N2JhOWY1OTUtM2FmZi00NTA0LWI0YTMtN2VlNjIwZjEwYTg1N2Q=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?N2JhOWY1OTUtM2FmZi00NTA0LWI0YTMtN2VlNjIwZjEwYTg1NDA=",
     "oid": "5b90e7bbd15d75093cb586c0",
     "stateId": "DB1DC84B-0CD9-4812-B711-F5500815A3DB"
   }, {
@@ -242,7 +241,7 @@
     "tool_description": "Orbital parameters used here are based on the work of Andre L. Berger and its implementation from the NASA Goddard Institute for Space Studies (GISS). Berger's orbital parameters are considered to be valid for approximately 1 million years. ",
     "tool_id": "2",
     "tool_name": "Earth's Orbital Parameters",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NDVjZGRjZTgtNDA5Ni00Njc1LTg0YWQtMDJjNDkzZDBmOWE2MjE=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NDVjZGRjZTgtNDA5Ni00Njc1LTg0YWQtMDJjNDkzZDBmOWE2ZmE=",
     "oid": "5b90e7bbd15d75093cb586ca",
     "stateId": "5EF2FAC9-D47D-4494-9D84-68EDEF642463"
   }, {
@@ -286,7 +285,7 @@
     "tool_description": "Orbital parameters used here are based on the work of Andre L. Berger and its implementation from the NASA Goddard Institute for Space Studies (GISS). Berger's orbital parameters are considered to be valid for approximately 1 million years. ",
     "tool_id": "3",
     "tool_name": "Annual Course of Daily Insolation",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?YmMzYzZkMWYtNTMyZi00OWFlLTg4M2MtYzY0NWViOTc3NDJhODU=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?YmMzYzZkMWYtNTMyZi00OWFlLTg4M2MtYzY0NWViOTc3NDJhNWY=",
     "oid": "5b90e7bbd15d75093cb586cb",
     "stateId": "8978259D-FD7B-4b22-BD91-11665F9457FE"
   }, {
@@ -336,7 +335,7 @@
     "tool_description": "Orbital parameters used here are based on the work of Andre L. Berger and its implementation from the NASA Goddard Institute for Space Studies (GISS). Berger's orbital parameters are considered to be valid for approximately 1 million years. ",
     "tool_id": "4",
     "tool_name": "Daily Insolation over Latitude",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NDk5YjBjYTAtYjk5Mi00NTQyLThkMjUtNjA5ZGY5YTI2YTQ4ZDU=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NDk5YjBjYTAtYjk5Mi00NTQyLThkMjUtNjA5ZGY5YTI2YTQ4OTY=",
     "oid": "5b90e7bbd15d75093cb586cc",
     "stateId": "EB1BC9B2-486B-4ee0-87E1-816C6AAFB908"
   }, {
@@ -383,7 +382,7 @@
     "tool_description": "Orbital parameters used here are based on the work of Andre L. Berger and its implementation from the NASA Goddard Institute for Space Studies (GISS). Berger's orbital parameters are considered to be valid for approximately 1 million years. ",
     "tool_id": "5",
     "tool_name": "Monthly Global by Latitude",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ZmRmMzM3N2MtYzZmNC00MzBhLWJlM2ItZWQyMjM3NTIzMmQ2NTM=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ZmRmMzM3N2MtYzZmNC00MzBhLWJlM2ItZWQyMjM3NTIzMmQ2NzE=",
     "oid": "5b90e7bbd15d75093cb586cd",
     "stateId": "093E7665-096A-4303-A6D0-496ACF757C82"
   }, {
@@ -433,7 +432,7 @@
     "tool_description": "Estimation of daily potential evapotranspiration from daily average, minimum and maximum temperatures using Hargreave's empirical equation. In order to estimate extraterrestrial net radiation geographic latitude of observation and Julian day have to be supplied too. ",
     "tool_id": "6",
     "tool_name": "ETpot (after Hargreaves, Table)",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ZjY4N2ViYmUtMjcyOS00OTJhLWI4ZDgtNzMwYzEyMGE3NDc4YzQ=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ZjY4N2ViYmUtMjcyOS00OTJhLWI4ZDgtNzMwYzEyMGE3NDc4ZDA=",
     "oid": "",
     "stateId": ""
   }, {
@@ -486,7 +485,7 @@
     "tool_description": "Derive hourly from daily evapotranspiration using sinusoidal distribution. ",
     "tool_id": "7",
     "tool_name": "Daily to Hourly ETpot",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?MTAwNGYxNzUtNzRiYi00NGI1LTkxYzktNGMyNzMyYjlhYmExZTQ=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?MTAwNGYxNzUtNzRiYi00NGI1LTkxYzktNGMyNzMyYjlhYmExN2Y=",
     "oid": "5b90e7bbd15d75093cb586ce",
     "stateId": "F8C4E970-07D7-4835-933F-5D7CD9665EE2"
   }, {
@@ -559,7 +558,7 @@
     "tool_description": "Estimation of daily potential evapotranspiration from daily average, minimum and maximum temperatures using Hargreave's empirical equation. In order to estimate extraterrestrial net radiation geographic latitude of observation and Julian day have to be supplied too. ",
     "tool_id": "8",
     "tool_name": "ETpot (after Hargreaves, Grid)",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?Y2MzM2Y0M2UtOGY0YS00NzY0LWE0MWUtZDY3MDM5NzA5ZDhlMjI=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?Y2MzM2Y0M2UtOGY0YS00NzY0LWE0MWUtZDY3MDM5NzA5ZDhlNjk=",
     "oid": "5b90e7bbd15d75093cb586cf",
     "stateId": "9B9C4593-D12F-468e-82E4-952A9F898993"
   }, {
@@ -620,7 +619,7 @@
     "tool_description": "This tool calculates the time of sunrise and sunset and the resulting day length for each cell of the target grid. The target grid needs to provide information about its coordinate system. ",
     "tool_id": "9",
     "tool_name": "Sunrise and Sunset",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?YmJlMDkzYzQtZWI0NS00MDkwLTg2ZDEtODljMDQwOGFhZjNmMWY=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?YmJlMDkzYzQtZWI0NS00MDkwLTg2ZDEtODljMDQwOGFhZjNmZDE=",
     "oid": "5b90e7bbd15d75093cb586d0",
     "stateId": "3DB1B3A3-CE83-417a-9E69-5CCB6056A169"
   }, {
@@ -808,7 +807,7 @@
     "tool_description": "This tool calculates biogically meaningful variables from monthly climate data (mean, minimum and maximum temperature and precipitation), as provided e.g. by the <a href=\"http://worldclim.org\">WorldClim - Global Climate Data</a> project.\n<p>The implementation follows the definitions given by Jeremy van der Wal at <a href=\"https://rforge.net/doc/packages/climates/bioclim.html\">BioClim - Bioclimatic Variables</a>:<ol><li><b>Annual Mean Temperature:</b> The mean of all the monthly mean temperatures. Each monthly mean temperature is the mean of that month's maximum and minimum temperature.</li><li><b>Mean Diurnal Range:</b> The annual mean of all the monthly diurnal temperature ranges. Each monthly diurnal range is the difference between that month's maximum and minimum temperature.</li><li><b>Isothermality:</b> The mean diurnal range (parameter 2) divided by the annual temperature range (parameter 7).</li><li><b>Temperature Seasonality:</b> returns either<ul><li> the temperature coefficient of variation as the standard deviation of the monthly mean temperatures expressed as a percentage of the mean of those temperatures (i.e. the annual mean). For this calculation, the mean in degrees Kelvin is used. This avoids the possibility of having to divide by zero, but does mean that the values are usually quite small.</li><li> the standard deviation of the monthly mean temperatures.</li></ul><li><b>Maximum Temperature of Warmest Period:</b> The highest temperature of any monthly maximum temperature.</li><li><b>Minimum Temperature of Coldest Period:</b> The lowest temperature of any monthly minimum temperature.</li><li><b>Temperature Annual Range:</b> The difference between the Maximum Temperature of Warmest Period and the Minimum Temperature of Coldest Period.</li><li><b>Mean Temperature of Wettest Quarter:</b> The wettest quarter of the year is determined (to the nearest month), and the mean temperature of this period is calculated.</li><li><b>Mean Temperature of Driest Quarter:</b> The driest quarter of the year is determined (to the nearest month), and the mean temperature of this period is calculated.</li><li><b>Mean Temperature of Warmest Quarter:</b> The warmest quarter of the year is determined (to the nearest month), and the mean temperature of this period is calculated.</li><li><b>Mean Temperature of Coldest Quarter:</b> The coldest quarter of the year is determined (to the nearest month), and the mean temperature of this period is calculated.</li><li><b>Annual Precipitation:</b> The sum of all the monthly precipitation estimates.</li><li><b>Precipitation of Wettest Period:</b> The precipitation of the wettest month.</li><li><b>Precipitation of Driest Period:</b> The precipitation of the driest month.</li><li><b>Precipitation Seasonality:</b> The Coefficient of Variation is the standard deviation of the monthly precipitation estimates expressed as a percentage of the mean of those estimates (i.e. the annual mean).</li><li><b>Precipitation of Wettest Quarter:</b> The wettest quarter of the year is determined (to the nearest month), and the total precipitation over this period is calculated.</li><li><b>Precipitation of Driest Quarter:</b> The driest quarter of the year is determined (to the nearest month), and the total precipitation over this period is calculated.</li><li><b>Precipitation of Warmest Quarter:</b> The warmest quarter of the year is determined (to the nearest month), and the total precipitation over this period is calculated.</li><li><b>Precipitation of Coldest Quarter:</b> The coldest quarter of the year is determined (to the nearest month), and the total precipitation over this period is calculated.</li></ol></p><p>The quarterly parameters are not aligned to any calendar quarters. BioClim's definition of a quarter is any consecutive 3 months. For example, the driest quarter will be the 3 consecutive months that are drier than any other set of 3 consecutive months.</p>",
     "tool_id": "10",
     "tool_name": "Bioclimatic Variables",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ODZjNTM4NTctNzU2Zi00MzY3LWFlZTEtZGVmYzMyNDNkNWRiOWE=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ODZjNTM4NTctNzU2Zi00MzY3LWFlZTEtZGVmYzMyNDNkNWRiYjM=",
     "oid": "5b90e7bbd15d75093cb586c1",
     "stateId": "959D7DFB-13FE-4e8f-A3AE-0063A8596DD2"
   }, {
@@ -953,7 +952,7 @@
     "tool_description": "The 'Tree Growth Season' tool estimates the potential number of days suitable for tree growth as well as the average temperature for these days. The estimation needs monthly data of mean, minimum, and maximum temperature and precipitation. Internally a soil water balance model is run on a daily basis. Using the given thresholds a relative tree line height can optionally be estimated.",
     "tool_id": "11",
     "tool_name": "Tree Growth Season",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NGFmOGE4MTUtYmRlMi00NWYyLWI4MGItOTljODc2N2RjYjZiZDQ=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NGFmOGE4MTUtYmRlMi00NWYyLWI4MGItOTljODc2N2RjYjZiNTU=",
     "oid": "5b90e7bbd15d75093cb586c2",
     "stateId": "AA8F9033-D3EF-4e28-B1B1-3BEC73B9F76F"
   }, {
@@ -1047,7 +1046,7 @@
     "tool_description": "This tool calculates the water balance for the selected position on a daily basis. Needed input is monthly data of mean, minimum, and maximum temperature as well as precipitation.",
     "tool_id": "12",
     "tool_name": "Soil Water Balance",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?MzlmZDVlYTMtOTQxOC00MmQ2LWFhZmQtZmM3NWU1ZmExMDIwM2Q=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?MzlmZDVlYTMtOTQxOC00MmQ2LWFhZmQtZmM3NWU1ZmExMDIwNzc=",
     "oid": "5b90e7bbd15d75093cb586c3",
     "stateId": "2778F59F-89E5-44de-B49C-E9F4E342C885"
   }, {
@@ -1139,7 +1138,7 @@
     "tool_description": "Wind effect correction using generalized logistic functions.",
     "tool_id": "13",
     "tool_name": "Wind Effect Correction",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?OTg2OGI5YTAtMzFjYy00OTUyLWFhNjEtNjM1MWM0Njg5N2ViOWU=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?OTg2OGI5YTAtMzFjYy00OTUyLWFhNjEtNjM1MWM0Njg5N2ViOTg=",
     "oid": "5b90e7bbd15d75093cb586c4",
     "stateId": "585BA1FA-A711-426e-8930-3426E2C23F1E"
   }, {
@@ -1216,7 +1215,7 @@
     "tool_description": "This tool calculates statistics about the frost change frequency either from monthly or daily minimum and maximum temperatures. In case of monthly observations these will be spline interpolated to gain a daily resolution. ",
     "tool_id": "14",
     "tool_name": "Frost Change Frequency",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?OGE3OWE1NDEtOTkwNi00OGFhLThlYmEtODA5OTEzODI1MDdmZjU=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?OGE3OWE1NDEtOTkwNi00OGFhLThlYmEtODA5OTEzODI1MDdmZTc=",
     "oid": "5b90e7bbd15d75093cb586c5",
     "stateId": "DA732FDB-EFAB-46f8-A80F-7CC4CF3F177C"
   }, {
@@ -1277,7 +1276,7 @@
     "tool_description": "Calculates the thermal belts based on mean temperature and length of the growing season.",
     "tool_id": "15",
     "tool_name": "Thermic Belt Classification",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ZmU2MTkzZWYtMWExOC00NGZmLWFmNjEtYWRlMjNlZThlNzViZDk=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ZmU2MTkzZWYtMWExOC00NGZmLWFmNjEtYWRlMjNlZThlNzViYjk=",
     "oid": "5b90e7bbd15d75093cb586c6",
     "stateId": "40EEDD93-FC15-436a-86CF-DA82A1568F51"
   }, {
@@ -1326,7 +1325,7 @@
     "tool_description": "This tool calculates statistics about the frost change frequency either from monthly or daily minimum and maximum temperatures. In case of monthly observations these will be spline interpolated to gain a daily resolution. ",
     "tool_id": "16",
     "tool_name": "Frost Change Frequency",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ZjZjNTIxMjYtOTYxZi00MTY2LWI1MDEtMzA4OGRlN2QzNzZkOTI=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?ZjZjNTIxMjYtOTYxZi00MTY2LWI1MDEtMzA4OGRlN2QzNzZkMjY=",
     "oid": "5b90e7bbd15d75093cb586c7",
     "stateId": "1883AEB0-D810-4642-8A38-8D440F5F2DF0"
   }, {
@@ -1407,7 +1406,7 @@
     "tool_description": "The 'Snow Cover' tool uses a simple model to estimate snow cover statistics from climate data. When temperature falls below zero any precipitation is accumulated as snow. Temperatures above zero will diminish accumulated snow successively until it is gone completely. Simulation is done on a daily basis. If you supply the tool with monthly averages, temperatures will be interpolated using a spline and precipitation will be splitted into separate events. The latter is done with respect to the monthly mean temperature, i.e. the higher the temperature the more concentrated are precipitation events and vice versa. ",
     "tool_id": "17",
     "tool_name": "Snow Cover",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?YmMxMDQ2NGEtYjg3MC00MDBiLWE3YjQtNjhmMTc3YzAwNGJjZDk=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?YmMxMDQ2NGEtYjg3MC00MDBiLWE3YjQtNjhmMTc3YzAwNGJjZDU=",
     "oid": "5b90e7bbd15d75093cb586c8",
     "stateId": "E856BDDD-FE6B-4418-AB74-ECCD7B6C4E68"
   }, {
@@ -1469,7 +1468,7 @@
     "tool_description": "This tool calculates growing degree days from daily or from spline interpolated monthly observations.",
     "tool_id": "18",
     "tool_name": "Growing Degree Days",
-    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NzEyMTdjOTEtNThkMS00N2I3LTkzZmMtZDJiM2E3ZjMwMzYyNTc=",
+    "tool_path": "http://geomodeling.njnu.edu.cn/OpenGMS/page/model-item-info/model-item-info.html?NzEyMTdjOTEtNThkMS00N2I3LTkzZmMtZDJiM2E3ZjMwMzYyNGM=",
     "oid": "5b90e7bbd15d75093cb586c9",
     "stateId": "CB45EF2A-A474-4e35-99E0-4AAC5F7539D4"
   }]

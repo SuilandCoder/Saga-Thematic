@@ -1,5 +1,5 @@
 
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 import { ModelService } from 'src/app/@core/data/model.service';
 import { ToastrService } from 'ngx-toastr';
 import { NzTabChangeEvent } from 'ng-zorro-antd';
@@ -22,6 +22,9 @@ export class RightTabComponent implements OnInit {
   private id = "9";
   private descriptionPath = "";
   private descriptionHtml = "";
+
+  @Input() opened:boolean=false;
+
   TabItems: Array<string>;
   constructor(
     private modelService: ModelService,
@@ -30,12 +33,12 @@ export class RightTabComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.LayersListHeight = window.innerHeight * 0.88;
+    this.LayersListHeight = window.innerHeight * 0.9;
     window.addEventListener('resize', () => {
-      this.LayersListHeight = window.innerHeight * 0.88;
+      this.LayersListHeight = window.innerHeight * 0.9;
     })
     this.TabItems = ['Description', 'Settings'];
-    this.subscription = this.modelService.getMessage().subscribe(({path,id})=>{
+    this.subscription = this.modelService.getModelInfoMessage().subscribe(({path,id})=>{
       this.path = path;
       this.id = id;
       this.getDescpPathByJsonPath(path,id);
@@ -51,6 +54,11 @@ export class RightTabComponent implements OnInit {
   }
 
   onTabChanged(nzTabChangeEvent: NzTabChangeEvent) {} 
+
+  rightSideToogle(){
+    this.opened = !this.opened;
+    this.modelService.sendRightSideMessage();
+  }
   
   getDescpPathByJsonPath(path,id){
     if(path){

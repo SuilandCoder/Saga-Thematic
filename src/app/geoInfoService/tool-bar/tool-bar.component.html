@@ -16,7 +16,7 @@
       <app-identify></app-identify>
     </span>
   </div>
-  <div class="tools-group">
+  <div class="tools-group" style="display: none">
     <span>
       <app-tools-box></app-tools-box>
     </span>
@@ -29,12 +29,8 @@
       <app-online-map-tool> </app-online-map-tool>
     </span>
   </div>
-  <!-- <div class="tools-group">
-      <span>
-        <app-tools-box-new></app-tools-box-new>
-      </span>
-    </div> -->
 
-
-
+  <div class="tools-group"> 
+    <span (click)="leftSideToogle()"><i class="fa fa-wrench" aria-hidden="true" title="saga tools"></i></span> 
+  </div>
 </div>

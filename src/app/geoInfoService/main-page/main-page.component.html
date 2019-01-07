@@ -1,17 +1,66 @@
-<div class="container-fluid">
-  <app-tool-bar></app-tool-bar>
+<div>
+  <app-tool-bar (leftOpenState)="openStateHandler($event)"></app-tool-bar>
+
+  <!-- 
    <div class="row">
+
+
      <div class="col layer-list-containter"> 
        <app-left-tab></app-left-tab>
      </div>
+
+
      <div class="col col-lg-5 col-md-4 col-sm-4 map-view">
        <app-ol-map></app-ol-map>
      </div>
+
+
      <div class="tool-info">
        <app-right-tab></app-right-tab>
      </div>
-   </div>
-   <div class="row">
-     <app-footer></app-footer>
-   </div> 
- </div>
+
+
+   </div> -->
+
+
+  <!-- <mat-sidenav-container class="example-container" autosize>
+    <mat-sidenav-content>
+        <app-ol-map></app-ol-map>
+        <div> 
+            <button class="left_bt" type="button" mat-raised-button (click)="drawer.toggle()">
+              {{leftOpened?rightBt:leftBt}}
+            </button>
+            <button class="right_bt" type="button" mat-raised-button (click)="drawerEnd.toggle()">
+              {{rightOpened?leftBt:rightBt}}
+            </button>
+          </div>
+    </mat-sidenav-content>
+      
+    <mat-sidenav #drawer [(opened)]="leftOpened" mode="over">
+      <app-left-tab></app-left-tab>
+    </mat-sidenav>
+    <mat-sidenav #drawerEnd [(opened)]="rightOpened" mode="over" position="end" style="max-width: 500px">
+      <app-right-tab></app-right-tab>
+    </mat-sidenav>
+  </mat-sidenav-container> -->
+
+  <ng-sidebar-container class="example-container" autosize [style.height]="LayersListHeight.toString()+'px'"> 
+
+    
+    <ng-sidebar #drawer [(opened)]="leftOpened" mode="over">
+      <app-left-tab></app-left-tab>
+    </ng-sidebar>
+
+    <ng-sidebar #drawerEnd [(opened)]="rightOpened" [dock]="rightDock" [dockedSize]="'35px'"  mode="over" position="end" style="z-index:1000">
+      <app-right-tab [opened]="rightOpened"></app-right-tab>
+    </ng-sidebar>
+
+    <div ng-sidebar-content style="padding:0px;">
+        <app-ol-map></app-ol-map>
+    </div>
+  </ng-sidebar-container>
+
+  <div>
+    <app-footer></app-footer>
+  </div>
+</div>

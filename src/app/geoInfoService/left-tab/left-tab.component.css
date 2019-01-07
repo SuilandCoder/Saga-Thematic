@@ -103,3 +103,11 @@ ul li{
 nz-tabset{
     text-align: center;
 }
+
+.bg_color{
+    background-color: #fff;
+}
+
+.max_w_6{
+    max-width: 450px;
+}
