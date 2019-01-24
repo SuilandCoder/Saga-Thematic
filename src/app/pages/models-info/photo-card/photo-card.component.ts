@@ -1,4 +1,4 @@
-import { ModelService } from './../../../@core/data/model.service';
+import { ToolService } from '../../../@core/data/tool.service';
 import { Component, OnInit, Input, Output } from '@angular/core';
 import {EventEmitter} from '@angular/core'//正确的
 
@@ -8,11 +8,11 @@ import {EventEmitter} from '@angular/core'//正确的
   styleUrls: ['./photo-card.component.scss']
 })
 export class PhotoCardComponent implements OnInit {
-  @Input() public library_info={};
+  @Input() public library_info:any={};
 
   @Output() toModelInfoPage:EventEmitter<any> = new EventEmitter<any>();
   constructor(
-    private modelService:ModelService,
+    private modelService:ToolService,
   ) { }
 
   ngOnInit() {

@@ -12,17 +12,18 @@ export class ToolBarComponent implements OnInit {
   SelectIsActive: boolean = false;
   IdentifyIsActive: boolean = false;
 
-  leftOpen:boolean = false;
-  constructor(private dataTransmissionService: DataTransmissionService) { }
+  leftOpen:boolean = true;
+  constructor(private dataTransmissionService: DataTransmissionService) {
+   }
 
   ngOnInit() {
+
     this.dataTransmissionService.getFeatureSelectedSubject().subscribe(SelectActive => {
       this.SelectIsActive = SelectActive;
     })
     this.dataTransmissionService.getIdentifySubject().subscribe(IdentifyActive => {
       this.IdentifyIsActive = IdentifyActive;
     })
-
   }
 
   leftSideToogle(){

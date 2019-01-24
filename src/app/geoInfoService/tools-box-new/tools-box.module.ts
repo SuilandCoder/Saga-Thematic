@@ -1,6 +1,6 @@
+import { ToolsBoxNewComponent } from './tools-box-new.component';
 import { NgModule } from "@angular/core";
-import { SharedModule, ModalModule } from "../../_common";
-import { ToolsBoxNewComponent } from "./tools-box-new.component";
+import { SharedModule, ModalModule } from "../../_common"; 
 import { NgZorroAntdModule } from "ng-zorro-antd";
 
 @NgModule({
@@ -10,6 +10,6 @@ import { NgZorroAntdModule } from "ng-zorro-antd";
         ModalModule
     ],
     declarations: [ToolsBoxNewComponent],
-    exports: [ToolsBoxNewComponent]
+    exports: [ToolsBoxNewComponent], 
 })
-export class ToolsBoxModule { }
+export class ToolsBoxModule { } 

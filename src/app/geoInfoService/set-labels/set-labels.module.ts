@@ -15,6 +15,6 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
         UpperCaseFirst
     ],exports:[
         SetLabelsComponent
-    ]
+    ] 
 })
 export class SetLabelsModule { };

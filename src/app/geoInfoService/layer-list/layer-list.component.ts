@@ -14,8 +14,9 @@ import {
   GlobeConfigService,
   DataTransmissionService
 } from '../../_common'
-import { remove, findIndex, isEqual, includes } from 'lodash';
+import { remove, findIndex, isEqual, includes, concat } from 'lodash';
 import { areIterablesEqual } from '@angular/core/src/change_detection/change_detection_util';
+import * as _ from 'lodash';
 
 declare var ol: any;
 @Component({
@@ -60,12 +61,18 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       }
     };
 
+
+    // let that = this;
     //每次添加数据都会执行
     this.dataTransmissionService.getCustomFileSubject().subscribe(customFile => {
       let newItem = new LayerItem(customFile.file.name.substr(0, customFile.file.name.lastIndexOf('.')),
         customFile.file,
         customFile.type)
+
       this.LayerItems.push(newItem);
+      //* 添加到数组头部 
+      // this.LayerItems=concat(newItem,this.LayerItems);
+
       //默认加载
       this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(true, "Loading layer to map,please waiting...."));
       this.changeLayerVisible(newItem);
@@ -86,6 +93,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         JsonObject.data.msr_output) {
         let output: Array<any> = JsonObject.data.msr_output;
         let hasOutput = false;
+        console.log(output);
         output.forEach(item => {
           if (item && item.DataId && item.DataId!="" && item.Event) {
             hasOutput = true;
@@ -115,10 +123,11 @@ export class LayerListComponent implements OnInit, AfterViewInit {
             return isEqual(item, newItem);
           });
           this.LayerItems.push(newItem);
+          // this.LayerItems=concat(newItem,this.LayerItems);
           //默认加载
           this.changeLayerVisible(newItem);
           this.toastr.success("Calculation completed.", "SUCCESS");
-          this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+          // this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
         }else{
           this.toastr.error("OUTPUT DATA TYPE UNKNOW.", "ERROR");
           this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
@@ -136,6 +145,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       })
       let newItem = new LayerItem(findOnlineLayer.name, null, "ONLINE", onlineLayerId);
       this.LayerItems.push(newItem);
+      // this.LayerItems=concat(newItem,this.LayerItems);
       //默认加载
       this.changeLayerVisible(newItem);
       this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
@@ -216,6 +226,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
             resultData.forEach((item,i)=>{
               currentItem = new LayerItem(layerItem.name+"_"+i, null, layerItem.type, data.Id);
               this.LayerItems.push(currentItem);
+              // this.LayerItems=concat(currentItem,this.LayerItems);
               currentItem.visible = true;
               currentItem.dataPath = item.dataPath;
               this.olMapService.addVectorLayer(new GeoJsonLayer(currentItem.dataId,item));
@@ -234,8 +245,17 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           remove(this.LayerItems, item => {
             return isEqual(item, currentItem);
           });
-          currentItem.layerShowing = false;
+          currentItem.layerShowing = false; 
           console.log(reason);
+          this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+          this.toastr.error("Failed to Load Data.");
+        }).catch(error => {
+          remove(this.LayerItems, item => {
+            return isEqual(item, currentItem);
+          });
+          currentItem.layerShowing = false;
+          this.toastr.error(error);
+          this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
         })
         break;
       case "sgrd":
@@ -251,6 +271,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
                   resultData.forEach((item,i)=>{
                     currentItem = new LayerItem(layerItem.name+"_"+i, null, layerItem.type, layerItem.dataId+i);
                     this.LayerItems.push(currentItem);
+                    // this.LayerItems=concat(currentItem,this.LayerItems);
                     let imageLayer = this.utilService.ResDataToImageLayer(item);
                     imageLayer.id = currentItem.dataId;
                     this.olMapService.addImageLayer(imageLayer);
@@ -299,6 +320,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           });
           currentItem.layerShowing = false;
           this.toastr.error(error);
+          this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
         })
         break;
       case "tif":
@@ -345,6 +367,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
             return isEqual(item, currentItem);
           });
           currentItem.layerShowing = false;
+          this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
           this.toastr.error(error);
         })
         break;
@@ -456,8 +479,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
 
   onClosed() {
     this.clickItem = null;
-  }
-
+  } 
   //////////按键事件/////////
   @HostListener('document:keyup', ['$event'])
   onkeydown(event: KeyboardEvent) {

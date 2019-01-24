@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { TreeModel, Ng2TreeSettings, NodeEvent } from 'ng2-tree';
 import { ToosTreeService } from '../../_common';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ModelService } from 'src/app/@core/data/model.service';
+import { ToolService } from 'src/app/@core/data/tool.service';
 
 export interface DialogData {
   animal: string;
@@ -21,7 +21,7 @@ export class ToolListComponent implements OnInit {
   CurrentSelected: any;
   public ButtonText = 'Next';
   public tree: TreeModel;
-  private treeJSONPath = "../../../assets/json/ng2tree.json"
+  private treeJSONPath = "assets/json/ng2tree.json"
   @ViewChild('ToolsTree')
   public ToolsTree: any;
   public settings: Ng2TreeSettings = {
@@ -31,7 +31,7 @@ export class ToolListComponent implements OnInit {
   constructor(
     private toosTreeService: ToosTreeService,
     public dialog: MatDialog,
-    public modelService:ModelService
+    public toolService:ToolService
   ) { }
 
   ngOnInit() {
@@ -61,7 +61,7 @@ export class ToolListComponent implements OnInit {
       console.log(e.node.parent.id + "   " + e.node.id);
       var path = e.node.parent.id;
       var id = e.node.id;
-      this.modelService.sendModelInfoMessage(path,id);
+      this.toolService.sendModelInfoMessage(path,id);
     } else {
       this.CurrentSelected = undefined;
       const thisControl = this.ToolsTree.getControllerByNodeId(e.node.id);

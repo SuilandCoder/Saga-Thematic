@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { ToolParam, HttpService, DataTransmissionService, LoadingInfo, LayerItem } from 'src/app/_common';
 import * as $ from "jquery";
-import { ModelService } from 'src/app/@core/data/model.service';
+import { ToolService } from 'src/app/@core/data/tool.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 @Component({
@@ -11,9 +11,9 @@ import { Subscription } from 'rxjs';
 })
 export class ToolSettingComponent implements OnInit {
   @Input() toolInfo;
-  private inputParams: Array<ToolParam>;
+  inputParams: Array<ToolParam>;
   private outputParams: Array<ToolParam>;
-  private optionsParams = [];
+  optionsParams = [];
   private formData;
   public layerListSubscription: Subscription;
   public layerItems: Array<LayerItem>=[];
@@ -22,7 +22,7 @@ export class ToolSettingComponent implements OnInit {
 
 
   constructor(
-    public modelService: ModelService,
+    public toolService: ToolService,
     public toastr: ToastrService,
     private httpService: HttpService,
     private dataTransmissionService: DataTransmissionService,
@@ -95,7 +95,7 @@ export class ToolSettingComponent implements OnInit {
     inputAlready = this.setInputData();
     this.setOptionsData();
     if (inputAlready) {
-      this.modelService.runSagaModel(this.formData).then(msr_id => {
+      this.toolService.runSagaModel(this.formData).then(msr_id => {
         this.httpService.waitForResult(msr_id).then(data => {
           console.log(data);
         });

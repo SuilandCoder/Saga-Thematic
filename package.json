@@ -4,7 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json",
-    "build": "ng build --prod --build-optimizer",
+    "build:aot": "ng build --aot --base-href ./ --output-path=dist-aot",
+    "build": "ng build --prod --build-optimizer --base-href ./ --output-path=dist --delete-output-path",
+    "build:prod": "node --max_old_space_size=5120 node_modules/@angular/cli/bin/ng build --base-href=./ --output-path=build-prod --delete-output-path --prod --build-optimizer=false --watch --common-chunk --vendor-chunk",
+    "build:prod:optimizer": "node --max_old_space_size=5120 node_modules/@angular/cli/bin/ng build --base-href ./ --output-path=build-prod-optimizer --delete-output-path --prod --build-optimizer --watch --common-chunk --vendor-chunk --stats-json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -12,13 +15,13 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
-    "@angular/cdk": "^7.1.0",
+    "@angular/cdk": "^7.2.0",
     "@angular/common": "^6.1.0",
     "@angular/compiler": "^6.1.0",
-    "@angular/core": "^6.1.0",
+    "@angular/core": "^7.2.0",
     "@angular/forms": "^6.1.0",
     "@angular/http": "^6.1.0",
-    "@angular/material": "^7.1.0",
+    "@angular/material": "^7.2.0",
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
@@ -29,6 +32,7 @@
     "bower": "^1.8.4",
     "bulma": "^0.7.2",
     "cheerio": "^1.0.0-rc.2",
+    "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.4",
     "css-loader": "^1.0.1",
     "file-saver": "^2.0.0",
@@ -37,7 +41,7 @@
     "jszip": "^3.1.5",
     "lodash": "^4.17.11",
     "ng-sidebar": "^8.0.0",
-    "ng-zorro-antd": "^0.7.1",
+    "ng-zorro-antd": "^7.0.0-rc.3",
     "ng2-tree": "^2.0.0-rc.11",
     "ngx-bootstrap": "^3.1.2",
     "ngx-color-picker": "^7.2.0",
@@ -75,7 +79,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
-    "tslint": "~5.11.0",
-    "typescript": "~2.9.2"
+    "tslint": "^5.12.0",
+    "typescript": "^2.9.2"
   }
 }

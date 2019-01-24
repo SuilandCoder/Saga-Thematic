@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModelService } from 'src/app/@core/data/model.service';
+import { ToolService } from 'src/app/@core/data/tool.service';
 
 @Component({
   selector: 'app-main-page',
@@ -12,14 +12,14 @@ export class MainPageComponent implements OnInit {
   leftBt = ">";
   rightBt = "<";
   @Input()
-  leftOpened: boolean= false;
+  leftOpened: boolean= true;
   @Input()
   rightOpened: boolean= false;
 
   rightDock = false;
 
   constructor(
-    private modelService:ModelService
+    private toolService:ToolService
   ) { 
 
   }
@@ -31,12 +31,12 @@ export class MainPageComponent implements OnInit {
       this.LayersListHeight = window.innerHeight * 0.9;
     })
 
-    this.modelService.getModelInfoMessage().subscribe(_=>{ 
+    this.toolService.getModelInfoMessage().subscribe(_=>{ 
       this.rightOpened = true;
       this.rightDock = true;
     })
 
-    this.modelService.getRightSideMessage().subscribe(_=>{
+    this.toolService.getRightSideMessage().subscribe(_=>{
       this.rightOpened = !this.rightOpened;
     })
   }

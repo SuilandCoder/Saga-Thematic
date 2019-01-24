@@ -136,7 +136,7 @@ function getModelItemPath(model_name) {
   var options = {
     hostname: "127.0.0.1",
     port: 9999,
-    path: "/api/getModelPath?model_name=" + model_name,
+    path: "/saga_theme/api/getModelPath?model_name=" + model_name,
     method: "GET",
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',

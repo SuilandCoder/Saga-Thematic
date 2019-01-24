@@ -1,19 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject} from '@angular/core';
 import * as $ from "jquery";
 import { _HttpClient } from '../utils/httpUtils';
 import {Observable} from 'rxjs';
 import { Subject } from 'rxjs'; 
-@Injectable({
-    providedIn: 'root'
-})
-export class ModelService {
+@Injectable()
+export class ToolService {
 
+    baseUrl:string;
     constructor(
         private http:_HttpClient,
         private httpc: HttpClient,
-    ) { }
+        @Inject('API') public api,
+    ) { 
+        this.baseUrl = `${this.api.backend}`;
+    }
 
     public queryModelPath(library_name, tool): Observable<any> {
         //组织modelName
@@ -30,7 +32,7 @@ export class ModelService {
     }
 
     public getToolById(path,id){
-        var filePath = "../../assets/"+path;
+        var filePath = "assets/"+path;
         return new Promise((resolve,reject)=>{
             $.getJSON(filePath,data=>{
                 console.log(data);
@@ -53,7 +55,7 @@ export class ModelService {
         var header = new HttpHeaders();
         header.append('Content-Type', 'multipart/form-data');
         header.append("X-HTTP-Method-Override","post");
-        var url = '/api/runSagaModel';
+        var url =`${this.baseUrl}/runSagaModel`;
         return new Promise((resolve,reject)=>{
             this.httpc.post(url,formdata,{
                 headers:header

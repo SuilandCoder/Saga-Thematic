@@ -14,6 +14,6 @@ import { NgZorroAntdModule } from "ng-zorro-antd";
         SetStyleComponent,
         ColorBandComponent
     ],
-    exports:[SetStyleComponent]
+    exports:[SetStyleComponent], 
 })
 export class SetStyleModule { };

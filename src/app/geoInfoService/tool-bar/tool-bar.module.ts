@@ -1,3 +1,5 @@
+import { CdkTreeModule } from '@angular/cdk/tree';
+import { ToolsBoxModule } from './../tools-box-new/tools-box.module';
 import { NgModule } from "@angular/core";
 import { AddLayerComponent } from "../add-layer/add-layer.component";
 import { SelectComponent } from "../select/select.component";
@@ -12,16 +14,19 @@ import { TreeModule } from "ng2-tree";
 import { SharedModule } from "../../_common";
  import { NgxUploaderModule } from 'ngx-uploader';
 import { NgZorroAntdModule } from "ng-zorro-antd";
-import { ToolBarComponent } from "./tool-bar.component";
-import { ToolsBoxModule } from "../tools-box-new/tools-box.module"; 
+import { ToolBarComponent } from "./tool-bar.component"; 
+import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 
 @NgModule({
     imports:[
         SharedModule, //一开始以为在上层引用会传递下来,并不会
+        OverlayModule,
+        CdkTreeModule,
         TreeModule,
         NgxUploaderModule,
         NgZorroAntdModule.forRoot(),
-        ToolsBoxModule],
+        ToolsBoxModule,
+    ],
     declarations: [
         ToolBarComponent,
         AddLayerComponent,
@@ -35,6 +40,9 @@ import { ToolsBoxModule } from "../tools-box-new/tools-box.module";
         OnlineMapToolComponent
     ],exports:[
         ToolBarComponent
+    ],
+    providers:[
+        Overlay
     ]
 })
 export class ToolBarModule { }

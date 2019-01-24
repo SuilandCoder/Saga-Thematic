@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tools-box-new.component.css']
 })
 export class ToolsBoxNewComponent implements OnInit {
-  private title: string;
+
+   title: string;
   private tagIndex: number = 1;
   private selectedNode: any;
 

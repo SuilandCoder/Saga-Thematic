@@ -12,7 +12,9 @@ export class LeftTabComponent implements OnInit {
   TabItems: Array<string>;
   ActiveTabItemIndex: number;
   constructor(private windowEventService: WindowEventService,
-    private dataTransmissionService: DataTransmissionService) { }
+    private dataTransmissionService: DataTransmissionService) {
+      console.log("leftTab");
+     }
 
   ngOnInit() {
 

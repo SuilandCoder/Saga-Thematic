@@ -1,4 +1,4 @@
-import { ModelService } from './../../@core/data/model.service';
+import { ToolService } from '../../@core/data/tool.service';
 import { MenuService } from './../../@core/data/menu.service';
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
@@ -9,13 +9,13 @@ import * as $ from "jquery";
   styleUrls: ['./models-info.component.scss']
 })
 export class ModelsInfoComponent implements OnInit {
-  private library_info={};
+  library_info:any={};
   private modelList;
   LayersListHeight: number;
   constructor(
     private routeInfo:ActivatedRoute,
     private menuService: MenuService,
-    private modelService: ModelService
+    private toolService: ToolService
     ) { }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class ModelsInfoComponent implements OnInit {
     if(info.tool_path && info.tool_path!==""){
       window.open(info.tool_path);
     }else{
-      this.modelService.queryModelPath(info.library_name,info.tool).subscribe(res=>{
+      this.toolService.queryModelPath(info.library_name,info.tool).subscribe(res=>{
         console.log(res);
       });
     } 

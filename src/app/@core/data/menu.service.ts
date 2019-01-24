@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as $ from "jquery"; 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MenuService {
 
   constructor() { }
@@ -13,7 +11,7 @@ export class MenuService {
       $.ajax({
         type: "get",
         async: false,
-        url: "../../assets/json/tree.json",
+        url: "assets/json/tree.json",
         dataType: "json",
         success: function (result) {
           resolve(result);
@@ -26,7 +24,7 @@ export class MenuService {
   }
 
   public queryModelJson(link) {
-    let url = "../../assets/"+link;
+    let url = "assets/"+link;
     return new Promise(function(resolve,reject){
       $.getJSON(url,function(data){
         resolve(data);

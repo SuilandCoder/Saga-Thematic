@@ -36,12 +36,13 @@ export class OlMapService {
     })
     public MapObject: any;
     private layerItems: Array<LayerItem>;
-
+    private baseUrl:string;
     constructor(
         private dataTransmissionService: DataTransmissionService,
         private httpService: HttpService,
         private utilService: UtilService,
         private globeConfigService: GlobeConfigService) {
+            this.baseUrl = `${this.httpService.api.backend}`;
     }
 
     //初始化
@@ -395,7 +396,7 @@ export class OlMapService {
         } else {
 
             if (dataItem.id === "ESRI_SHAPEFILE") {
-                let dataPath = "http://" + window.location.host + "/api/download?ip=" + this.httpService.Ip + "&id=" + layer.dataId + "&filename=" + filename;
+                let dataPath = "http://" + window.location.host + this.baseUrl+"/download?ip=" + this.httpService.Ip + "&id=" + layer.dataId + "&filename=" + filename;
                 aLink.href = new URL(dataPath).toString();
             } else if (dataItem.id = "GEOJSON") {
 

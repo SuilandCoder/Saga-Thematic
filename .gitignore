@@ -4,7 +4,9 @@
 /dist
 /tmp
 /out-tsc
-
+/build-prod-optimizer
+/dist-aot
+/build-prod
 # dependencies
 /node_modules
 

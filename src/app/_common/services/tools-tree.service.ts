@@ -9,19 +9,19 @@ export class ToosTreeService {
     private RsltTree: TreeModel;
 
     constructor(private http: HttpClient) {
-        
-     }
 
-     getToolsTree_leftTab(url): Promise<any>{
-        return new Promise((resolve,reject)=>{
-            $.getJSON(url,data=>{
+    }
+
+    getToolsTree_leftTab(url): Promise<any> {
+        return new Promise((resolve, reject) => {
+            $.getJSON(url, data => {
                 resolve(data);
             })
         })
-     }
+    }
 
     getToolsTree(): Promise<any> {
-        return this.organizeTree().then(next=>{
+        return this.organizeTree().then(next => {
             let ResponseData: Array<ToolsTreeNode> = next['data'];
             let RootNodeArray: Array<ToolsTreeNode> = ResponseData.filter(value => {
                 return value.parentId === 'NULL';
@@ -84,9 +84,9 @@ export class ToosTreeService {
     /////private//////////////////
     private organizeTestTree(): Promise<any> {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
 
-            resolve(           [
+            resolve([
                 {
                     value: "Analysis Tools",
                     id: 1,
@@ -99,7 +99,7 @@ export class ToosTreeService {
                                     callback([
                                         {
                                             value: "Clip",
-                                            modelId:'59f57d0fc38772305035333f',
+                                            modelId: '59f57d0fc38772305035333f',
                                             id: '59f57d0fc38772305035333f'
                                         },
                                         {
@@ -118,9 +118,7 @@ export class ToosTreeService {
                             },
                             {
                                 value: "Overlay",
-                                loadChildren: (callback) => {
-
-
+                                loadChildren: (callback) => { 
                                     callback([
                                     ])
                                 }
@@ -144,7 +142,7 @@ export class ToosTreeService {
                 }
             ])
         })
-       
+
     }
 
     private organizeTree(): Promise<any> {
@@ -157,7 +155,7 @@ export class ToosTreeService {
             }).toPromise().then(data => {
                 resolve(data);
 
-            },error=>{
+            }, error => {
                 reject(error);
             })
         })

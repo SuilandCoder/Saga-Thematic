@@ -1,6 +1,6 @@
 
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
-import { ModelService } from 'src/app/@core/data/model.service';
+import { ToolService } from 'src/app/@core/data/tool.service';
 import { ToastrService } from 'ngx-toastr';
 import { NzTabChangeEvent } from 'ng-zorro-antd';
 import { ToolParam } from 'src/app/_common';
@@ -14,7 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class RightTabComponent implements OnInit {
   subscription: Subscription;
   LayersListHeight: number;
-  private toolInfo;
+  toolInfo;
   private inputParams:Array<ToolParam>;
   private outputParams:Array<ToolParam>;
   private optionsParams:Array<ToolParam>;
@@ -27,10 +27,12 @@ export class RightTabComponent implements OnInit {
 
   TabItems: Array<string>;
   constructor(
-    private modelService: ModelService,
+    private toolService: ToolService,
     public toastr: ToastrService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) {
+    console.log("rightTab");
+  }
 
   ngOnInit() {
     this.LayersListHeight = window.innerHeight * 0.9;
@@ -38,12 +40,12 @@ export class RightTabComponent implements OnInit {
       this.LayersListHeight = window.innerHeight * 0.9;
     })
     this.TabItems = ['Description', 'Settings'];
-    this.subscription = this.modelService.getModelInfoMessage().subscribe(({path,id})=>{
+    this.subscription = this.toolService.getModelInfoMessage().subscribe(({path,id})=>{
       this.path = path;
       this.id = id;
       this.getDescpPathByJsonPath(path,id);
       console.log("path:"+ path+"  id:"+id);
-      this.modelService.getToolById(this.path, this.id).then(data => {
+      this.toolService.getToolById(this.path, this.id).then(data => {
         console.log(data);
         this.toolInfo = data;
       }).catch(err => {
@@ -57,13 +59,13 @@ export class RightTabComponent implements OnInit {
 
   rightSideToogle(){
     this.opened = !this.opened;
-    this.modelService.sendRightSideMessage();
+    this.toolService.sendRightSideMessage();
   }
   
   getDescpPathByJsonPath(path,id){
     if(path){
       var libraryName = path.substring(path.lastIndexOf("/") + 1, path.indexOf(".json"));
-      this.descriptionPath = "../../../assets/html/"+libraryName+"/"+libraryName+"_"+id+".html";
+      this.descriptionPath = "assets/html/"+libraryName+"/"+libraryName+"_"+id+".html";
       $.get(this.descriptionPath,data=>{
         // console.log(data); 
         this.descriptionHtml = data;

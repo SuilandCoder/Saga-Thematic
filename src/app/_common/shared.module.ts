@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { WindowMouseMoveDirective, DialogDragDirective, MapResizeDirective } from './attribute-directives/react-directive';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
         ReactiveFormsModule,
         HttpClientModule,
         RouterModule,
+        OverlayModule,
         NgZorroAntdModule.forRoot()
     ],
     declarations: [
@@ -32,6 +34,9 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
         DialogDragDirective,
         MapResizeDirective,
         NgZorroAntdModule
+    ],
+    providers:[
+        Overlay
     ]
 })
 
