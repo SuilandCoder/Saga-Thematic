@@ -1,7 +1,6 @@
 import { MatDialogModule } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
 
-import { ToolsBoxNewComponent } from './app/geo-info-service/tools-box-new/tools-box-new.component';
 import { ToastrModule } from 'ngx-toastr';
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,11 +9,11 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './_common/shared.module';
 import { RouterModule, Routes } from '@angular/router'
 import { HttpClientModule } from '@angular/common/http';
-import { httpInterceptorProviders } from './@core/utils/interceptor';
-import { MainPageModule } from './geoInfoService/main-page/main-page.module';
+import { httpInterceptorProviders } from './_common/interceptor'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { PagesModule } from './pages/pages.module';
 import { Overlay, OverlayModule } from '@angular/cdk/overlay';
+import { MainPageModule } from './pages/application/saga-tools/main-page/main-page.module';
 const routes: Routes = [
   { path: '', loadChildren: './pages/pages.module#PagesModule' },
   { path: 'saga-tools', loadChildren: './geoInfoService/main-page/main-page.module#MainPageModule' }
@@ -22,7 +21,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    ToolsBoxNewComponent
   ],
   imports: [
     SharedModule,

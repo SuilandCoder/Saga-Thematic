@@ -1,4 +1,4 @@
-import { MenuService } from './../@core/data/menu.service';
+import { MenuService } from '../_common/services/menu.service';
 import { Component, Injectable } from '@angular/core';
 import * as $ from 'jquery';
 import { NestedTreeControl } from '@angular/cdk/tree';

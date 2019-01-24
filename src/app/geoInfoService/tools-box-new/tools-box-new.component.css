@@ -1,9 +1,0 @@
-.tool-content,.tool-content .left,.tool-content .right{
-    height:400px;
-}
-.tool-content > .left{
-   border: solid 1px red;
-}
-.tool-content > .right{
-    border: solid 1px blue;
- }

@@ -1,4 +1,4 @@
-import { ToolService } from '../../../@core/data/tool.service';
+import { ToolService } from '../../../_common/services/tool.service';
 import { Component, OnInit, Input, Output } from '@angular/core';
 import {EventEmitter} from '@angular/core'//正确的
 

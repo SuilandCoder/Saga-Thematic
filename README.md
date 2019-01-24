@@ -1,27 +1,38 @@
-# SagaThematic
+### 介绍
+本软件是在面向服务的分布式模型资源共享的基础上使用户能够在线使用SAGA GIS工具实现地学分析，避免集中式的建模与模拟环境带来的封闭性弊端，充分利用已有的模型资源，促进网络空间开放式地理建模与模拟理论与技术的发展，为地理研究者提供开放、高效的地理问题求解平台。
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.5.
+### 功能
+- 栅格数据处理
+- 矢量数据处理
+- 气候相关数据计算
+- 遥感影像处理
+- 空间和地理统计
+- 地形分析
+- 模型输出数据可视化
 
-## Development server
+### 项目须知：
+#### 1、模型服务地址
+> 地址：**172.21.212.75**
+#### 2、启动项目：
+##### debug模式：
+> npm start
+##### release模式：
+> npm build/npm build:prod
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+#### 3、部署位置：
+> 门户地址：**222.192.7.75**
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+> 路径：**E:\Tomcat\webapps\saga_theme**
+##### 部署须知：
+将 **src/config/api.config.ts** 文件下的 **backend: '/api'** 换为：**backend: '/saga_backend/api'**
+>门户使用 nginx 拦截80端口请求：
+```
+location ^~ /saga_backend/api/ {
+			proxy_pass http://127.0.0.1:9999/api/;
+			proxy_redirect off;
+			proxy_set_header X-Real-IP $remote_addr;
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header Host $http_host;
+			proxy_set_header X-NginX-Proxy true;
+		}
+```

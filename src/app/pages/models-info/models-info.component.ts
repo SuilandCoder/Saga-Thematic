@@ -1,5 +1,5 @@
-import { ToolService } from '../../@core/data/tool.service';
-import { MenuService } from './../../@core/data/menu.service';
+import { ToolService } from '../../_common/services/tool.service';
+import { MenuService } from '../../_common/services/menu.service';
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import * as $ from "jquery";

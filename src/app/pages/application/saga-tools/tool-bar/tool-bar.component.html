@@ -1,0 +1,28 @@
+<div class="toolsbar noselect">
+  <div class="tools-group">
+    <span>
+      <app-add-layer></app-add-layer>
+    </span>
+  </div>
+
+  <div class="tools-group">
+    <span [class.selected]="SelectIsActive">
+      <app-select></app-select>
+    </span>
+    <span>
+      <app-full-extent></app-full-extent>
+    </span>
+    <span [class.selected]="IdentifyIsActive">
+      <app-identify></app-identify>
+    </span>
+  </div>
+  <div class="tools-group">
+    <span>
+      <app-online-map-tool> </app-online-map-tool>
+    </span>
+  </div>
+
+  <div class="tools-group"> 
+    <span (click)="leftSideToogle()"><i class="fa fa-wrench" aria-hidden="true" title="saga tools"></i></span> 
+  </div>
+</div>
