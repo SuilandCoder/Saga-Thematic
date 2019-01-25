@@ -76,7 +76,6 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       //默认加载
       this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(true, "Loading layer to map,please waiting...."));
       this.changeLayerVisible(newItem);
-
     })
 
     //准备接收外部的获取layer list的请求
@@ -371,6 +370,10 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           this.toastr.error(error);
         })
         break;
+
+      case "txt":
+          
+        break;
       case "ONLINE":
         currentItem.visible = !layerItem.visible;
         this.olMapService.addOnlineLayer(currentItem);
@@ -430,6 +433,10 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           case "ONLINE":
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
             this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
+            break;
+          case "txt":
+            this.popupContent.push(new DataItem("REMOVE", "Remove"));
+            this.popupContent.push(new DataItem("EDITTABLE", "Edit Table"));
             break;
           default:
             break;

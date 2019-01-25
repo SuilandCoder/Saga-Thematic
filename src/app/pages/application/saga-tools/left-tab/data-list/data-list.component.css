@@ -18,7 +18,7 @@ ul li{
     text-overflow: ellipsis;
 }
 .item-name{
-    max-width: 100px;
+    max-width: 150px;
     display: inline-block;
     white-space: nowrap;
     border-radius: 0px;

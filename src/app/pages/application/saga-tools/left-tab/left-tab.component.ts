@@ -23,7 +23,7 @@ export class LeftTabComponent implements OnInit {
       this.LayersListHeight = window.innerHeight * 0.9;
     })
 
-    this.TabItems = ['Layers', 'Data','Tools'];
+    this.TabItems = ['Datas', 'Outputs','Tools'];
     this.ActiveTabItemIndex = 0;
     this.dataTransmissionService.sendTabIndexSwitchedSubject(0);
 

@@ -12,7 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './_common/interceptor'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { PagesModule } from './pages/pages.module';
-import { Overlay, OverlayModule } from '@angular/cdk/overlay';
+import { Overlay, OverlayModule } from '@angular/cdk/overlay'; 
 import { MainPageModule } from './pages/application/saga-tools/main-page/main-page.module';
 const routes: Routes = [
   { path: '', loadChildren: './pages/pages.module#PagesModule' },
@@ -32,8 +32,6 @@ const routes: Routes = [
     MainPageModule,
     MatDialogModule,
     PagesModule,
-    
-    
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
   ],

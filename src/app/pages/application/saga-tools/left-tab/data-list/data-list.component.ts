@@ -39,13 +39,11 @@ export class DataListComponent implements OnInit {
 
     this.dataTransmissionService.getRemoteData().subscribe(data => {
       this.ListItems.push(new LayerItem(data.name, null, data.type, data.id));
-    })
+    });
 
-    this.dataTransmissionService.getTabIndexSwitchedSubject().subscribe(TabIndex => {
-
+    this.dataTransmissionService.getTabIndexSwitchedSubject().subscribe(TabIndex => { 
       this.CurrentTabIndex = TabIndex;
-    })
-
+    });
   }
 
   //以压缩包的形式下载
@@ -57,7 +55,6 @@ export class DataListComponent implements OnInit {
   onDataItemClick(DataItem: LayerItem) {
     this.SelectedListItemId = DataItem.dataId;
     this.dataTransmissionService.sendLayerSelectedSubject(this.SelectedListItemId);
-
   }
 
   //////////按键事件/////////

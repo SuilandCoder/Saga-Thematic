@@ -8,6 +8,7 @@ export class DataTransmissionService {
         console.log("init data DataTransmissionService");
     }
 
+
     //传输文件
     private CustomFileSubject = new Subject<any>();
     //传输dataid，用于显示图层或者隐藏图层

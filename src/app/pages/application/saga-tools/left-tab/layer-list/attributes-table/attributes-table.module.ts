@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { AttributesTableComponent } from "./attributes-table.component";
 import { NgZorroAntdModule } from "ng-zorro-antd"; 
-import { ModalModule } from "../modal";
 import { SharedModule } from "src/app/_common";
+import { ModalModule } from "../../../modal";
 
 
 @NgModule({
