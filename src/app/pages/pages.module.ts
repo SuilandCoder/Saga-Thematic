@@ -23,8 +23,7 @@ import {MatIconModule} from '@angular/material'
     MatCardModule,
     MatIconModule,
     MatTreeModule,
-    ThemeInfoModule,
-     
+    ThemeInfoModule
   ],
   declarations: [
     PagesComponent,

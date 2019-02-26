@@ -32,7 +32,7 @@
                 <!-- export data panel -->
     <app-export-data></app-export-data>
                 <!-- attr table -->
-    <app-attributes-table *ngIf="clickItem && clickItem.id ==='TABLE'" [attrTableVisible] = "'true'" [LayerItem]="SelectedLayerItem" (onClosed)="onClosed()"></app-attributes-table>
+    <app-attributes-table *ngIf="clickItem && (clickItem.id ==='TABLE'|| clickItem.id==='EDITTABLE')" [attrTableVisible] = "'true'" [LayerItem]="SelectedLayerItem" (onClosed)="onClosed()"></app-attributes-table>
               
 </div>
 

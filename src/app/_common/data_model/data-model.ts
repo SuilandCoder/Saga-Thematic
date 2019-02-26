@@ -153,6 +153,7 @@ export class LayerItem {
     public type: string;
     public layerSetting: LayerSetting;
     public dataPath:string="";
+    public tableInfo:TableInfo;
     constructor(
         name: string,
         file?: File,
@@ -447,6 +448,16 @@ export class DataItem {
     }
 
 }
+//模型返回的table数据
+export class TableInfo{
+    public fieldArr:Array<string>;
+    public fieldVal:Array<any>; 
+    constructor(fieldArr?:Array<string>,fieldVal?:Array<any>){
+        this.fieldArr = fieldArr;
+        this.fieldVal = fieldVal; 
+    }
+}
+
 
 // 上传显示到图层列表的数据
 export class CustomFile {

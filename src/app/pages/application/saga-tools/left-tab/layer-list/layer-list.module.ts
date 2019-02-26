@@ -2,10 +2,10 @@ import { NgModule } from "@angular/core";
 import { LayerListComponent } from "./layer-list.component";
 import { SortablejsModule } from 'angular-sortablejs/dist';
 import { SharedModule } from "src/app/_common";
-import { PopupComponent } from "../../popup/popup.component";
-import { ExportDataComponent } from "../../export-data/export-data.component";
 import { LayerSettingsModule } from "./layer-settings/layer-settings.module";
 import { AttrbutesTableModule } from "./attributes-table/attributes-table.module";
+import { PopupComponent } from "../popup/popup.component";
+import { ExportDataComponent } from "../export-data/export-data.component";
 @NgModule({
     imports: [
         SharedModule,

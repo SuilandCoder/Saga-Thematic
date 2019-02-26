@@ -41,6 +41,10 @@ export class ListInputComponent implements OnInit {
       this.layerItems = this.layerItems.filter(item => {
         return item.type == "shp";
       })
+    } else if(this.inputType.includes("Table ")){
+      this.layerItems = this.layerItems.filter(item => {
+        return item.type == "txt";
+      })
     }
     this.layerListSubscription = this.dataTransmissionService.getLayerListSubject().subscribe(layersArray => {
       this.layerItems = layersArray;

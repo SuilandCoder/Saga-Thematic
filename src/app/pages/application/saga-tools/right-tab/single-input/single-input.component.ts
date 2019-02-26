@@ -1,7 +1,7 @@
 import { LayerItem } from 'src/app/_common/data_model/data-model';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { DataTransmissionService } from 'src/app/_common';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs'; 
 
 @Component({
   selector: 'app-single-input',
@@ -11,15 +11,30 @@ import { Subscription } from 'rxjs';
 export class SingleInputComponent implements OnInit {
   @Input() layerItems:Array<LayerItem>;
   @Input() eventName:string;
-  // public layerListSubscription: Subscription;
+  @Input() inputType: string;
+  public layerListSubscription: Subscription;
   layerItem:LayerItem;
   @Output() 
   inputData:EventEmitter<any> = new EventEmitter();
+  myLayerItems:Array<LayerItem>;
   constructor(
     private dataTransmissionService: DataTransmissionService,
   ) {}
 
   ngOnInit() {
+    if (this.inputType.includes("Grid")) {
+      this.layerItems = this.layerItems.filter(item => {
+        return item.type == "tif" || item.type == "sgrd";
+      })
+    } else if (this.inputType.includes("Shapes")) {
+      this.layerItems = this.layerItems.filter(item => {
+        return item.type == "shp";
+      })
+    } else if(this.inputType.includes("Table")){
+      this.layerItems = this.layerItems.filter(item => {
+        return item.type == "txt";
+      })
+    }  
   }
 
   onInputItemSelected(layer){

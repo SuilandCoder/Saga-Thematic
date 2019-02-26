@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { TreeModel, Ng2TreeSettings, NodeEvent } from 'ng2-tree';
-import { ToosTreeService } from 'src/app/_common';
+import { ToolsTreeService } from 'src/app/_common';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ToolService } from 'src/app/_common/services/tool.service';
 
@@ -28,7 +28,7 @@ export class ToolListComponent implements OnInit {
   };
 
   constructor(
-    private toosTreeService: ToosTreeService,
+    private toolsTreeService: ToolsTreeService,
     public dialog: MatDialog,
     public toolService:ToolService
   ) { }
@@ -37,7 +37,7 @@ export class ToolListComponent implements OnInit {
     this.initTree();
     this.CurrentSelected = null;
     this.tree.loadChildren = (callback => {
-      this.toosTreeService.getToolsTree_leftTab(this.treeJSONPath).then(childrenArray => {
+      this.toolsTreeService.getToolsTree_leftTab(this.treeJSONPath).then(childrenArray => {
         callback(childrenArray);
       })
     })

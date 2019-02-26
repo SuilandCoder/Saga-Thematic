@@ -1,8 +1,6 @@
 import { MatDialogModule } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
-
 import { ToastrModule } from 'ngx-toastr';
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -16,7 +14,7 @@ import { Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { MainPageModule } from './pages/application/saga-tools/main-page/main-page.module';
 const routes: Routes = [
   { path: '', loadChildren: './pages/pages.module#PagesModule' },
-  { path: 'saga-tools', loadChildren: './geoInfoService/main-page/main-page.module#MainPageModule' }
+  { path: 'saga-tools', loadChildren: './pages/application/saga-tools/main-page/main-page.module#MainPageModule' }
 ];
 @NgModule({
   declarations: [
@@ -29,9 +27,9 @@ const routes: Routes = [
     BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
-    MainPageModule,
     MatDialogModule,
     PagesModule,
+    MainPageModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
   ],

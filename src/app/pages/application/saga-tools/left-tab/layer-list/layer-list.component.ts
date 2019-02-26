@@ -7,15 +7,14 @@ import {
   LoadingInfo,
   GeoData,
   GeoJsonLayer,
-  OlMapService,
-  WindowEventService,
+  OlMapService, 
   HttpService,
   UtilService,
   GlobeConfigService,
-  DataTransmissionService
+  DataTransmissionService,
 } from 'src/app/_common'
-import { remove, findIndex, isEqual, includes, concat } from 'lodash';
-import { areIterablesEqual } from '@angular/core/src/change_detection/change_detection_util';
+import {TableInfo} from 'src/app/_common/data_model'
+import { remove,isEqual } from 'lodash'; 
 import * as _ from 'lodash';
 
 declare var ol: any;
@@ -94,14 +93,14 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         let hasOutput = false;
         console.log(output);
         output.forEach(item => {
-          if (item && item.DataId && item.DataId!="" && item.Event) {
+          if (item && item.DataId && item.DataId != "" && item.Event) {
             hasOutput = true;
-            this.dataTransmissionService.sendRemoteData(new GeoData(item.Event,"",0,item.DataId));
+            this.dataTransmissionService.sendRemoteData(new GeoData(item.Event, "", 0, item.DataId));
           }
         });
-        if(!hasOutput){
+        if (!hasOutput) {
           this.toastr.error("Run model failed.", "ERROR");
-        this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+          this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
         }
       } else {
         this.toastr.error("Run model failed.", "ERROR");
@@ -127,7 +126,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           this.changeLayerVisible(newItem);
           this.toastr.success("Calculation completed.", "SUCCESS");
           // this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
-        }else{
+        } else {
           this.toastr.error("OUTPUT DATA TYPE UNKNOW.", "ERROR");
           this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
         }
@@ -218,33 +217,33 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         this.httpService.getGeoJson(currentItem).then(data => {
           //* 如果 返回结果是 list, 从 layer-list remove layerItem, 重新添加每个list中的item.
           let resultData = data['data'];
-          if(resultData instanceof Array){
+          if (resultData instanceof Array) {
             remove(this.LayerItems, item => {
               return isEqual(item, currentItem);
             });
-            resultData.forEach((item,i)=>{
-              currentItem = new LayerItem(layerItem.name+"_"+i, null, layerItem.type, data.Id);
+            resultData.forEach((item, i) => {
+              currentItem = new LayerItem(layerItem.name + "_" + i, null, layerItem.type, data.Id);
               this.LayerItems.push(currentItem);
               // this.LayerItems=concat(currentItem,this.LayerItems);
               currentItem.visible = true;
               currentItem.dataPath = item.dataPath;
-              this.olMapService.addVectorLayer(new GeoJsonLayer(currentItem.dataId,item));
+              this.olMapService.addVectorLayer(new GeoJsonLayer(currentItem.dataId, item));
               currentItem.isOnMap = true;
               currentItem.layerShowing = false;
             })
-          }else{
+          } else {
             currentItem.visible = !layerItem.visible;
             //添加到olmap上
             currentItem.dataPath = data['data']['dataPath'];
             this.olMapService.addVectorLayer(new GeoJsonLayer(currentItem.dataId, data['data']));
             currentItem.isOnMap = true;
             currentItem.layerShowing = false;
-          } 
+          }
         }, reason => {
           remove(this.LayerItems, item => {
             return isEqual(item, currentItem);
           });
-          currentItem.layerShowing = false; 
+          currentItem.layerShowing = false;
           console.log(reason);
           this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
           this.toastr.error("Failed to Load Data.");
@@ -263,12 +262,12 @@ export class LayerListComponent implements OnInit, AfterViewInit {
             if (ResponseData["code"] === 0) {
               let resultData = ResponseData['data'];
               if (resultData) {
-                if(resultData instanceof Array){
+                if (resultData instanceof Array) {
                   remove(this.LayerItems, item => {
                     return isEqual(item, currentItem);
                   });
-                  resultData.forEach((item,i)=>{
-                    currentItem = new LayerItem(layerItem.name+"_"+i, null, layerItem.type, layerItem.dataId+i);
+                  resultData.forEach((item, i) => {
+                    currentItem = new LayerItem(layerItem.name + "_" + i, null, layerItem.type, layerItem.dataId + i);
                     this.LayerItems.push(currentItem);
                     // this.LayerItems=concat(currentItem,this.LayerItems);
                     let imageLayer = this.utilService.ResDataToImageLayer(item);
@@ -280,7 +279,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
                     currentItem.dataPath = item['dataPath'];
                   })
                   this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
-                }else{
+                } else {
                   let imageLayer = this.utilService.ResToImageLayer(ResponseData);
                   imageLayer.id = currentItem.dataId;
                   this.olMapService.addImageLayer(imageLayer);
@@ -289,7 +288,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
                   currentItem.layerShowing = false;
                   currentItem.dataPath = ResponseData['data']['dataPath'];
                   this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
-                } 
+                }
               } else {
                 remove(this.LayerItems, item => {
                   return isEqual(item, currentItem);
@@ -372,7 +371,40 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         break;
 
       case "txt":
-          
+        //* 如果是加载本地数据，则不处理
+        if(currentItem.file){
+          this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+          break;
+        }
+        this.httpService.getTableFile(currentItem).then(response => {
+          if (response && response['code'] != undefined) {
+            if (response['code'] === 0) {
+              if (response['data'] && response['data']['fieldArr'] && response['data']['fieldValue'] && response['data']['dataPath']) {
+                let ti:TableInfo = new TableInfo();
+                ti.fieldArr = response['data']['fieldArr'];
+                ti.fieldVal = response['data']['fieldValue'];
+                currentItem.dataPath = response['data']['dataPath'];
+                currentItem.tableInfo = ti;
+              } else {
+                remove(this.LayerItems, item => {
+                  return isEqual(item, currentItem);
+                });
+                this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+                return;
+              }
+            }
+          }
+        }, reason => {
+          console.log(reason);
+          currentItem.layerShowing = false;
+        }).catch(error => {
+          remove(this.LayerItems, item => {
+            return isEqual(item, currentItem);
+          });
+          currentItem.layerShowing = false;
+          this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+          this.toastr.error(error);
+        })
         break;
       case "ONLINE":
         currentItem.visible = !layerItem.visible;
@@ -486,7 +518,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
 
   onClosed() {
     this.clickItem = null;
-  } 
+  }
   //////////按键事件/////////
   @HostListener('document:keyup', ['$event'])
   onkeydown(event: KeyboardEvent) {

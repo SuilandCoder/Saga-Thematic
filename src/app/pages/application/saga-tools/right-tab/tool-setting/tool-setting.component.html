@@ -23,7 +23,7 @@
           <!-- <input type="file" accept="application/zip"> -->
           <app-list-input *ngIf="input.type.includes('list');else single_input" [eventName]="input.identifier" [layerItems]="this.layerItems" [inputType]="input.type" (inputData)="inputListHandler($event)"></app-list-input>
           <ng-template #single_input>
-            <app-single-input [eventName]="input.identifier" [layerItems]="layerItems" (inputData)="inputDataHandler($event)"></app-single-input>
+            <app-single-input [eventName]="input.identifier" [layerItems]="this.layerItems" [inputType]="input.type" (inputData)="inputDataHandler($event)"></app-single-input>
           </ng-template> 
         </td>
       </tr>

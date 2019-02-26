@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core'
 import { TreeModel } from 'ng2-tree'
 import { ToolsTreeNode } from '../data_model'
 import { HttpClient } from '@angular/common/http';
-import { resolve, reject } from 'q';
 import * as $ from 'jquery';
 @Injectable()
-export class ToosTreeService {
+export class ToolsTreeService {
     private RsltTree: TreeModel;
 
     constructor(private http: HttpClient) {

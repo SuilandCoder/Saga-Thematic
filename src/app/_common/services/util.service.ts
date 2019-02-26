@@ -164,4 +164,31 @@ export class UtilService {
         return str;
     }
 
+
+    getTableFieldArray(file:File,callback){
+       var reader = new FileReader();
+       reader.readAsText(file,"utf-8");
+       var fieldArr = new Array<string>();
+       var filedValue:Array<any>=[];
+       reader.onload = function(evt){
+        var result = reader.result;
+        var res =result.toString();
+        var arr = res.split("\n");
+        arr.forEach((element,index)=>{
+            var elArr = element.split("\t");
+            if(index==0){
+                fieldArr = elArr;
+            }else{
+                var obj={};
+                elArr.forEach((el,elIndex)=>{
+                    obj[fieldArr[elIndex]] = el;
+                })
+                filedValue.push(obj);
+            } 
+        })
+        callback(fieldArr,filedValue);
+       }
+      
+    }
+
 }

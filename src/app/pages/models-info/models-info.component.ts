@@ -2,7 +2,7 @@ import { ToolService } from '../../_common/services/tool.service';
 import { MenuService } from '../../_common/services/menu.service';
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import * as $ from "jquery";
+
 @Component({
   selector: 'app-models-info',
   templateUrl: './models-info.component.html',
@@ -10,7 +10,6 @@ import * as $ from "jquery";
 })
 export class ModelsInfoComponent implements OnInit {
   library_info:any={};
-  private modelList;
   LayersListHeight: number;
   constructor(
     private routeInfo:ActivatedRoute,

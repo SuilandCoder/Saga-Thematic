@@ -1,6 +1,6 @@
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CdkTreeModule } from '@angular/cdk/tree';
-import { Overlay, CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
+import { Overlay, OverlayModule } from '@angular/cdk/overlay';
  import { OlMapComponent } from './../ol-map/ol-map.component';
 import { RightTabModule } from './../right-tab/right-tab.module'; 
 import {API} from "src/config";
@@ -8,7 +8,7 @@ import { NgModule } from '@angular/core';
 import { MainPageRoutingModule } from './main-page-routing.module';
 import { MainPageComponent } from './main-page.component';
 
-import { SharedModule, ImageProcessing,DataTransmissionService, GlobeConfigService, HttpService, ModelService, OlMapService, ToosTreeService, UtilService, WindowEventService } from 'src/app/_common';
+import { SharedModule, ImageProcessing,DataTransmissionService, GlobeConfigService, HttpService, ModelService, OlMapService, ToolsTreeService, UtilService, WindowEventService } from 'src/app/_common';
 import { ToolBarModule } from '../tool-bar/tool-bar.module';
 import { LeftTabModule } from '../left-tab/left-tab.module';
 import { FooterModule } from '../footer/footer.module'; 
@@ -47,7 +47,7 @@ import { RequestCache, RequestCacheWithMap } from 'src/app/_common/services';
         ModelService,
         ToolService,
         OlMapService,
-        ToosTreeService,
+        ToolsTreeService,
         UtilService,
         WindowEventService,
         ImageProcessing,

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ToolIOData, GeoData, postData, uploadResponseData, LayerItem, DataForRunModel, ImageLayer, WktProjection } from "../data_model";
 import * as Xml2js from 'xml2js';
 import { API } from "src/config";
+import { resolve } from "url";
 
 @Injectable()
 export class HttpService {
@@ -312,6 +313,24 @@ export class HttpService {
                     reject(next);
                 }
             })
+        })
+    }
+
+    getTableFile(layerItem:LayerItem):Promise<Object>{
+        return new Promise((resolve,reject)=>{
+            if(!layerItem){
+                return reject("LayerItem is null");
+            }
+            if(layerItem.uploaded && layerItem.dataId !==null){
+                let postData = new FormData();
+                postData.append('id', layerItem.dataId);
+                postData.append('ip', this.SagaIp);
+                this.http.post(`${this.baseUrl}/getTableFile`, postData).toPromise().then(next => {
+                    resolve(next);
+                }).catch(error => {
+                    reject(error);
+                })
+            }
         })
     }
 

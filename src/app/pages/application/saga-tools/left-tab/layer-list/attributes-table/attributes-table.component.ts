@@ -46,8 +46,22 @@ export class AttributesTableComponent implements OnInit {
   ngOnInit() {
 
     let LayerOnMap = this.olMapService.getLayerById(this.CurrentLayerItem.dataId);
-    this.fieldArray = this.utilService.getFieldArray(LayerOnMap);
-    this.fieldValues = this.utilService.getFieldValue(LayerOnMap);
+    if(this.CurrentLayerItem.type=='txt'){
+      //* 模型返回的table数据
+      if(this.CurrentLayerItem.tableInfo){
+        this.fieldArray = this.CurrentLayerItem.tableInfo.fieldArr;
+        this.fieldValues = this.CurrentLayerItem.tableInfo.fieldVal;
+      }else{
+        //* 本地加载的 table数据
+        this.utilService.getTableFieldArray(this.CurrentLayerItem.file,(fieldArr,valuesArr)=>{
+          this.fieldArray = fieldArr;
+          this.fieldValues = valuesArr;
+        });
+      } 
+    }else{
+      this.fieldArray = this.utilService.getFieldArray(LayerOnMap);
+      this.fieldValues = this.utilService.getFieldValue(LayerOnMap);
+    } 
     this.itemWidth = 100;
     this.scrollX = this.fieldArray.length * this.itemWidth + 400;
 
