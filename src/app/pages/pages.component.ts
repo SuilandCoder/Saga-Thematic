@@ -1,9 +1,11 @@
+import { Ng2TreeSettings, TreeModel, NodeEvent } from 'ng2-tree';
 import { MenuService } from '../_common/services/menu.service';
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, ViewChild } from '@angular/core';
 import * as $ from 'jquery';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { BehaviorSubject } from 'rxjs';
+import { ToolsTreeService } from '../_common';
  
 export class FileNode {
   children: FileNode[];
@@ -69,8 +71,10 @@ export class FileDatabase {
 export class PagesComponent {
   nestedTreeControl: NestedTreeControl<FileNode>;
   nestedDataSource: MatTreeNestedDataSource<FileNode>;
+
   constructor(
     private menuService: MenuService,
+    private toolsTreeService: ToolsTreeService,
     database: FileDatabase
   ) {
     this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
@@ -100,6 +104,7 @@ export class PagesComponent {
       $("#module_tree").show();
     }
   }
+
 
   hasNestedChild = (_: number, nodeData: FileNode) => !nodeData.type;
 

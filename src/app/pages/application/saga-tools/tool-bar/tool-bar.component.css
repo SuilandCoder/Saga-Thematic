@@ -40,3 +40,9 @@
 .tools-group span.selected>>>i {
     color: #5F7387!important;
 }
+
+.user-menu{
+    position: absolute;
+    right: 20px;
+    top:2px;
+}

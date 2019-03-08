@@ -15,7 +15,6 @@ export class OnlineMapToolComponent implements OnInit {
     this.onlineLayers = this.globeConfigService.onlineLayers;
   }
 
-
   ngOnInit() {
   }
 

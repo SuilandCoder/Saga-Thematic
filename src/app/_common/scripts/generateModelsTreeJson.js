@@ -1,7 +1,11 @@
+/**
+ * * 该脚本用来生成或更新 models_tree.json 文件。
+ * * models_tree 文件为 saga models页面的工具树信息。
+ */
 var fs = require("fs");
 var path = require("path");
 var filePath = path.resolve("./src/assets/json/tree.json");
-var result = "./src/assets/json/ng2tree.json";
+var result = "./src/assets/json/models_tree_test.json";
 
 const settings = {
   cssClasses: {

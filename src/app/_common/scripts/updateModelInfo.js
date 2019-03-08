@@ -1,5 +1,6 @@
 /**
- *  * 该脚本用来获取所以模型在模型门户的地址，并将模型地址更新进 Json 文件中
+ *  * 该脚本用来更新modelInfo文件夹下的文件信息
+ *  * 包括 oid, stateId, tool_path，
  */
 var fs = require("fs");
 var path = require("path");

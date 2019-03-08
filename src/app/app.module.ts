@@ -7,14 +7,15 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './_common/shared.module';
 import { RouterModule, Routes } from '@angular/router'
 import { HttpClientModule } from '@angular/common/http';
-import { httpInterceptorProviders } from './_common/interceptor'; 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { httpInterceptorProviders } from './_common/interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PagesModule } from './pages/pages.module';
-import { Overlay, OverlayModule } from '@angular/cdk/overlay'; 
+import { Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { MainPageModule } from './pages/application/saga-tools/main-page/main-page.module';
 const routes: Routes = [
-  { path: '', loadChildren: './pages/pages.module#PagesModule' },
-  { path: 'saga-tools', loadChildren: './pages/application/saga-tools/main-page/main-page.module#MainPageModule' }
+  // { path: '', loadChildren: './pages/pages.module#PagesModule' },
+  { path: '', loadChildren: './pages/application/saga-tools/main-page/main-page.module#MainPageModule' },
+  { path: 'users', loadChildren: './pages/users/users.module#UsersModule' }
 ];
 @NgModule({
   declarations: [
@@ -36,7 +37,6 @@ const routes: Routes = [
   providers: [
     Overlay,
     httpInterceptorProviders,
-    
   ],
   exports: [
     OverlayModule

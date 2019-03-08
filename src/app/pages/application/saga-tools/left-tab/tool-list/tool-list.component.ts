@@ -20,7 +20,7 @@ export class ToolListComponent implements OnInit {
   CurrentSelected: any;
   public ButtonText = 'Next';
   public tree: TreeModel;
-  private treeJSONPath = "assets/json/ng2tree.json"
+  private treeJSONPath = "assets/json/tools_tree.json"
   @ViewChild('ToolsTree')
   public ToolsTree: any;
   public settings: Ng2TreeSettings = {
@@ -65,9 +65,7 @@ export class ToolListComponent implements OnInit {
       this.CurrentSelected = undefined;
       const thisControl = this.ToolsTree.getControllerByNodeId(e.node.id);
       e.node.isNodeCollapsed() ? thisControl.expand() : thisControl.collapse();
-
       //? this.modelService.clearMessage?  移除右侧的模型信息?
-      
     }
   }
 

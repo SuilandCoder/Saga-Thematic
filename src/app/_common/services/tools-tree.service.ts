@@ -14,10 +14,13 @@ export class ToolsTreeService {
     getToolsTree_leftTab(url): Promise<any> {
         return new Promise((resolve, reject) => {
             $.getJSON(url, data => {
+                console.log(data);
                 resolve(data);
             })
         })
     }
+
+
 
     getToolsTree(): Promise<any> {
         return this.organizeTree().then(next => {

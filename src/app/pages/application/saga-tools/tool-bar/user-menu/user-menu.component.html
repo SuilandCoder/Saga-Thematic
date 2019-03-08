@@ -1,0 +1,22 @@
+<div id="login-menu">
+  <div *ngIf="logined else gotoLogin">
+      <button class='menu-btn' mat-button [matMenuTriggerFor]='userMenuTemp'>
+          User
+          <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #userMenuTemp='matMenu'>
+          <button mat-menu-item [routerLink]='["/user", username]'>Profile</button>
+          <button mat-menu-item [routerLink]='["/user", username, "settings"]'>Setting</button>
+          <button mat-menu-item (click)='signOut()'>Sign Out</button>
+      </mat-menu>
+  </div>
+  <ng-template #gotoLogin>
+      <div id='sign-in-group'>
+          <button class='menu-btn' mat-button routerLink='/users/sign-in'>Sign in</button>
+          &nbsp;
+          <span style='color: #586069 !important;'>or</span>
+          &nbsp;
+          <button class='menu-btn' mat-button routerLink='/users/sign-up'>Sign up</button>
+      </div>
+  </ng-template>
+</div>

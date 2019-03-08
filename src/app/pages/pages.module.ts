@@ -1,3 +1,5 @@
+import { CommonModule } from '@angular/common';
+import { TreeModule } from 'ng2-tree';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTreeModule } from '@angular/material/tree';
@@ -11,10 +13,11 @@ import { ApplicationComponent } from './application/application.component';
 import { ThemeInfoModule } from './theme-info/theme-info.module';
 import { Overlay } from 'ngx-toastr';
 import { CdkTreeModule } from '@angular/cdk/tree';
-import {MatIconModule} from '@angular/material'
+import {MatIconModule} from '@angular/material';
 
 @NgModule({
   imports: [
+    CommonModule,
     OverlayModule,
     CdkTreeModule,
     PagesRoutingModule,
@@ -23,6 +26,7 @@ import {MatIconModule} from '@angular/material'
     MatCardModule,
     MatIconModule,
     MatTreeModule,
+    TreeModule,
     ThemeInfoModule
   ],
   declarations: [
