@@ -15,6 +15,8 @@ export class MainPageComponent implements OnInit {
   leftOpened: boolean= true;
   @Input()
   rightOpened: boolean= false;
+  @Input()
+  right_tag = "";
 
   rightDock = false;
 
@@ -32,6 +34,7 @@ export class MainPageComponent implements OnInit {
     })
 
     this.toolService.getModelInfoMessage().subscribe(_=>{ 
+      this.right_tag = "des";
       this.rightOpened = true;
       this.rightDock = true;
     })
@@ -48,4 +51,14 @@ export class MainPageComponent implements OnInit {
       this.rightDock = event;
     }
   } 
+
+  right_tab_toggle(event){
+    if(event==this.right_tag){
+      this.rightOpened = !this.rightOpened;
+    }else{
+      this.right_tag = event;
+      this.rightOpened = true;
+    } 
+  }
+
 }

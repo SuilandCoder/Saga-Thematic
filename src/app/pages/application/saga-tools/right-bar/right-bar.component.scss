@@ -1,0 +1,38 @@
+.right_bar {
+    background: #fff;
+    height: 100%;
+    width: 30px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 1000;
+    overflow: hidden;
+  }
+  
+  .rotate_text {
+    transform: rotate(90deg);
+    /* Internet Explorer 9*/
+    -ms-transform: rotate(90deg);
+    /* Firefox */
+    -moz-transform: rotate(90deg);
+    /* Safari 和 Chrome */
+    -webkit-transform: rotate(90deg);
+    /* Opera */
+    -o-transform: rotate(90deg); 
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  
+    /* border: #000 solid 1px; */
+  }
+  
+  .right_btn{
+    margin-left: 15px;
+    border: 1px solid #ddd;
+    padding: 3px;
+    display: inline;
+    border-radius: 5px;
+  }
+  
+  .right_btn :hover{
+    border: 1px solid #ccc;
+    color: aquamarine;
+  }

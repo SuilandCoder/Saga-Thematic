@@ -24,6 +24,7 @@ export class RightTabComponent implements OnInit {
   private descriptionHtml = "";
 
   @Input() opened:boolean=false;
+  @Input() tag:string = "";
 
   TabItems: Array<string>;
   constructor(

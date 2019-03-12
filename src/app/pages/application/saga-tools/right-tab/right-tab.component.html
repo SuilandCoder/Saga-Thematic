@@ -1,4 +1,4 @@
-<div class=" layer-container scrollbar mb_0 ml_30 bg_color max_w" [style.height]="LayersListHeight.toString()+'px'" *ngIf="toolInfo">
+<div class=" layer-container scrollbar mb_0 ml_30 mr_25 bg_color max_w" [style.height]="LayersListHeight.toString()+'px'" *ngIf="toolInfo &&tag=='des' else data">
   <button  class="closeRight" (click)="rightSideToogle()">
     <i *ngIf="opened; else left" class="fa fa-chevron-right" aria-hidden="true"></i>
     <ng-template #left>
@@ -17,3 +17,7 @@
     </nz-tab> 
   </nz-tabset>
 </div>
+
+<ng-template #data>
+  <div style="width:400px;height: 100%;">todo</div>
+</ng-template>

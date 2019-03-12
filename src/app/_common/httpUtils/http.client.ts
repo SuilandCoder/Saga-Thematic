@@ -13,15 +13,20 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class _HttpClient {
-    headers: HttpHeaders;
+    headers: HttpHeaders = new HttpHeaders();
 
     constructor(
         private http: HttpClient,
         // private loading: SlimLoadingBarService, 
     ) { 
+        this.headers = this.headers.append("Content-Type","application/json");
     }
 
-    resetHeaders() { 
+    setAuthHeaders() {
+        const jwtStr = localStorage.getItem('jwt');
+        if (jwtStr) {
+            this.headers = new HttpHeaders().append('Authorization', `bearer ${JSON.parse(jwtStr).token}`);
+        }
     }
 
     private resInterceptor(observable: Observable<any>, parseRes?: boolean, withRequestProgress?: boolean): Observable<any> {
@@ -31,7 +36,7 @@ export class _HttpClient {
                     if (withRequestProgress !== false)
                         // this.loading.complete();
                     if (parseRes !== false) {
-                        if (!response.error) {
+                        if (response.code ==0) {
                             observer.next({
                                 data: response.data
                             });
@@ -39,7 +44,7 @@ export class _HttpClient {
                         }
                         else {
                             observer.next({
-                                error: response.error
+                                error: response.msg
                             });
                             console.log(response.error);
                             // this.notice.warning('Warning', 'Http request error!');
@@ -75,12 +80,7 @@ export class _HttpClient {
         withRequestProgress?: boolean,
         headers?:HttpHeaders
     ): Observable<any> {
-        if(headers!=null || headers!=undefined){
-            this.headers = headers;
-        }else{
-            this.headers = new HttpHeaders();
-        }
-        // this.headers.set("X-HTTP-Method-Override","post");
+        
         return this.resInterceptor(this.http.post(url, body, {
             ...options, 
             headers: this.headers
@@ -92,7 +92,7 @@ export class _HttpClient {
         options: any = {},
         parseRes?: boolean
     ): Observable<any> {
-        this.headers = new HttpHeaders().append("X-HTTP-Method-Override","delete");
+        this.headers = this.headers.append("X-HTTP-Method-Override", "delete");
         return this.resInterceptor(this.http.post(url,null, {
             ...options,
             headers: this.headers
@@ -105,7 +105,7 @@ export class _HttpClient {
         options: any = {},
         parseRes?: boolean
     ): Observable<any> {
-        this.headers = new HttpHeaders().append("X-HTTP-Method-Override","put");
+        this.headers = this.headers.append("X-HTTP-Method-Override", "put");
         return this.resInterceptor(this.http.post(url, body, {
             ...options,
             headers: this.headers
@@ -118,7 +118,7 @@ export class _HttpClient {
         options: any = {},
         parseRes?: boolean
     ): Observable<any> {
-        this.headers = new HttpHeaders().append("X-HTTP-Method-Override","patch");
+        this.headers = this.headers.append("X-HTTP-Method-Override", "patch");
         return this.resInterceptor(this.http.post(url, body, {
             ...options,
             headers: this.headers

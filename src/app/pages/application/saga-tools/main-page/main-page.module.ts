@@ -19,6 +19,8 @@ import { ToolService } from 'src/app/_common/services/tool.service';
 import { MenuService } from 'src/app/_common/services/menu.service';
 import { MessageService } from 'src/app/_common/services/message.service';
 import { RequestCache, RequestCacheWithMap } from 'src/app/_common/services'; 
+import { RightBarComponent } from '../right-bar/right-bar.component';
+
 @NgModule({
     imports: [
         SharedModule,
@@ -36,6 +38,7 @@ import { RequestCache, RequestCacheWithMap } from 'src/app/_common/services';
     ],
     declarations: [
         MainPageComponent,
+        RightBarComponent,
     ],
     entryComponents:[
         OlMapComponent,
