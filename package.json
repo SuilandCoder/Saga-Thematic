@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.config.json",
+    "start": "ng serve --proxy-config proxy.config.json -o",
     "build:aot": "ng build --aot --base-href ./ --output-path=dist-aot",
     "build": "ng build --prod --build-optimizer --base-href ./ --output-path=dist --delete-output-path",
     "build:prod": "node --max_old_space_size=5120 node_modules/@angular/cli/bin/ng build --base-href=./ --output-path=build-prod --delete-output-path --prod --build-optimizer=false --watch --common-chunk --vendor-chunk",

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder,Validators } from '@angular/forms';
-
+import { UserService } from 'src/app/_common/services/user.service';
+import { get } from 'lodash';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -18,12 +19,13 @@ export class SignUpComponent implements OnInit {
     };
   constructor(
     private fb: FormBuilder,
+    private service: UserService
   ) { }
 
   ngOnInit() {
     this.signUpFG = this.fb.group({
-      username: [],
-      email: [ ],
+      userId: [get(this.service, 'jwt.user.userId'), [Validators.required, Validators.minLength(3)]],
+      email: [get(this.service, 'jwt.user.email'), [Validators.required, Validators.email]],
       password: this.fb.group(
           {
               value: ['', [Validators.required, Validators.minLength(6)]],
@@ -41,19 +43,19 @@ export class SignUpComponent implements OnInit {
     var signUpData = this.signUpFG.value;
     signUpData.password = this.signUpFG.get('password').get('value').value;
     console.log("signUpData:",signUpData);
-    // this.service.signUp(signUpData).subscribe({
-    //   next: res => {
-    //     if (res.error) {
-    //       this.errorInfo = {
-    //         show: true,
-    //         message: res.error.desc
-    //       };
-    //     }
-    //   },
-    //   error: e => {
-    //     console.log(e);
-    //   }
-    // })
+    this.service.signUp(signUpData).subscribe({
+      next: res => {
+        if (res.error) {
+          this.errorInfo = {
+            show: true,
+            message: res.error
+          };
+        }
+      },
+      error: e => {
+        console.log(e);
+      }
+    })
   }
 
   equalValidator(ctrl) {

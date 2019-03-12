@@ -1,18 +1,22 @@
 <div>
-  <app-tool-bar (leftOpenState)="openStateHandler($event)"></app-tool-bar> 
+  <app-tool-bar (leftOpenState)="openStateHandler($event)"></app-tool-bar>
 
-  <ng-sidebar-container class="example-container" autosize [style.height]="LayersListHeight.toString()+'px'"> 
+  <ng-sidebar-container class="example-container" autosize [style.height]="LayersListHeight.toString()+'px'">
 
     <ng-sidebar #drawer [(opened)]="leftOpened" mode="over">
       <app-left-tab></app-left-tab>
     </ng-sidebar>
 
-    <ng-sidebar #drawerEnd [(opened)]="rightOpened" [dock]="rightDock" [dockedSize]="'35px'"  mode="over" position="end" style="z-index:1000">
-      <app-right-tab [opened]="rightOpened"></app-right-tab>
+    <ng-sidebar #drawerEnd [(opened)]="rightOpened" [dock]="rightDock" [dockedSize]="'35px'" mode="over" position="end"
+      style="z-index:1000">
+      <app-right-tab [opened]="rightOpened" [tag] = "right_tag"></app-right-tab>
     </ng-sidebar>
 
-    <div ng-sidebar-content style="padding:0px;">
-        <app-ol-map></app-ol-map>
+
+
+    <div ng-sidebar-content style="padding:0px; height: 100%;">
+      <app-right-bar (rightTabToggle)="right_tab_toggle($event)"></app-right-bar>
+      <app-ol-map></app-ol-map>
     </div>
   </ng-sidebar-container>
 

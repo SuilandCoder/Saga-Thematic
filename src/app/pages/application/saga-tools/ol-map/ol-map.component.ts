@@ -234,8 +234,8 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       target: 'mapview',
       layers: this.Layers,
       view: new ol.View({
-        center: [0, 0],
-        zoom: 1
+        center: ol.proj.fromLonLat([120, 30]),
+        zoom: 5
       })
     });
 

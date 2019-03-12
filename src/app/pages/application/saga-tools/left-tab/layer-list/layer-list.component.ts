@@ -51,7 +51,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
     this.CurrentTabIndex = 0;
   }
   ngOnInit() {
-
+    
     this.LayerListOptions = {
       animation: 150,
       onUpdate: () => {
@@ -160,6 +160,8 @@ export class LayerListComponent implements OnInit, AfterViewInit {
 
       this.CurrentTabIndex = TabIndex;
     })
+    
+    this.dataTransmissionService.sendOnlineLayerSubject("osm");
   }
 
   ngAfterViewInit() {

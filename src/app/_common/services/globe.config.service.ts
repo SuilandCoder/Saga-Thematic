@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { View} from 'ol';
 declare var ol: any;
 
 
