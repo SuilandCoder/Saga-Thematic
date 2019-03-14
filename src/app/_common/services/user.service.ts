@@ -1,3 +1,4 @@
+import { UserDataService } from './user-data.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { _HttpClient } from './../httpUtils/http.client';
@@ -20,6 +21,7 @@ export class UserService{
         private route: ActivatedRoute,
         private router: Router,
         private location: Location,
+        private userDataService:UserDataService,
         @Inject("API") private api,
     ){
         this.baseUrl = `${this.api.backend_user}`;
@@ -74,6 +76,7 @@ export class UserService{
 
     signOut() {
         this.jwt = null;
+        this.userDataService.userDatas = null;
     }
 
     signUp(user): Observable<any> {

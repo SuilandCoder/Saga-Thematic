@@ -1,3 +1,18 @@
+export class DataInfo{
+    public author:string;
+    public dataItemId:string;
+    public fileName:string;
+    public mdlId:string;
+    public sourceStoreId:string;
+    public suffix:string;
+    public tags:Array<string>;
+    public type:string;
+    public file: File;
+    public createDate:string;
+    public toGeoserver:boolean;
+    constructor(){}
+}
+
 export class ToolParam{
     public constraints:string;
     public description:string;
