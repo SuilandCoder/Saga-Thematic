@@ -55,6 +55,29 @@ app-tool-setting {
 }
 
 
+label{
+  display: inline;
+}
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+  not supported by any browser */
+}
+
+.upload-tag{
+  font-size: 30px;
+} 
+
+.user_data_title{
+  height: 44px;
+  border: 1px solid #ddd;
+}
+
+
 @media screen {
   #ifr_des {
     height: 700px;

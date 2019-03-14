@@ -51,8 +51,6 @@ export class OlMapService {
         this.dataTransmissionService.getLayerListSubject().subscribe(layerItems => {
             this.layerItems = layerItems;
         })
-
-
     }
 
     //将geojson添加至Vector图层

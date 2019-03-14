@@ -183,13 +183,15 @@ export class OlMapComponent implements OnInit, AfterViewInit {
     //更新图层的ZIndex
     this.dataTransmissionService.getLayerListOnSortSubject().subscribe(() => {
       this.AllOnMapLayer.forEach(LayerOnMap => {
-        let findIndex = this.AllLayers.findIndex(value => {
-          return value.dataId === LayerOnMap.id;
-        })
-        if (findIndex !== -1) {
-          //倒序，位于列表最上方，则显示也在最上方
-          LayerOnMap.setZIndex(this.AllLayers.length - findIndex - 1);
-        }
+        if(this.AllLayers){
+          let findIndex = this.AllLayers.findIndex(value => {
+            return value.dataId === LayerOnMap.id;
+          })
+          if (findIndex !== -1) {
+            //倒序，位于列表最上方，则显示也在最上方
+            LayerOnMap.setZIndex(this.AllLayers.length - findIndex - 1);
+          }
+        } 
       })
     })
 

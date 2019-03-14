@@ -19,7 +19,7 @@ export class _HttpClient {
         private http: HttpClient,
         // private loading: SlimLoadingBarService, 
     ) { 
-        this.headers = this.headers.append("Content-Type","application/json");
+        // this.headers = this.headers.append("Content-Type","application/json");
     }
 
     setAuthHeaders() {

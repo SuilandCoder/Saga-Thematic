@@ -1,11 +1,11 @@
 <div class="scrollbar mb_0 ml_30 mr_25 bg_color max_w" [style.height]="LayersListHeight.toString()+'px'" *ngIf="toolInfo &&tag=='des' else data">
-  <button  class="closeRight" (click)="rightSideToogle()">
+  <button class="closeRight" (click)="rightSideToogle()">
     <i *ngIf="opened; else left" class="fa fa-chevron-right" aria-hidden="true"></i>
     <ng-template #left>
-        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+      <i class="fa fa-chevron-left" aria-hidden="true"></i>
     </ng-template>
   </button>
-  <nz-tabset class="col scrollbar" (nzSelectChange)="onTabChanged($event)"> 
+  <nz-tabset class="col scrollbar" (nzSelectChange)="onTabChanged($event)">
     <nz-tab [nzTitle]="TabItems[0]">
       <!-- <iframe id="ifr_des" [src]="truest(descriptionPath)" style="width: 100%;transform: scale(0.9)"
         frameborder="0"></iframe> -->
@@ -14,17 +14,25 @@
 
     <nz-tab [nzTitle]="TabItems[1]" id="tool_settings">
       <app-tool-setting [toolInfo]="this.toolInfo"></app-tool-setting>
-    </nz-tab> 
+    </nz-tab>
   </nz-tabset>
 </div>
 
 <ng-template #data>
   <div class="scrollbar mb_0 ml_30 mr_25 bg_color w_400 max_w" [style.height]="LayersListHeight.toString()+'px'">
-    <button  class="closeRight" (click)="rightSideToogle()">
+    <button class="closeRight" (click)="rightSideToogle()">
       <i *ngIf="opened; else left" class="fa fa-chevron-right" aria-hidden="true"></i>
       <ng-template #left>
-          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
       </ng-template>
     </button>
+
+    <div class="user_data_title">
+      <label class="upload-button">
+        <input type="file" ngFileSelect #fileInput (uploadOutput)="onUploadOutput($event,fileInput)" (beforeUpload)='beforeFileUpload($event)'>
+        <i class="fa fa-plus upload-tag" aria-hidden="true" title="add layer"></i>
+        <span>上传文件</span>
+      </label>
+    </div> 
   </div>
 </ng-template>

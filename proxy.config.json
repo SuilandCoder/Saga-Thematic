@@ -5,6 +5,12 @@
      "/user":{
       "target": "http://localhost:9999"
      },
+     "/dataResource":{
+      "target":"http://172.21.213.194:8081"
+     },
+     "/file":{
+      "target":"http://172.21.213.194:8081"
+     },
      "/modelItem": {
       "target": "http://localhost:9999"
      },
