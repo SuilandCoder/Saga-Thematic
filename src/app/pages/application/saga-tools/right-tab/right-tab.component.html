@@ -31,8 +31,10 @@
       <label class="upload-button">
         <input type="file" ngFileSelect #fileInput (uploadOutput)="onUploadOutput($event,fileInput)" (beforeUpload)='beforeFileUpload($event)'>
         <i class="fa fa-plus upload-tag" aria-hidden="true" title="add layer"></i>
-        <span>上传文件</span>
+        <span>File Upload</span>
       </label>
     </div> 
+
+    <share-data-list [userDatas] = "this.userDatas"></share-data-list>
   </div>
 </ng-template>

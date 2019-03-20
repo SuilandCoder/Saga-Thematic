@@ -10,7 +10,7 @@ import { ToolParam, DataTransmissionService, CustomFile } from 'src/app/_common'
 import { Subscription } from 'rxjs/Subscription';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as JSZip from 'jszip';
-import { FiledToGetData } from 'src/app/_common/enum';
+import { FieldToGetData } from 'src/app/_common/enum';
 
 
 @Component({
@@ -29,6 +29,7 @@ export class RightTabComponent implements OnInit {
   private id = "9";
   private descriptionPath = "";
   private descriptionHtml = "";
+  private userDatas:Array<DataInfo>=[];
 
   @Input() opened: boolean = false;
   @Input() tag: string = "";
@@ -65,6 +66,9 @@ export class RightTabComponent implements OnInit {
         this.toastr.error(err);
       });
     })
+    if(this.userDataService.userDatas!=null){
+      this.userDatas = this.userDataService.userDatas;
+    }
   }
 
   onTabChanged(nzTabChangeEvent: NzTabChangeEvent) { }
@@ -74,12 +78,13 @@ export class RightTabComponent implements OnInit {
     if (changes['tag'] && !changes['tag'].firstChange) {
       if (changes['tag'].currentValue === 'data' && this.userDataService.userDatas==null) {
         //*请求数据
-        this.userDataService.getDatas(FiledToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
+        this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
           next: res => {
             if (res.error) {
               this.toast.warning(res.error, "Warning", { timeOut: 2000 });
             } else {
               this.userDataService.userDatas = res.data;
+              this.userDatas = res.data;
               console.log(res.data);
             }
           },
@@ -88,8 +93,7 @@ export class RightTabComponent implements OnInit {
           }
         });
       }
-    }
-
+    } 
   }
 
   rightSideToogle() {
@@ -123,40 +127,40 @@ export class RightTabComponent implements OnInit {
       let type = "";
       let suffix = "";
       let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+      let fileNameNoExt = fileName.substr(0,fileName.lastIndexOf("."));
       if (zipExt == "txt") {
         type = "OTHER";
+        suffix = "txt";
         // this.dataTransmissionService.sendCustomFileSubject(new CustomFile(currentFile,Type));
       } else {
         JSZip.loadAsync(currentFile).then(data => {
-
+          suffix = "zip";
           data.forEach((relativePath, file) => {
             let currentFileName: string = relativePath;
             let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1);
             switch (extName) {
               case "shp":
-                suffix = "shp";
                 type = "SHAPEFILE";
                 break;
               case "tif":
-                suffix = "tif";
                 type = "GEOTIFF";
                 break;
               case "sgrd":
-                suffix = "sgrd";
                 type = "OTHER";
                 break;
               default:
                 break;
             }
-            if (suffix !== "") {
+            if (type !== "") {
               return false;
             }
           });
-          if (suffix !== "") {
+          
+          if (type !== "") {
             //* 将压缩文件上传至数据容器
             let dataInfo = new DataInfo();
             dataInfo.author = this.userService.user.userId;
-            dataInfo.fileName = fileName;
+            dataInfo.fileName = fileNameNoExt;
             dataInfo.suffix = suffix;
             dataInfo.type = type;
             dataInfo.file = currentFile;
@@ -164,6 +168,8 @@ export class RightTabComponent implements OnInit {
               next: res => {
                 if (res.error) {
                   this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+                }else{
+                  this.userDatas.push(res.data);
                 }
               },
               error: e => {

@@ -1,0 +1,95 @@
+.data_list_container{
+    // overflow: hidden;
+}
+
+.btn_container{
+    margin-bottom: 20px;
+}
+
+.list_item_container {
+  display: grid;
+  grid-template-columns: 80px 200px 100px;
+  grid-template-rows: 30px 20px 20px;
+  margin-left: 10px;
+  margin-top: 5px;
+  border-bottom: 1px solid #ddd;
+  grid-gap: 5px;
+}
+
+.img{
+    grid-row:1/4;
+    align-self: end;
+    justify-self: center;
+}
+
+.img i{
+    font-size: 76px;
+}
+
+.name{
+    grid-column: 2/3;
+    align-self:center;
+    font-size:18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.time{
+    grid-column: 3/4;
+    align-self: center;
+    font-size: 16px;
+}
+
+.type{
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+
+.tags{
+    grid-column: 2/3;
+    align-self: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tags span{
+    border:1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.showData{
+    grid-column: 3/4;
+    grid-row: 2/3;
+}
+
+.btn_show{
+    width: 60px;
+    height: 35px;
+}
+
+.grid_item_container{
+    display: grid;
+    grid-template-columns: 90px 90px 90px;
+    grid-template-rows: 80px 80px 80px 80px 80px;
+    grid-gap: 20px;
+    justify-content: center;
+}
+
+.grid{
+    text-align: center;
+    // justify-self: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.grid img{
+    width: 60px;
+    height: 60px;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+}

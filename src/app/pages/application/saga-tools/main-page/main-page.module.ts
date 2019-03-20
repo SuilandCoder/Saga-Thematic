@@ -1,3 +1,4 @@
+import { DataPickComponent } from './../../../../shared/data-pick/data-pick.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { Overlay, OverlayModule } from '@angular/cdk/overlay';
@@ -20,6 +21,7 @@ import { MenuService } from 'src/app/_common/services/menu.service';
 import { MessageService } from 'src/app/_common/services/message.service';
 import { RequestCache, RequestCacheWithMap } from 'src/app/_common/services'; 
 import { RightBarComponent } from '../right-bar/right-bar.component';
+import { MatDialogModule, MatMenuModule, MatIconModule } from '@angular/material';
 
 @NgModule({
     imports: [
@@ -31,9 +33,10 @@ import { RightBarComponent } from '../right-bar/right-bar.component';
         LeftTabModule,
         FooterModule,
         RightTabModule,
+        MatDialogModule,
         MatSidenavModule,
         OlMapModule,
-        HttpClientModule,  
+        HttpClientModule,   
         SidebarModule.forRoot(),
     ],
     declarations: [
@@ -42,6 +45,7 @@ import { RightBarComponent } from '../right-bar/right-bar.component';
     ],
     entryComponents:[
         OlMapComponent,
+        
     ],
     providers: [
         DataTransmissionService,

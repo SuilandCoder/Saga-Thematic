@@ -1,5 +1,5 @@
 #table_settings{
-    margin-left: 30px;
+    margin-left: 20px;
     margin-top: 20px;
     
     // overflow: auto;
@@ -7,8 +7,26 @@
 
 .table_container{
     overflow: auto;
+    margin-right: 20px;
 }
 
 #options_body td{
     min-width: 80px;
+}
+
+.not_ready{
+    color: red;
+}
+
+.on_uploading{
+    color:#ff3100a3;
+}
+
+.ready{
+    color: green;
+}
+
+.btn_select{
+    width: 100px;
+    height: 35px;
 }
