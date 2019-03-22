@@ -13,28 +13,30 @@
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
-  <div [style.height]="dataListHeight.toString()+'px'" *ngIf="group.value=='list' else grid">
-    <div class="list_item_container scrollbar" *ngFor="let item of userDatas">
-      <div class="img">
-        <i *ngIf="true" class="material-icons">gradient</i>
-        <i *ngIf="false" class="material-icons">format_shapes</i>
+  <div *ngIf="group.value=='list' else grid">
+
+    <div class="list_item_room" *ngFor="let item of userDatas">
+      <div class="left_img">
+        <img *ngIf="item.type=='GEOTIFF'" src="/src/assets/images/data/tiff.png" alt="">
+        <img *ngIf="item.type=='SHAPEFILE'" src="/src/assets/images/data/vector.png" alt="">
+        <img *ngIf="item.type=='OTHER'" src="/src/assets/images/data/other.png" alt="">
       </div>
-      <div class="name" title="{{item.fileName}}">
-        {{item.fileName}}
-      </div>
-      <div class="time">
-        {{item.createDate | date:'yyyy-MM-dd'}}
-      </div>
-      <div class="type">
-        type: {{item.type}}
-      </div>
-      <div class="tags">
-        <span *ngFor="let itemTags of item.tags">{{itemTags}}</span>
-      </div>
-      <div class="showData">
-        <button mat-stroked-button class="btn_show">
-          show
-        </button>
+      <div class="right_content">
+        <div class="item_top">
+          <span class="item_name">{{item.fileName}}</span>
+          <span class="item_time">{{item.createDate | date:'yyyy-MM-dd'}}</span>
+        </div>
+        <div class="item_middle">
+          type: {{item.type}}
+        </div>
+        <div class="item_bottom">
+          <div class="item_tags">
+            <span *ngFor="let itemTags of item.tags">{{itemTags}}</span>
+          </div>
+          <div class="btn_show">
+            <img src="/src/assets//images/data/eye.png" alt="">
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -43,10 +45,15 @@
 
 
 <ng-template #grid let-item='userDatas'>
-    <div class="grid_item_container scrollbar">
-      <div class="grid" *ngFor="let item of userDatas">
-        <img src="/src/assets/images/common/grid.jpeg" alt="">
-        <span title="{{item.fileName}}">{{item.fileName}}</span>
-      </div>
+  <div class="grid_item_container scrollbar">
+    <div class="grid" *ngFor="let item of userDatas">
+      <img *ngIf="item.type=='GEOTIFF'" src="/src/assets/images/data/tiff.png" alt="">
+      <img *ngIf="item.type=='SHAPEFILE'" src="/src/assets/images/data/vector.png" alt="">
+      <img *ngIf="item.type=='OTHER'" src="/src/assets/images/data/other.png" alt="">
+      <span title="{{item.fileName}}">{{item.fileName}}</span>
+      <div class="cover">
+          <img src="/src/assets//images/data/vision.png" alt="">
+        </div>
     </div>
+  </div>
 </ng-template>

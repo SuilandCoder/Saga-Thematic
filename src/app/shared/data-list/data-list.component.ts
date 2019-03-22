@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { DataInfo } from 'src/app/_common';
+import { FieldToGetData } from 'src/app/_common/enum';
+import { UserService } from 'src/app/_common/services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'share-data-list',
@@ -15,14 +18,31 @@ export class DataListComponent implements OnInit {
   dataListHeight:number;
   constructor(
     private userDataService:UserDataService,
+    private userService: UserService,
+    private toast: ToastrService,
   ) {}
 
   ngOnInit() {
-    this.userDataContainerHeight = window.innerHeight * 0.9;
+    this.userDataContainerHeight = window.innerHeight * 0.9-44;
     window.addEventListener('resize', () => {
-      this.userDataContainerHeight = window.innerHeight * 0.9;
+      this.userDataContainerHeight = window.innerHeight * 0.9-44;
     })
-    this.dataListHeight = 500;
+    // this.dataListHeight = 500;
+
+    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
+      next: res => {
+        if (res.error) {
+          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+        } else {
+          this.userDataService.userDatas = res.data;
+          this.userDatas = res.data;
+          console.log(res.data);
+        }
+      },
+      error: e => {
+        console.log(e);
+      }
+    });
 
   }
 

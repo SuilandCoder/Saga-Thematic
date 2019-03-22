@@ -19,7 +19,9 @@ export class DataInfo {
     public file: File;
     public createDate: string;
     public toGeoserver: boolean;
-    constructor() { }
+    constructor() { 
+        this.tags = new Array<string>();
+    }
 }
 
 export class ToolParam {

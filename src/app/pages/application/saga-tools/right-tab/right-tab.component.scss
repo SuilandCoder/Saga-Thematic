@@ -1,12 +1,12 @@
-.mb_0{
+.mb_0 {
   margin-bottom: 0px;
 }
 
-.ml_30{
+.ml_30 {
   margin-left: 30px;
 }
 
-.mr_25{
+.mr_25 {
   // margin-right: 25px;
 }
 
@@ -29,24 +29,24 @@ app-tool-setting {
   overflow: hidden;
 }
 
-#tool_settings{
-    overflow-x: auto;
+#tool_settings {
+  overflow-x: auto;
 }
 
-.bg_color{
+.bg_color {
   background-color: #fff;
 }
 
-.max_w{
+.max_w {
   max-width: 500px;
 }
 
-.w_400{
+.w_400 {
   width: 400px;
 }
 
 
-.closeRight{
+.closeRight {
   position: absolute;
   margin-left: -20px;
   height: 43px;
@@ -55,24 +55,38 @@ app-tool-setting {
 }
 
 
-label{
-  display: inline;
+label {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 120px;
+  >span{
+    margin-left: 10px;
+  }
 }
+
 .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Chrome/Safari/Opera */
-  -khtml-user-select: none; /* Konqueror */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
   not supported by any browser */
 }
 
-.upload-tag{
+.upload-tag {
   font-size: 30px;
-} 
+}
 
-.user_data_title{
+.user_data_title {
   height: 44px;
   border: 1px solid #ddd;
 }

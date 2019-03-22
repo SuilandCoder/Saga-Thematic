@@ -23,6 +23,7 @@ export interface LayerData {
   layerItems: Array<LayerItem>;
   type: string;
   eventName: string;
+  toolName:string;
 }
 
 @Component({
@@ -35,7 +36,7 @@ export class DataPickComponent {
   layerList: Array<DataInfo> = [];
   dataResources: Array<DataInfo> = null;
   dataSources: DataSources;
-
+  toolName:string;
   inputDataList: Array<DataUploadInfo> = [];
 
   //*是否为 list 参数
@@ -59,6 +60,7 @@ export class DataPickComponent {
     let layerItems = this.data.layerItems;
     let type = this.data.type;
     this.eventName = this.data.eventName;
+    this.toolName = this.data.toolName;
     if (type.includes('list')) {
       this.isInputList = true;
     } else {
@@ -76,6 +78,7 @@ export class DataPickComponent {
       dataItem.author = this.userService.user.userId;
       dataItem.file = item.file;
       dataItem.fileName = item.name;
+      dataItem.tags.push(this.toolName);
       if(item.type == "txt"){
         dataItem.suffix = item.type;
       }else{
@@ -197,6 +200,7 @@ export class DataPickComponent {
             dataInfo.fileName = fileNameNoExt;
             dataInfo.suffix = suffix;
             dataInfo.type = type;
+            dataInfo.tags.push(this.toolName);
             dataInfo.file = currentFile;
             this.dataPicked.push(dataInfo);
             InputElement.value = ''; //清空文件列表，避免不能重复上传文件的情况

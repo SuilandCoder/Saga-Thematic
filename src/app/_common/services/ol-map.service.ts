@@ -263,12 +263,14 @@ export class OlMapService {
         let FindedLayers: Array<any> = Layers.filter((value) => {
             return value.id === id;
         })
-        if (FindedLayers.length === 1) {
-            if (FindedLayers[0].getVisible()) {
-                FindedLayers[0].setVisible(false);
-            } else {
-                FindedLayers[0].setVisible(true);
-            }
+        if (FindedLayers.length >= 1) {
+            FindedLayers.forEach(item=>{
+                if (item.getVisible()) {
+                    item.setVisible(false);
+                } else {
+                    item.setVisible(true);
+                }
+            })    
         }
     }
 

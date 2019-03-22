@@ -29,7 +29,7 @@ export class RightTabComponent implements OnInit {
   private id = "9";
   private descriptionPath = "";
   private descriptionHtml = "";
-  private userDatas:Array<DataInfo>=[];
+  private userDatas: Array<DataInfo> = [];
 
   @Input() opened: boolean = false;
   @Input() tag: string = "";
@@ -66,7 +66,7 @@ export class RightTabComponent implements OnInit {
         this.toastr.error(err);
       });
     })
-    if(this.userDataService.userDatas!=null){
+    if (this.userDataService.userDatas != null) {
       this.userDatas = this.userDataService.userDatas;
     }
   }
@@ -76,7 +76,7 @@ export class RightTabComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
     if (changes['tag'] && !changes['tag'].firstChange) {
-      if (changes['tag'].currentValue === 'data' && this.userDataService.userDatas==null) {
+      if (changes['tag'].currentValue === 'data' && (this.userDataService.userDatas == null || this.userDataService.userDatas.length === 0 )) {
         //*请求数据
         this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
           next: res => {
@@ -93,12 +93,12 @@ export class RightTabComponent implements OnInit {
           }
         });
       }
-    } 
+    }
   }
 
   rightSideToogle() {
     this.opened = !this.opened;
-    this.toolService.sendRightSideMessage(); 
+    this.toolService.sendRightSideMessage();
   }
 
   getDescpPathByJsonPath(path, id) {
@@ -127,7 +127,7 @@ export class RightTabComponent implements OnInit {
       let type = "";
       let suffix = "";
       let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1);
-      let fileNameNoExt = fileName.substr(0,fileName.lastIndexOf("."));
+      let fileNameNoExt = fileName.substr(0, fileName.lastIndexOf("."));
       if (zipExt == "txt") {
         type = "OTHER";
         suffix = "txt";
@@ -155,7 +155,7 @@ export class RightTabComponent implements OnInit {
               return false;
             }
           });
-          
+
           if (type !== "") {
             //* 将压缩文件上传至数据容器
             let dataInfo = new DataInfo();
@@ -168,7 +168,7 @@ export class RightTabComponent implements OnInit {
               next: res => {
                 if (res.error) {
                   this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-                }else{
+                } else {
                   this.userDatas.push(res.data);
                 }
               },
