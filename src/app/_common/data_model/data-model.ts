@@ -44,6 +44,7 @@ export class ToolInfo {
     public tool_path: string;
     public oid: string;
     public stateId: string;
+    public mdlId:string;
 }
 
 

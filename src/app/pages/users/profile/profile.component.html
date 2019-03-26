@@ -1,0 +1,24 @@
+<div class="profile_room">
+    <div class="profile_left">
+        <div class="mb-lg">
+            <ng-container *ngIf="user">
+                <div class="avatarHolder">
+                    <img src='/src/assets//images/user/avatar_def.png'>
+                </div>
+                <h1 style="text-align:center"><span class="username">{{user.userId}}</span></h1>
+
+                <div class="line"></div>
+
+                <div class="detail">
+                    <p *ngIf="user.email" class="user_info">
+                        <i class="email"></i>
+                        <a href="mailto:{{user.email}}" title="{{user.email}}" class="ws">{{user.email}}</a>
+                    </p>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="profile_right">
+
+    </div>
+</div>

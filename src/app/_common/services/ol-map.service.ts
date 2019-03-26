@@ -1,3 +1,4 @@
+import { Inject } from '@angular/core';
 import { Injectable } from '@angular/core'
 import { DataTransmissionService } from './data-transmission.service'
 import { GeoJsonLayer, LayerItem, ImageLayer, WktProjection, LayerSetting, TextStyle, LoadingInfo, DataItem } from '../data_model'
@@ -43,6 +44,7 @@ export class OlMapService {
         private utilService: UtilService,
         private globeConfigService: GlobeConfigService) {
         this.baseUrl = `${this.httpService.api.backend}`;
+        
     }
 
     //初始化
@@ -313,7 +315,7 @@ export class OlMapService {
             return null;
         }
         //默认图层范围
-        let DefaultExtent = ol.proj.get('EPSG:3857').getExtent();
+        let DefaultExtent = ol.proj.get('EPSG:4326').getExtent();
 
         let currentProjection = this.MapObject.getView().getProjection();
         if (code === null) {
@@ -327,8 +329,8 @@ export class OlMapService {
         } else {
             let newProj = ol.proj.get(code);
             if (!newProj) {
-                console.warn(`unknown EPSG_CODE ${code}. switch to EPSG:3857.`)
-                newProj = ol.proj.get('EPSG:3857');
+                console.warn(`unknown EPSG_CODE ${code}. switch to EPSG:4326.`)
+                newProj = ol.proj.get('EPSG:4326');
             }
 
             let LayerExtent;
@@ -390,7 +392,7 @@ export class OlMapService {
                     } else if (layerOnMap.crs) {
                         geojsonObject.crs = layerOnMap.crs;
                     } else {
-                        geojsonObject.crs = { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } };
+                        geojsonObject.crs = { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } };
                     }
 
                     var tempBlob = new Blob([JSON.stringify(geojsonObject)]);

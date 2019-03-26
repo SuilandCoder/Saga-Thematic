@@ -1,3 +1,4 @@
+import { Inject } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import {
   OlMapService,
@@ -17,16 +18,17 @@ export class ProjectionListComponent implements OnInit {
   title: string;
 
   constructor(private dataTransmissionService: DataTransmissionService,
-    private olMapService: OlMapService) {
+    private olMapService: OlMapService,
+  ) {
     this.ProjectionList = new Array<any>();
     this.title = "Current Projections";
   }
 
   ngOnInit() {
     this.ProjectionList.push({
-      id: "pre_code_epsg_3857",
+      id: "pre_code_epsg_4326",
       proj: {
-        name: 'EPSG:3857',
+        name: 'EPSG:4326',
         proj: 'null'
       }
     });

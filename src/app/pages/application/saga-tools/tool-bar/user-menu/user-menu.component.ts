@@ -8,6 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserMenuComponent implements OnInit {
   logined:boolean = false;
+
+  get username(){
+    return this.userService.user.userId;
+  }
   constructor(
     private userService:UserService
   ) { 

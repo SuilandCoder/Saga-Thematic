@@ -13,44 +13,44 @@ import { ToastrService } from 'ngx-toastr';
 export class DataListComponent implements OnInit {
 
   @Input()
-  userDatas:Array<DataInfo>;
+  userDatas: Array<DataInfo>;
   userDataContainerHeight: number;
-  dataListHeight:number;
+  dataListHeight: number;
   constructor(
-    private userDataService:UserDataService,
+    private userDataService: UserDataService,
     private userService: UserService,
     private toast: ToastrService,
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.userDataContainerHeight = window.innerHeight * 0.9-44;
+    this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
     window.addEventListener('resize', () => {
-      this.userDataContainerHeight = window.innerHeight * 0.9-44;
+      this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
     })
     // this.dataListHeight = 500;
-
-    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
-      next: res => {
-        if (res.error) {
-          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-        } else {
-          this.userDataService.userDatas = res.data;
-          this.userDatas = res.data;
-          console.log(res.data);
+    if (this.userService.isLogined) {
+      this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
+        next: res => {
+          if (res.error) {
+            this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+          } else {
+            this.userDataService.userDatas = res.data;
+            this.userDatas = res.data;
+            console.log(res.data);
+          }
+        },
+        error: e => {
+          console.log(e);
         }
-      },
-      error: e => {
-        console.log(e);
-      }
-    });
-
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("data list:",changes);
+    console.log("data list:", changes);
     if (changes['userDatas'] && !changes['userDatas'].firstChange) {
-    
-    } 
+
+    }
   }
 
 

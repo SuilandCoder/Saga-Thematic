@@ -1,5 +1,5 @@
 import { UserService } from 'src/app/_common/services/user.service';
-import { DataInfo } from 'src/app/_common/data_model/data-model';
+import { DataInfo, ToolInfo } from 'src/app/_common/data_model/data-model';
 import { UserDataService } from 'src/app/_common/services/user-data.service';
 
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
@@ -76,7 +76,7 @@ export class RightTabComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
     if (changes['tag'] && !changes['tag'].firstChange) {
-      if (changes['tag'].currentValue === 'data' && (this.userDataService.userDatas == null || this.userDataService.userDatas.length === 0 )) {
+      if (changes['tag'].currentValue === 'data' && (this.userDataService.userDatas == null || this.userDataService.userDatas.length === 0)) {
         //*请求数据
         this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
           next: res => {
@@ -126,7 +126,7 @@ export class RightTabComponent implements OnInit {
       let fileName = currentFile.name;
       let type = "";
       let suffix = "";
-      let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+      let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase();
       let fileNameNoExt = fileName.substr(0, fileName.lastIndexOf("."));
       if (zipExt == "txt") {
         type = "OTHER";
@@ -137,7 +137,7 @@ export class RightTabComponent implements OnInit {
           suffix = "zip";
           data.forEach((relativePath, file) => {
             let currentFileName: string = relativePath;
-            let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1);
+            let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
             switch (extName) {
               case "shp":
                 type = "SHAPEFILE";

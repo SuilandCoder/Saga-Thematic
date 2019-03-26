@@ -333,7 +333,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         this.httpService.getColorMap(currentItem, null).then(ResponseData => {
           if (ResponseData && ResponseData["code"] !== undefined) {
             if (ResponseData["code"] === 0) {
-              if (ResponseData['data']) {
+              if (ResponseData['data']) { 
                 let imageLayer = this.utilService.ResToImageLayer(ResponseData);
                 imageLayer.id = currentItem.dataId;
                 this.olMapService.addImageLayer(imageLayer);

@@ -1,3 +1,4 @@
+import { Projection } from 'ol/proj/projection';
 import { Injectable } from '@angular/core';
 declare var ol: any;
 import {
@@ -13,11 +14,11 @@ export class GlobeConfigService {
 
     webKey = 'b40562686efa2ffbe579e05331f07e86';
 
-    wmtsUrl_1 = 'http://t{0-7}.tianditu.gov.cn/vec_w/wmts?tk='; //矢量底图
-    wmtsUrl_2 = 'http://t{0-7}.tianditu.gov.cn/cva_w/wmts?tk='; //矢量注记
+    wmtsUrl_1 = 'http://t{0-7}.tianditu.gov.cn/vec_c/wmts?tk='; //矢量底图
+    wmtsUrl_2 = 'http://t{0-7}.tianditu.gov.cn/cva_c/wmts?tk='; //矢量注记
 
-    wmtsUrl_3 = 'http://t{0-7}.tianditu.gov.cn/img_w/wmts?tk='; //影像底图
-    wmtsUrl_4 = 'http://t{0-7}.tianditu.gov.cn/cia_w/wmts?tk='; //影像注记
+    wmtsUrl_3 = 'http://t{0-7}.tianditu.gov.cn/img_c/wmts?tk='; //影像底图
+    wmtsUrl_4 = 'http://t{0-7}.tianditu.gov.cn/cia_c/wmts?tk='; //影像注记
 
     wmtsUrl_5 = 'http://t{0-7}.tianditu.gov.cn/ter_w/wmts?tk='; //地形底图
     wmtsUrl_6 = 'http://t{0-7}.tianditu.gov.cn/cta_w/wmts?tk='; //地形注记
@@ -45,10 +46,11 @@ export class GlobeConfigService {
     ];
 
     constructor() {
-        this.projection = getProjection('EPSG:3857');
+        this.projection = getProjection('EPSG:4326');
         this.projectionExtent = this.projection.getExtent();
         this.matrixIds = new Array(18);
         this.resolutions = new Array(18);
+
         this.size = getWidth(this.projectionExtent) / 256;
 
         for (var z = 1; z < 19; ++z) {
@@ -56,13 +58,22 @@ export class GlobeConfigService {
             this.resolutions[z] = this.size / Math.pow(2, z);
             this.matrixIds[z] = z;
         }
+        // this.projectionExtent = [-180,-90,180,90]; 
+        // this.resolutions = new Array(19);
+        // this.matrixIds = new Array(19);
+        // this.size = getWidth(this.projectionExtent)/256;
+        // for (var z = 0; z < 19; ++z) {  
+        //     this.resolutions[z] = this.size / Math.pow(2, z);  
+        //     this.matrixIds[z]=z;
+        // } 
 
         this.onlineLayers = [
             {
                 name: 'OSM',
                 id: 'osm',
                 layer: [new ol.layer.Tile({
-                    source: new ol.source.OSM()
+                    source: new ol.source.OSM(),
+                    projection:this.projection
                 })]
 
             }
@@ -77,7 +88,7 @@ export class GlobeConfigService {
                             source: new ol.source.WMTS({
                                 url: this.wmtsUrl_1 + this.webKey,
                                 layer: 'vec',
-                                matrixSet: 'w',
+                                matrixSet: 'c',
                                 format: 'tiles',
                                 style: 'default',
                                 projection: this.projection,
@@ -93,7 +104,7 @@ export class GlobeConfigService {
                             source: new ol.source.WMTS({
                                 url: this.wmtsUrl_2 + this.webKey,
                                 layer: 'cva',
-                                matrixSet: 'w',
+                                matrixSet: 'c',
                                 format: 'tiles',
                                 style: 'default',
                                 projection: this.projection,
@@ -117,7 +128,7 @@ export class GlobeConfigService {
                             source: new ol.source.WMTS({
                                 url: this.wmtsUrl_3 + this.webKey,
                                 layer: 'img',
-                                matrixSet: 'w',
+                                matrixSet: 'c',
                                 format: 'tiles',
                                 style: 'default',
                                 projection: this.projection,
@@ -133,7 +144,7 @@ export class GlobeConfigService {
                             source: new ol.source.WMTS({
                                 url: this.wmtsUrl_4 + this.webKey,
                                 layer: 'cia',
-                                matrixSet: 'w',
+                                matrixSet: 'c',
                                 format: 'tiles',
                                 style: 'default',
                                 projection: this.projection,
@@ -157,7 +168,8 @@ export class GlobeConfigService {
                             source: new ol.source.BingMaps({
                                 key: 'AjJc6AsekcsRocEYk3NhrXNYcAZaD9owLDe7pWr_lI0rT3lmdz0i3WQe7zIO3OcT',
                                 imagerySet: this.styles[i]
-                            })
+                            }),
+                            projection:this.projection
                         })
                     ]
                 })

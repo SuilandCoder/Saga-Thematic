@@ -23,7 +23,8 @@ export interface LayerData {
   layerItems: Array<LayerItem>;
   type: string;
   eventName: string;
-  toolName:string;
+  toolName: string;
+  mdlId:string;
 }
 
 @Component({
@@ -36,7 +37,7 @@ export class DataPickComponent {
   layerList: Array<DataInfo> = [];
   dataResources: Array<DataInfo> = null;
   dataSources: DataSources;
-  toolName:string;
+  toolName: string;
   inputDataList: Array<DataUploadInfo> = [];
 
   //*是否为 list 参数
@@ -79,9 +80,10 @@ export class DataPickComponent {
       dataItem.file = item.file;
       dataItem.fileName = item.name;
       dataItem.tags.push(this.toolName);
-      if(item.type == "txt"){
+      dataItem.mdlId = this.data.mdlId;
+      if (item.type == "txt") {
         dataItem.suffix = item.type;
-      }else{
+      } else {
         dataItem.suffix = "zip";
       }
       if (type.includes("Grid") && (item.type == "tif" || item.type == "sgrd")) {
@@ -111,35 +113,29 @@ export class DataPickComponent {
       this.toast.warning("please login.", "Warning", { timeOut: 3000 });
       return;
     }
-    if (this.userDataService.userDatas == null) {
-      this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
-        next: res => {
-          if (res.error) {
-            this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-          } else {
-            this.userDataService.userDatas = res.data;
-            this.dataResources = res.data.filter(item => {
-              return item.type == this.dataType;
-            });
-            this.cdr.markForCheck();
-            this.cdr.detectChanges();
-            console.log(this.dataResources);
-          }
-        },
-        error: e => {
-          console.log(e);
+    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
+      next: res => {
+        if (res.error) {
+          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+        } else {
+          this.userDataService.userDatas = res.data;
+          this.dataResources = res.data.filter(item => {
+            return item.type == this.dataType;
+          });
+          this.cdr.markForCheck();
+          this.cdr.detectChanges();
+          console.log(this.dataResources);
         }
-      });
-    } else {
-      this.dataResources = this.userDataService.userDatas.filter(item => {
-        return item.type == this.dataType;
-      });
-    }
+      },
+      error: e => {
+        console.log(e);
+      }
+    });
   }
 
   fromDataContainer() {
     this.dataSources = DataSources.DATA_CONTAINER;
-    this.userDataService.getDatas(FieldToGetData.BY_MDL_ID, " ").subscribe({
+    this.userDataService.getDatas(FieldToGetData.BY_MDL_ID, this.data.mdlId).subscribe({
       next: res => {
         if (res.error) {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
@@ -165,7 +161,7 @@ export class DataPickComponent {
       let fileName = currentFile.name;
       let type = "";
       let suffix = "";
-      let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+      let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase();
       let fileNameNoExt = fileName.substr(0, fileName.lastIndexOf("."));
       if (zipExt == "txt") {
         type = "OTHER";
@@ -175,7 +171,7 @@ export class DataPickComponent {
         JSZip.loadAsync(currentFile).then(data => {
           data.forEach((relativePath, file) => {
             let currentFileName: string = relativePath;
-            let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1);
+            let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
             switch (extName) {
               case "shp":
                 type = "SHAPEFILE";
@@ -201,6 +197,7 @@ export class DataPickComponent {
             dataInfo.suffix = suffix;
             dataInfo.type = type;
             dataInfo.tags.push(this.toolName);
+            dataInfo.mdlId = this.data.mdlId;
             dataInfo.file = currentFile;
             this.dataPicked.push(dataInfo);
             InputElement.value = ''; //清空文件列表，避免不能重复上传文件的情况
@@ -298,7 +295,7 @@ export class DataPickComponent {
         //* 并行上传所有数据，获取最后返回结果
         forkJoin(requestList).subscribe(results => {
           //* 获取返回结果
-          console.log("result: ",results);
+          console.log("result: ", results);
           let resultDatas = results.map(item => {
             let dataUploadInfo = new DataUploadInfo();
             dataUploadInfo.fileName = item.data.fileName;

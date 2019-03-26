@@ -66,6 +66,12 @@ export class ToolSettingComponent implements OnInit {
       console.log("uploadDataInfo", uploadDataInfo);
       let toolIndex = findIndex(this.inputParams, ["identifier", uploadDataInfo.eventName]);
       this.inputParams[toolIndex].dataStatus = DataUploadStatus.READY;
+
+      //* 先清除之前准备的数据。
+    let currentEventIndex = findIndex(this.dataListForTool, ["eventName", uploadDataInfo.eventName]);
+    if(currentEventIndex>=0){
+      this.dataListForTool.splice(currentEventIndex,1);
+    }
       this.dataListForTool.push(uploadDataInfo);
     })
   }
@@ -73,8 +79,10 @@ export class ToolSettingComponent implements OnInit {
   showDialog(input: ToolParam): void {
     const dialogRef = this.dialog.open(DataPickComponent, {
       width: '500px',
-      data: { "layerItems": this.layerItems, "type": input.type, "eventName": input.identifier,"toolName":this.toolInfo["tool_name"] },
+      data: { "layerItems": this.layerItems, "type": input.type, "eventName": input.identifier,"toolName":this.toolInfo["tool_name"] ,"mdlId":this.toolInfo["mdlId"]},
     })
+
+    
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
@@ -148,6 +156,7 @@ export class ToolSettingComponent implements OnInit {
     }
   }
 
+  //* 作废
   runModel() {
     this.formData = new FormData();
     this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(true, "Calculating, please wait..."));
@@ -196,6 +205,7 @@ export class ToolSettingComponent implements OnInit {
     return isInputAlready;
   }
 
+  //* 作废
   setInputData() {
     var len = $("#input_body tr").length;
     for (var i = 0; i < len; i++) {
