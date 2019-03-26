@@ -15,7 +15,7 @@ import { MainPageModule } from './pages/application/saga-tools/main-page/main-pa
 const routes: Routes = [
   // { path: '', loadChildren: './pages/pages.module#PagesModule' },
   { path: 'saga-tools', loadChildren: './pages/application/saga-tools/main-page/main-page.module#MainPageModule' },
-  { path: 'users', loadChildren: './pages/users/users.module#UsersModule' }
+  { path: 'user', loadChildren: './pages/users/users.module#UsersModule' }
 ];
 @NgModule({
   declarations: [

@@ -24,7 +24,7 @@ export class AddLayerComponent implements OnInit {
       //* 判断传入的是否为压缩文件
       let fileName = currentFile.name;
       let Type = "";
-      let ext = fileName.substr(fileName.lastIndexOf('.') + 1);
+      let ext = fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase();
       if(ext=="txt"){
         Type = "txt";
         this.dataTransmissionService.sendCustomFileSubject(new CustomFile(currentFile,Type));
@@ -33,7 +33,7 @@ export class AddLayerComponent implements OnInit {
           
           data.forEach((relativePath, file) => {
             let currentFileName: string = relativePath;
-            let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1);
+            let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
             switch (extName) {
               case "shp":
                 Type = "shp";

@@ -1,3 +1,4 @@
+import { Inject } from '@angular/core';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import {
   DataTransmissionService,
@@ -124,7 +125,7 @@ export class ExportDataComponent implements OnInit, AfterViewInit {
       } else if (Layer.crs) {
         geojsonObject.crs = Layer.crs;
       } else {
-        geojsonObject.crs = { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } };
+        geojsonObject.crs = { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } };
       }
 
       this.httpService.geojsonToShape(geojsonObject, srsStr).then(res => {

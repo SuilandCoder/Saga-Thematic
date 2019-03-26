@@ -50,6 +50,34 @@ export class ToolService {
         })
     }
 
+    public runSataModelByDC(formdata): Promise<any>{
+        var header = new HttpHeaders();
+        header.append('Content-Type', 'multipart/form-data');
+        header.append("X-HTTP-Method-Override","post");
+        var url =`${this.baseUrl}/runSagaModelByDC`;
+        return new Promise((resolve,reject)=>{
+            this.httpc.post(url,formdata,{
+                headers:header
+            }).toPromise().then(responseData => {
+                console.log("responseData"+responseData);
+                if (responseData !== undefined &&
+                    responseData['code'] !== undefined &&
+                    responseData['data'] !== undefined &&
+                    responseData['msg'] !== undefined) {
+                    if (responseData['code'] === 0) {
+                        resolve(responseData['data']);
+                    } else {
+                        reject(responseData['msg']);
+                    }
+                } else {
+                    reject("error to run model");
+                }
+            }, error => {
+                reject("error to run model");
+            });
+        });
+    }
+
 
     public runSagaModel(formdata):  Promise<any> {
         var header = new HttpHeaders();

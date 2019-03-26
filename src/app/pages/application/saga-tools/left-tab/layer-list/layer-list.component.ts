@@ -67,8 +67,8 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       let newItem = new LayerItem(customFile.file.name.substr(0, customFile.file.name.lastIndexOf('.')),
         customFile.file,
         customFile.type)
-
-      this.LayerItems.push(newItem);
+      this.LayerItems.splice(0,0,newItem);
+      // this.LayerItems.push(newItem);
       //* 添加到数组头部 
       // this.LayerItems=concat(newItem,this.LayerItems);
 
@@ -120,8 +120,10 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           remove(this.LayerItems, item => {
             return isEqual(item, newItem);
           });
-          this.LayerItems.push(newItem);
-          // this.LayerItems=concat(newItem,this.LayerItems);
+
+          this.LayerItems.splice(0,0,newItem);
+
+          // this.LayerItems.push(newItem);
           //默认加载
           this.changeLayerVisible(newItem);
           this.toastr.success("Calculation completed.", "SUCCESS");
@@ -142,7 +144,9 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         return value["id"] === onlineLayerId;
       })
       let newItem = new LayerItem(findOnlineLayer.name, null, "ONLINE", onlineLayerId);
-      this.LayerItems.push(newItem);
+
+      this.LayerItems.splice(0,0,newItem);
+      // this.LayerItems.push(newItem);
       // this.LayerItems=concat(newItem,this.LayerItems);
       //默认加载
       this.changeLayerVisible(newItem);
@@ -161,7 +165,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       this.CurrentTabIndex = TabIndex;
     })
     
-    this.dataTransmissionService.sendOnlineLayerSubject("osm");
+    this.dataTransmissionService.sendOnlineLayerSubject("TDT");
   }
 
   ngAfterViewInit() {
@@ -225,7 +229,8 @@ export class LayerListComponent implements OnInit, AfterViewInit {
             });
             resultData.forEach((item, i) => {
               currentItem = new LayerItem(layerItem.name + "_" + i, null, layerItem.type, data.Id);
-              this.LayerItems.push(currentItem);
+              this.LayerItems.splice(0,0,currentItem);
+              // this.LayerItems.push(currentItem);
               // this.LayerItems=concat(currentItem,this.LayerItems);
               currentItem.visible = true;
               currentItem.dataPath = item.dataPath;
@@ -270,7 +275,8 @@ export class LayerListComponent implements OnInit, AfterViewInit {
                   });
                   resultData.forEach((item, i) => {
                     currentItem = new LayerItem(layerItem.name + "_" + i, null, layerItem.type, layerItem.dataId + i);
-                    this.LayerItems.push(currentItem);
+                    this.LayerItems.splice(0,0,currentItem);
+                    // this.LayerItems.push(currentItem);
                     // this.LayerItems=concat(currentItem,this.LayerItems);
                     let imageLayer = this.utilService.ResDataToImageLayer(item);
                     imageLayer.id = currentItem.dataId;
@@ -327,7 +333,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         this.httpService.getColorMap(currentItem, null).then(ResponseData => {
           if (ResponseData && ResponseData["code"] !== undefined) {
             if (ResponseData["code"] === 0) {
-              if (ResponseData['data']) {
+              if (ResponseData['data']) { 
                 let imageLayer = this.utilService.ResToImageLayer(ResponseData);
                 imageLayer.id = currentItem.dataId;
                 this.olMapService.addImageLayer(imageLayer);

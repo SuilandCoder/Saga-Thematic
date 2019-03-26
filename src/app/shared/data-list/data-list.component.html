@@ -1,0 +1,59 @@
+<div class="data_list_container" [style.height]="userDataContainerHeight.toString()+'px'">
+  <div class="btn_container">
+    <mat-button-toggle-group #group="matButtonToggleGroup">
+      <mat-button-toggle checked value="list">
+        <i class="material-icons">
+          view_list
+        </i>
+      </mat-button-toggle>
+      <mat-button-toggle value="grid">
+        <i class="material-icons">
+          view_module
+        </i>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div *ngIf="group.value=='list' else grid">
+
+    <div class="list_item_room" *ngFor="let item of userDatas">
+      <div class="left_img">
+        <img *ngIf="item.type=='GEOTIFF'" src="/src/assets/images/data/tiff.png" alt="">
+        <img *ngIf="item.type=='SHAPEFILE'" src="/src/assets/images/data/vector.png" alt="">
+        <img *ngIf="item.type=='OTHER'" src="/src/assets/images/data/other.png" alt="">
+      </div>
+      <div class="right_content">
+        <div class="item_top">
+          <span class="item_name">{{item.fileName}}</span>
+          <span class="item_time">{{item.createDate | date:'yyyy-MM-dd'}}</span>
+        </div>
+        <div class="item_middle">
+          type: {{item.type}}
+        </div>
+        <div class="item_bottom">
+          <div class="item_tags">
+            <span *ngFor="let itemTags of item.tags">{{itemTags}}</span>
+          </div>
+          <div class="btn_show">
+            <img src="/src/assets//images/data/eye.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<ng-template #grid let-item='userDatas'>
+  <div class="grid_item_container scrollbar">
+    <div class="grid" *ngFor="let item of userDatas">
+      <img *ngIf="item.type=='GEOTIFF'" src="/src/assets/images/data/tiff.png" alt="">
+      <img *ngIf="item.type=='SHAPEFILE'" src="/src/assets/images/data/vector.png" alt="">
+      <img *ngIf="item.type=='OTHER'" src="/src/assets/images/data/other.png" alt="">
+      <span title="{{item.fileName}}">{{item.fileName}}</span>
+      <div class="cover">
+          <img src="/src/assets//images/data/vision.png" alt="">
+        </div>
+    </div>
+  </div>
+</ng-template>

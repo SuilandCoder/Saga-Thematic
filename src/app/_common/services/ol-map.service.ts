@@ -1,3 +1,4 @@
+import { Inject } from '@angular/core';
 import { Injectable } from '@angular/core'
 import { DataTransmissionService } from './data-transmission.service'
 import { GeoJsonLayer, LayerItem, ImageLayer, WktProjection, LayerSetting, TextStyle, LoadingInfo, DataItem } from '../data_model'
@@ -36,13 +37,14 @@ export class OlMapService {
     })
     public MapObject: any;
     private layerItems: Array<LayerItem>;
-    private baseUrl:string;
+    private baseUrl: string;
     constructor(
         private dataTransmissionService: DataTransmissionService,
         private httpService: HttpService,
         private utilService: UtilService,
         private globeConfigService: GlobeConfigService) {
-            this.baseUrl = `${this.httpService.api.backend}`;
+        this.baseUrl = `${this.httpService.api.backend}`;
+        
     }
 
     //初始化
@@ -54,7 +56,7 @@ export class OlMapService {
     }
 
     //将geojson添加至Vector图层
-    addVectorLayer(geoJsonLayer: GeoJsonLayer, pStyle?: any, modifyExtentOfProj?:boolean,allDeclutter?: boolean) {
+    addVectorLayer(geoJsonLayer: GeoJsonLayer, pStyle?: any, modifyExtentOfProj?: boolean, allDeclutter?: boolean) {
         if (!this.MapObject) {
             console.error("Map object in ol-map service is undefined.");
             return null;
@@ -167,14 +169,14 @@ export class OlMapService {
             let TempCode: string = vectorLayer.crs.properties.name;
             let findedIndex = -1;
             if ((findedIndex = TempCode.lastIndexOf('EPSG::')) !== -1) {
-                this.setProjection(`EPSG:${TempCode.substring(findedIndex + 6)}`, SourceExtentArray,modifyExtentOfProj);
+                this.setProjection(`EPSG:${TempCode.substring(findedIndex + 6)}`, SourceExtentArray, modifyExtentOfProj);
             } else {
-                this.setProjection(TempCode, SourceExtentArray,modifyExtentOfProj);
+                this.setProjection(TempCode, SourceExtentArray, modifyExtentOfProj);
             }
         } else if (newProjectionCode) {
-            this.setProjection(newProjectionCode, SourceExtentArray,modifyExtentOfProj);
+            this.setProjection(newProjectionCode, SourceExtentArray, modifyExtentOfProj);
         } else {
-            this.setProjection(null, SourceExtentArray,modifyExtentOfProj);
+            this.setProjection(null, SourceExtentArray, modifyExtentOfProj);
         }
         this.MapObject.addLayer(vectorLayer);
         //保证地图加载不变形
@@ -183,7 +185,7 @@ export class OlMapService {
     }
 
     //添加图像图层
-    addImageLayer(imageLayer: ImageLayer,modifyExtentOfProj?:boolean) {
+    addImageLayer(imageLayer: ImageLayer, modifyExtentOfProj?: boolean) {
         if (!this.MapObject) {
             console.error("Map object in ol-map service is undefined.");
             return null;
@@ -217,7 +219,7 @@ export class OlMapService {
                 return staticImage.extent
             }
             //重新设置范围
-            this.setProjection(imageLayer.proj.name, newExtent,modifyExtentOfProj);
+            this.setProjection(imageLayer.proj.name, newExtent, modifyExtentOfProj);
             this.MapObject.addLayer(staticImage);
 
             //保证地图加载不变形
@@ -230,18 +232,22 @@ export class OlMapService {
     addOnlineLayer(onlineLayerItem: LayerItem, extent?: Array<number>) {
 
         let onlineLayer = this.globeConfigService.onlineLayers;
-        let findLayer:any = this.globeConfigService.onlineLayers.find(value=>{
-            return value['id']===onlineLayerItem.dataId;
+        let findLayer: any = this.globeConfigService.onlineLayers.find(value => {
+            return value['id'] === onlineLayerItem.dataId;
         })
-        let currentLayer:any  =findLayer["layer"];
-        currentLayer.id = onlineLayerItem.dataId;
+        let currentLayer: Array<any> = findLayer["layer"];
+        //currentLayer.id = onlineLayerItem.dataId;
         let currentProjection = this.MapObject.getView().getProjection();
 
         if (extent != null) {
             currentProjection.setExtent(extent);
         }
-        currentLayer.proj = currentProjection;
-        this.MapObject.addLayer(currentLayer);
+        //currentLayer.proj = currentProjection;
+        for(var i = 0;i<currentLayer.length;i++){
+            currentLayer[i].id = onlineLayerItem.dataId;
+            currentLayer[i].proj = currentProjection;
+            this.MapObject.addLayer(currentLayer[i]);
+        }
         //保证地图加载不变形
         this.MapObject.updateSize();
         this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
@@ -259,12 +265,14 @@ export class OlMapService {
         let FindedLayers: Array<any> = Layers.filter((value) => {
             return value.id === id;
         })
-        if (FindedLayers.length === 1) {
-            if (FindedLayers[0].getVisible()) {
-                FindedLayers[0].setVisible(false);
-            } else {
-                FindedLayers[0].setVisible(true);
-            }
+        if (FindedLayers.length >= 1) {
+            FindedLayers.forEach(item=>{
+                if (item.getVisible()) {
+                    item.setVisible(false);
+                } else {
+                    item.setVisible(true);
+                }
+            })    
         }
     }
 
@@ -278,8 +286,11 @@ export class OlMapService {
         let FindedLayers: Array<any> = Layers.filter((value) => {
             return value.id === id;
         })
-        if (FindedLayers.length == 1) {
-            this.MapObject.removeLayer(FindedLayers[0]);
+        if (FindedLayers.length >= 1) {
+            FindedLayers.forEach(item=>{
+                this.MapObject.removeLayer(item);
+            })
+            // this.MapObject.removeLayer(FindedLayers[0]);
         }
 
     }
@@ -298,13 +309,13 @@ export class OlMapService {
     }
 
     //设置地图投影
-    setProjection(code: string, FeatureExtent?: Array<number>,modifyExtentOfProj?:boolean): void {
+    setProjection(code: string, FeatureExtent?: Array<number>, modifyExtentOfProj?: boolean): void {
         if (!this.MapObject) {
             console.error("Map object in ol-map service is undefined.");
             return null;
         }
         //默认图层范围
-        let DefaultExtent = ol.proj.get('EPSG:3857').getExtent();
+        let DefaultExtent = ol.proj.get('EPSG:4326').getExtent();
 
         let currentProjection = this.MapObject.getView().getProjection();
         if (code === null) {
@@ -318,8 +329,8 @@ export class OlMapService {
         } else {
             let newProj = ol.proj.get(code);
             if (!newProj) {
-                console.warn(`unknown EPSG_CODE ${code}. switch to EPSG:3857.`)
-                newProj = ol.proj.get('EPSG:3857');
+                console.warn(`unknown EPSG_CODE ${code}. switch to EPSG:4326.`)
+                newProj = ol.proj.get('EPSG:4326');
             }
 
             let LayerExtent;
@@ -329,14 +340,14 @@ export class OlMapService {
                 LayerExtent = DefaultExtent;
             }
 
-            if(modifyExtentOfProj){
+            if (modifyExtentOfProj) {
                 newProj.setExtent(LayerExtent);
             }
 
             let newView = new ol.View({
                 projection: newProj,
-                center: ol.extent.getCenter(LayerExtent), 
-                zoom:1   
+                center: ol.extent.getCenter(LayerExtent),
+                zoom: 1
             });
             this.MapObject.setView(newView);
             //保证地图加载不变形
@@ -381,7 +392,7 @@ export class OlMapService {
                     } else if (layerOnMap.crs) {
                         geojsonObject.crs = layerOnMap.crs;
                     } else {
-                        geojsonObject.crs = { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } };
+                        geojsonObject.crs = { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } };
                     }
 
                     var tempBlob = new Blob([JSON.stringify(geojsonObject)]);
@@ -394,7 +405,7 @@ export class OlMapService {
         } else {
 
             if (dataItem.id === "ESRI_SHAPEFILE") {
-                let dataPath = "http://" + window.location.host + this.baseUrl+"/download?ip=" + this.httpService.Ip + "&id=" + layer.dataId + "&filename=" + filename;
+                let dataPath = "http://" + window.location.host + this.baseUrl + "/download?ip=" + this.httpService.Ip + "&id=" + layer.dataId + "&filename=" + filename;
                 aLink.href = new URL(dataPath).toString();
             } else if (dataItem.id = "GEOJSON") {
 

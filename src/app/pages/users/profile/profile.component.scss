@@ -1,0 +1,100 @@
+:host-context(body) {
+    background: #fff;
+    box-sizing: border-box;
+    min-width: 1012px;
+}
+
+.profile_room {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    width: 1012px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+}
+
+.profile_right{
+    float: left;
+    padding-right: 16px;
+    padding-left: 16px;
+    padding-top: 30px; 
+    flex: 1;
+}
+
+.profile-right{
+    float: left;
+    padding-left: 8px;
+    flex: 3;
+}
+
+.avatarHolder {
+    text-align: center;
+
+    >img {
+        width: 200px; 
+        display: inline-block;
+        overflow: hidden;
+        line-height: 1;
+        vertical-align: middle;
+        border-radius: 3px; 
+        // background-color: rgba(128, 128, 128,0.13);
+    }
+}
+
+.username {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px;
+    color: #666;
+    margin-left: 10px;
+}
+
+.line{
+    background: none;
+    border-top: 1px dashed #e8e8e8;
+    margin-top:12px;
+    margin-bottom:12px
+}
+
+.detail {
+    p {
+        margin-bottom: 8px;
+        padding-left: 26px;
+        position: relative;
+
+        >*:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    i {
+        position: absolute;
+        height: 14px;
+        width: 14px;
+        left: 0;
+        top: 4px;
+
+        &.title {
+            background: url(https://gw.alipayobjects.com/zos/rmsportal/pBjWzVAHnOOtAUvZmZfy.svg);
+            background-position: 0 0;
+
+        }
+
+        
+        &.email{
+          background: url("/src/assets/icon/mailbox.svg");
+        }
+    }
+    
+    mat-icon{
+        position: absolute;
+        height: 14px;
+        width: 14px;
+        left: 0;
+        top: 4px;
+        font-size: 18px;
+        line-height: 1;
+        margin-left: -2px;
+    }
+}

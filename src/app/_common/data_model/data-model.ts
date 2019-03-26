@@ -1,37 +1,50 @@
-export class DataInfo{
-    public author:string;
-    public dataItemId:string;
-    public fileName:string;
-    public mdlId:string;
-    public sourceStoreId:string;
-    public suffix:string;
-    public tags:Array<string>;
-    public type:string;
+import { DataUploadStatus } from "../enum";
+
+export class DataUploadInfo {
+    public fileName: string;
+    public sourceStoreId: string;
+    public suffix: string;
+
+}
+
+export class DataInfo {
+    public author: string;
+    public dataItemId: string;
+    public fileName: string;
+    public mdlId: string;
+    public sourceStoreId: string;
+    public suffix: string;
+    public tags: Array<string>;
+    public type: string;
     public file: File;
-    public createDate:string;
-    public toGeoserver:boolean;
-    constructor(){}
+    public createDate: string;
+    public toGeoserver: boolean;
+    constructor() { 
+        this.tags = new Array<string>();
+    }
 }
 
-export class ToolParam{
-    public constraints:string;
-    public description:string;
-    public identifier:string;
-    public name:string;
-    public optional:string;
-    public type:string;
+export class ToolParam {
+    public constraints: string;
+    public description: string;
+    public identifier: string;
+    public name: string;
+    public optional: string;
+    public type: string;
+    public dataStatus: DataUploadStatus = DataUploadStatus.NOT_READY;
 }
 
 
-export class ToolInfo{
-    public author:string;
-    public parameters:Array<any>;
-    public tool_description:string;
-    public tool_id:string;
-    public tool_name:string;
-    public tool_path:string;
-    public oid:string;
-    public stateId:string;
+export class ToolInfo {
+    public author: string;
+    public parameters: Array<any>;
+    public tool_description: string;
+    public tool_id: string;
+    public tool_name: string;
+    public tool_path: string;
+    public oid: string;
+    public stateId: string;
+    public mdlId:string;
 }
 
 
@@ -167,8 +180,8 @@ export class LayerItem {
     public layerShowing: boolean;
     public type: string;
     public layerSetting: LayerSetting;
-    public dataPath:string="";
-    public tableInfo:TableInfo;
+    public dataPath: string = "";
+    public tableInfo: TableInfo;
     constructor(
         name: string,
         file?: File,
@@ -196,8 +209,6 @@ export class LayerItem {
         this.layerShowing = false;
         this.layerSetting = new LayerSetting();
         //clone
-
-
     }
 
     public clone(): LayerItem {
@@ -464,12 +475,12 @@ export class DataItem {
 
 }
 //模型返回的table数据
-export class TableInfo{
-    public fieldArr:Array<string>;
-    public fieldVal:Array<any>; 
-    constructor(fieldArr?:Array<string>,fieldVal?:Array<any>){
+export class TableInfo {
+    public fieldArr: Array<string>;
+    public fieldVal: Array<any>;
+    constructor(fieldArr?: Array<string>, fieldVal?: Array<any>) {
         this.fieldArr = fieldArr;
-        this.fieldVal = fieldVal; 
+        this.fieldVal = fieldVal;
     }
 }
 

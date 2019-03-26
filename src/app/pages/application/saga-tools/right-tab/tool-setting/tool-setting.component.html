@@ -19,12 +19,21 @@
       <tr *ngFor="let input of inputParams">
         <td>{{input.name}}</td>
         <td>{{input.type}}</td>
-        <td colspan="2">
-          <!-- <input type="file" accept="application/zip"> -->
-          <app-list-input *ngIf="input.type.includes('list');else single_input" [eventName]="input.identifier" [layerItems]="this.layerItems" [inputType]="input.type" (inputData)="inputListHandler($event)"></app-list-input>
+        <td >
+          <button class="btn_select btn btn-info" (click)="showDialog(input)">
+            Select data
+          </button>
+
+          <!-- <app-list-input *ngIf="input.type.includes('list');else single_input" [eventName]="input.identifier" [layerItems]="this.layerItems" [inputType]="input.type" (inputData)="inputListHandler($event)"></app-list-input>
           <ng-template #single_input>
             <app-single-input [eventName]="input.identifier" [layerItems]="this.layerItems" [inputType]="input.type" (inputData)="inputDataHandler($event)"></app-single-input>
-          </ng-template> 
+          </ng-template>  -->
+          
+        </td>
+        <td>
+          <span *ngIf="!input.dataStatus || input.dataStatus == 0" class="not_ready">Data not ready</span>
+          <span *ngIf="input.dataStatus == 1" class="on_uploading">On uploading...</span>
+          <span *ngIf="input.dataStatus == 2" class="ready">Ready!</span>
         </td>
       </tr>
     </tbody>
@@ -66,7 +75,7 @@
     </tbody> -->
   </table>
   <button type="button" style="float: right;margin-top: 20px;margin-right: 30px;width: 100px;tab-size: 28px" class="btn btn-success"
-    (click)="runModel()">Run
+    (click)="runModelUseDC()">Run
   </button>
 
 </div>

@@ -1,0 +1,70 @@
+<div class="dialog_room">
+  <div class="title">
+    <h4>Select Input Data</h4>
+    <button class="btn_add_data" mat-stroked-button [matMenuTriggerFor]="menu">add data</button>
+    <mat-menu #menu="matMenu">
+      <label mat-menu-item class="upload-button" (click)="fromLocal()">
+        <input type="file" ngFileSelect accept="application/zip" multiple="multiple" #fileInput
+          (uploadOutput)="onUploadOutput($event,fileInput)" />
+        <span style="margin-bottom:25px">From Local Data</span>
+      </label>
+      <button mat-menu-item (click)="fromLayers()">From Layer List</button>
+      <button mat-menu-item (click)="fromUser()">From User Storage</button>
+      <button mat-menu-item (click)="fromDataContainer()">Search From Data Container</button>
+    </mat-menu>
+  </div>
+
+  <div class="data_room">
+    <div class="data_res" scrollbar>
+      <div class="data_res_control" *ngIf="dataSources==4">
+        <div class="search">
+          <mat-form-field class="example-form-field">
+            <input matInput type="text" placeholder="Search from remote" [(ngModel)]="searchContent">
+            <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="searchContent=''">
+
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <button mat-button mat-icon-button (click)="search()">
+            <mat-icon _ngcontent-c5="" class="mat-icon material-icons" role="img" style="margin-top: 3px;"
+              aria-hidden="true">search</mat-icon>
+          </button>
+        </div>
+      </div>
+      <!-- <nz-transfer *ngIf="dataSources==2" [nzDataSource]="list" [nzTitles]="['Source', 'Target']" (nzSelectChange)="select($event)"
+            (nzChange)="change($event)"></nz-transfer> -->
+      <div class="user_datas_container">
+        <div class="item" *ngFor="let item of dataResources" title="{{item.fileName}}" (click)="pickData(item)">
+          <img *ngIf="item.type=='GEOTIFF'" src="/src/assets/images/data/tiff.png" alt="">
+          <img *ngIf="item.type=='SHAPEFILE'" src="/src/assets/images/data/vector.png" alt="">
+          <img *ngIf="item.type=='OTHER'" src="/src/assets/images/data/other.png" alt="">
+          <span class="dataName">{{item.fileName}}</span>
+          <div class="cover">
+            <a>
+              pick
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    <div class="picked" scrollbar>
+      <div class="item" *ngFor="let item of dataPicked" title="{{item.fileName}}" (click)="discard(item)">
+        <img *ngIf="item.type=='GEOTIFF'" src="/src/assets/images/data/tiff.png" alt="">
+        <img *ngIf="item.type=='SHAPEFILE'" src="/src/assets/images/data/vector.png" alt="">
+        <img *ngIf="item.type=='OTHER'" src="/src/assets/images/data/other.png" alt="">
+        <span class="dataName">{{item.fileName}}</span>
+        <div class="cover">
+          <a>
+            discard
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="upload_room" *ngIf="this.dataPicked.length>0">
+      <button class="btn btn-info" [mat-dialog-close]="this.inputDataIdList" (click)="upload()">upload</button>
+    </div>
+
+  </div>
+</div>

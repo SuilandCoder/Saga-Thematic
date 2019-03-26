@@ -49,12 +49,14 @@ function updateJson_addPath(filePath) {
                           tool_path = dataJson.data.path;
                           oid = dataJson.data.oid;
                           stateId = dataJson.data.stateId;
+                          mdlId = dataJson.data.mdlId;
                           pathNum++;
                           console.log("pathNum:" + pathNum);
                           console.log("result:" + tool_path);
                           tool["tool_path"] = tool_path;
                           tool["oid"] = oid;
                           tool["stateId"] = stateId;
+                          tool['mdlId'] = mdlId;
                           console.log("tooNum：" + toolNum + "  count:" + count);
                           if(toolNum==count){
                             //   console.log(res)

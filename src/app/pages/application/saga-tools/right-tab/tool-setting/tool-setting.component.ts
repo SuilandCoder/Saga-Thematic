@@ -1,9 +1,15 @@
+import { stringify } from '@angular/core/src/util';
+import { findIndex, includes } from 'lodash';
+import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { ToolParam, HttpService, DataTransmissionService, LoadingInfo, LayerItem } from 'src/app/_common';
 import * as $ from "jquery";
 import { ToolService } from 'src/app/_common/services/tool.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { DataPickComponent } from 'src/app/shared/data-pick/data-pick.component';
+import { DataUploadStatus } from 'src/app/_common/enum';
 @Component({
   selector: 'app-tool-setting',
   templateUrl: './tool-setting.component.html',
@@ -16,10 +22,11 @@ export class ToolSettingComponent implements OnInit {
   optionsParams = [];
   private formData;
   public layerListSubscription: Subscription;
-  public layerItems: Array<LayerItem>=[];
-  public layerDataForPost:Map<string,LayerItem>;
-  public layerListForPost:Map<string,Array<LayerItem>>;
+  public layerItems: Array<LayerItem> = [];
+  public layerDataForPost: Map<string, LayerItem>;
+  public layerListForPost: Map<string, Array<LayerItem>>;
 
+  public dataListForTool: Array<any>;
 
   constructor(
     public toolService: ToolService,
@@ -27,9 +34,13 @@ export class ToolSettingComponent implements OnInit {
     private httpService: HttpService,
     private dataTransmissionService: DataTransmissionService,
     private cd: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private userDataService: UserDataService,
   ) {
-    this.layerDataForPost = new Map<string,LayerItem>();
-    this.layerListForPost = new Map<string,Array<LayerItem>>();
+    this.layerDataForPost = new Map<string, LayerItem>();
+    this.layerListForPost = new Map<string, Array<LayerItem>>();
+
+    this.dataListForTool = new Array<any>();
   }
 
   ngOnInit() {
@@ -43,21 +54,57 @@ export class ToolSettingComponent implements OnInit {
       var options = this.toolInfo["parameters"][2]["optionals"];
       this.setOptParams(options);
     }
-    
+
     this.layerListSubscription = this.dataTransmissionService.getLayerListSubject().subscribe(layersArray => {
       this.layerItems = layersArray;
-      this.layerItems.forEach(layer=>{
-        console.log("layers",JSON.stringify(layer));
+      this.layerItems.forEach(layer => {
+        console.log("layers", JSON.stringify(layer));
       })
     })
+
+    this.userDataService.getDataUploadResultSubject().subscribe(uploadDataInfo => {
+      console.log("uploadDataInfo", uploadDataInfo);
+      let toolIndex = findIndex(this.inputParams, ["identifier", uploadDataInfo.eventName]);
+      this.inputParams[toolIndex].dataStatus = DataUploadStatus.READY;
+
+      //* 先清除之前准备的数据。
+    let currentEventIndex = findIndex(this.dataListForTool, ["eventName", uploadDataInfo.eventName]);
+    if(currentEventIndex>=0){
+      this.dataListForTool.splice(currentEventIndex,1);
+    }
+      this.dataListForTool.push(uploadDataInfo);
+    })
+  }
+
+  showDialog(input: ToolParam): void {
+    const dialogRef = this.dialog.open(DataPickComponent, {
+      width: '500px',
+      data: { "layerItems": this.layerItems, "type": input.type, "eventName": input.identifier,"toolName":this.toolInfo["tool_name"] ,"mdlId":this.toolInfo["mdlId"]},
+    })
+
+    
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log("result:", result);
+      if (result == "ready") {
+        let toolIndex = findIndex(this.inputParams, input);
+        this.inputParams[toolIndex].dataStatus = DataUploadStatus.READY;
+      } else if (result == "no loading") {
+        let toolIndex = findIndex(this.inputParams, input);
+        this.inputParams[toolIndex].dataStatus = DataUploadStatus.ON_UPLOADING;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
     try {
       if (changes['toolInfo'] && !changes['toolInfo'].firstChange) {
-        this.layerDataForPost = new Map<string,LayerItem>();
-        this.layerListForPost = new Map<string,Array<LayerItem>>();
+        this.layerDataForPost = new Map<string, LayerItem>();
+        this.layerListForPost = new Map<string, Array<LayerItem>>();
+
+        this.dataListForTool = new Array<any>();
         this.toolInfo = changes.toolInfo.currentValue;
         if (this.toolInfo["parameters"][0]) {
           this.inputParams = this.toolInfo["parameters"][0]["inputs"];
@@ -86,6 +133,30 @@ export class ToolSettingComponent implements OnInit {
     this.cd.detectChanges();
   }
 
+  runModelUseDC() {
+    this.formData = new FormData();
+    this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(true, "Calculating, please wait..."));
+    this.formData.append("oid", this.toolInfo.oid);
+    this.formData.append("stateId", this.toolInfo.stateId);
+    var inputAlready = false;
+    inputAlready = this.setInputDataUseDC();
+    this.setOptionsData();
+    if (inputAlready) {
+      this.toolService.runSataModelByDC(this.formData).then(msr_id => {
+        this.httpService.waitForResult(msr_id).then(data => {
+          console.log(data);
+        });
+      }).catch(reason => {
+        this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+        this.toastr.error("Run Model Failed.", "error");
+        console.log(reason);
+      })
+    } else {
+      this.toastr.error("Data Not Ready");
+    }
+  }
+
+  //* 作废
   runModel() {
     this.formData = new FormData();
     this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(true, "Calculating, please wait..."));
@@ -101,7 +172,7 @@ export class ToolSettingComponent implements OnInit {
         });
       }).catch(reason => {
         this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
-        this.toastr.error("Run Model Failed.","error");
+        this.toastr.error("Run Model Failed.", "error");
         console.log(reason);
       })
     } else {
@@ -109,50 +180,68 @@ export class ToolSettingComponent implements OnInit {
     }
   }
 
-  inputDataHandler(event){
-    this.layerDataForPost.set(event["eventName"],event["layerItem"]);
+  inputDataHandler(event) {
+    this.layerDataForPost.set(event["eventName"], event["layerItem"]);
   }
 
-  inputListHandler(event){
-    this.layerListForPost.set(event["eventName"],event["layerList"]);
+  inputListHandler(event) {
+    this.layerListForPost.set(event["eventName"], event["layerList"]);
   }
-  
+
+
+  //* 通过数据容器的方式运行模型
+  setInputDataUseDC() {
+    let isInputAlready = this.inputParams.every(item => {
+      return findIndex(this.dataListForTool, ["eventName", item.identifier]) >= 0;
+    })
+
+    if (isInputAlready) {
+      this.dataListForTool.forEach(item => {
+        console.log("dataList:", item.dataList);
+        console.log("dataList-string:", JSON.stringify(item.dataList));
+        this.formData.append(item.eventName, JSON.stringify(item.dataList));
+      })
+    }
+    return isInputAlready;
+  }
+
+  //* 作废
   setInputData() {
     var len = $("#input_body tr").length;
     for (var i = 0; i < len; i++) {
       let type = this.inputParams[i].type;
       let eventName = this.inputParams[i].identifier;
-      
+
       //* 如果输入数据为list数据
-      if(type.includes("list")){
+      if (type.includes("list")) {
         let layerList = this.layerListForPost.get(eventName);
-        if((layerList==null || layerList.length==0) && this.inputParams[i].optional == "false" ){
+        if ((layerList == null || layerList.length == 0) && this.inputParams[i].optional == "false") {
           this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
           return false;
-        }else if(layerList!=null && layerList.length>0){
+        } else if (layerList != null && layerList.length > 0) {
           let pathList = [];
-          layerList.forEach(layer=>{
-            if(layer.dataPath){
+          layerList.forEach(layer => {
+            if (layer.dataPath) {
               pathList.push(layer.dataPath);
-            }else if(layer.file){
-              this.formData.append(eventName,layer.file);
+            } else if (layer.file) {
+              this.formData.append(eventName, layer.file);
             }
           })
-          if(pathList.length>0){
-            this.formData.append(eventName,pathList);
+          if (pathList.length > 0) {
+            this.formData.append(eventName, pathList);
           }
         }
-      }else{
+      } else {
         let layerItem = this.layerDataForPost.get(eventName);
-        if (layerItem==null && this.inputParams[i].optional == "false" ) {
+        if (layerItem == null && this.inputParams[i].optional == "false") {
           this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
           return false;
-        }else if(layerItem){
+        } else if (layerItem) {
           //*从layerlist中取数据作为输入数据
-          if(layerItem.dataPath){
-            this.formData.append(eventName,layerItem.dataPath);
-          }else if(layerItem.file){
-            this.formData.append(eventName,layerItem.file);
+          if (layerItem.dataPath) {
+            this.formData.append(eventName, layerItem.dataPath);
+          } else if (layerItem.file) {
+            this.formData.append(eventName, layerItem.file);
           }
         }
       }

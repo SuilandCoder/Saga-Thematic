@@ -55,8 +55,7 @@ export class FileDatabase {
         } else {
           node.type = value;
         }
-      }
-
+      } 
       return accumulator.concat(node);
     }, []);
   }

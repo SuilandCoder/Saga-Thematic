@@ -44,7 +44,7 @@ export class UserService{
             localStorage.setItem('jwt', JSON.stringify(jwt));
             let url = this.route.snapshot.queryParams['redirect'];
             this.logined$.next(true);
-            if (!url || url.indexOf('#/users/sign') !== -1) {
+            if (!url || url.indexOf('#/user/sign') !== -1) {
                 this.router.navigate(['/saga-tools']);
             }
             else {
