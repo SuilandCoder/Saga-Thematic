@@ -1,16 +1,14 @@
+import { UserService } from 'src/app/_common/services/user.service';
+import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { Inject } from '@angular/core';
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { UserDataService } from 'src/app/_common/services/user-data.service';
-import { UserService } from 'src/app/_common/services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { FieldToGetData } from 'src/app/_common/enum';
-import { DataInfo, LayerItem, DataUploadInfo } from 'src/app/_common';
 import * as JSZip from 'jszip';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { forkJoin } from "rxjs/observable/forkJoin";
-import { stringify } from '@angular/core/src/util';
+import { LayerItem, DataInfo, DataUploadInfo } from '../../data_model';
+import { FieldToGetData } from '../../enum';
 
 enum DataSources {
   LOCAL = 1,

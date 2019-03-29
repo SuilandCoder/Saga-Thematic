@@ -52,6 +52,4 @@ export class DataListComponent implements OnInit {
 
     }
   }
-
-
 }

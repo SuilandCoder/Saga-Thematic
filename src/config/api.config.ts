@@ -4,4 +4,5 @@ export const API = {
     backend_user:'/user',
     backend_data_resource:'/dataResource',
     backend_file:'/file',
+    backend_model_container:'/geodata',
 }

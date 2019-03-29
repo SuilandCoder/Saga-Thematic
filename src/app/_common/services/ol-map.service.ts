@@ -375,7 +375,6 @@ export class OlMapService {
         evt.initEvent("click", false, false);
         //在本地
         if (layer.file) {
-
             if (dataItem.id === "ESRI_SHAPEFILE") {
                 aLink.download = filename;
                 aLink.href = URL.createObjectURL(layer.file);
@@ -409,9 +408,7 @@ export class OlMapService {
                 aLink.href = new URL(dataPath).toString();
             } else if (dataItem.id = "GEOJSON") {
 
-            }
-
-
+            } 
         }
         aLink.click();
         aLink.dispatchEvent(evt);

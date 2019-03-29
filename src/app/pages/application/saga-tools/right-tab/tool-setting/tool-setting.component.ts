@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/_common/services/user.service';
 import { stringify } from '@angular/core/src/util';
 import { findIndex, includes } from 'lodash';
 import { UserDataService } from 'src/app/_common/services/user-data.service';
@@ -8,8 +9,8 @@ import { ToolService } from 'src/app/_common/services/tool.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
-import { DataPickComponent } from 'src/app/shared/data-pick/data-pick.component';
 import { DataUploadStatus } from 'src/app/_common/enum';
+import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.component';
 @Component({
   selector: 'app-tool-setting',
   templateUrl: './tool-setting.component.html',
@@ -36,6 +37,7 @@ export class ToolSettingComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private dialog: MatDialog,
     private userDataService: UserDataService,
+    private userService: UserService,
   ) {
     this.layerDataForPost = new Map<string, LayerItem>();
     this.layerListForPost = new Map<string, Array<LayerItem>>();
@@ -68,10 +70,10 @@ export class ToolSettingComponent implements OnInit {
       this.inputParams[toolIndex].dataStatus = DataUploadStatus.READY;
 
       //* 先清除之前准备的数据。
-    let currentEventIndex = findIndex(this.dataListForTool, ["eventName", uploadDataInfo.eventName]);
-    if(currentEventIndex>=0){
-      this.dataListForTool.splice(currentEventIndex,1);
-    }
+      let currentEventIndex = findIndex(this.dataListForTool, ["eventName", uploadDataInfo.eventName]);
+      if (currentEventIndex >= 0) {
+        this.dataListForTool.splice(currentEventIndex, 1);
+      }
       this.dataListForTool.push(uploadDataInfo);
     })
   }
@@ -79,10 +81,10 @@ export class ToolSettingComponent implements OnInit {
   showDialog(input: ToolParam): void {
     const dialogRef = this.dialog.open(DataPickComponent, {
       width: '500px',
-      data: { "layerItems": this.layerItems, "type": input.type, "eventName": input.identifier,"toolName":this.toolInfo["tool_name"] ,"mdlId":this.toolInfo["mdlId"]},
+      data: { "layerItems": this.layerItems, "type": input.type, "eventName": input.identifier, "toolName": this.toolInfo["tool_name"], "mdlId": this.toolInfo["mdlId"] },
     })
 
-    
+
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
@@ -143,9 +145,18 @@ export class ToolSettingComponent implements OnInit {
     this.setOptionsData();
     if (inputAlready) {
       this.toolService.runSataModelByDC(this.formData).then(msr_id => {
-        this.httpService.waitForResult(msr_id).then(data => {
-          console.log(data);
-        });
+        console.log("msr_id:", msr_id);
+        if (this.userService.isLogined) {
+          let userId = this.userService.user.userId;
+          this.userService.addToolRecord(userId,msr_id).subscribe();
+          this.httpService.waitForResult(msr_id,userId).then(data => {
+            console.log(data);
+          });
+        }else{
+          this.httpService.waitForResult(msr_id).then(data => {
+            console.log(data);
+          });
+        }
       }).catch(reason => {
         this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
         this.toastr.error("Run Model Failed.", "error");

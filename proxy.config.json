@@ -11,6 +11,9 @@
      "/file":{
       "target":"http://172.21.213.194:8081"
      },
+     "/geodata":{
+      "target":"http://172.21.212.75:8060"
+     },
      "/modelItem": {
       "target": "http://localhost:9999"
      },

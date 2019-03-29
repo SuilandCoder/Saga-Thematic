@@ -164,6 +164,9 @@ export class LayerListComponent implements OnInit, AfterViewInit {
 
       this.CurrentTabIndex = TabIndex;
     })
+
+
+    
     
     this.dataTransmissionService.sendOnlineLayerSubject("TDT");
   }

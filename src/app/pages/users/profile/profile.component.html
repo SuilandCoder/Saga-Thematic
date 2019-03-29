@@ -1,4 +1,4 @@
-<div class="profile_room">
+<div class="profile_room" scrollbar [style.height]="profileHeight.toString()+'px'">
     <div class="profile_left">
         <div class="mb-lg">
             <ng-container *ngIf="user">
@@ -19,6 +19,17 @@
         </div>
     </div>
     <div class="profile_right">
-
+        <mat-tab-group> 
+            <mat-tab label="Tool Record">
+                <ng-template matTabContent>
+                    <user-tool-record ></user-tool-record> 
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Data">
+                    <ng-template matTabContent>
+                        <user-data-list ></user-data-list> 
+                    </ng-template>
+                </mat-tab>
+        </mat-tab-group>
     </div>
 </div>

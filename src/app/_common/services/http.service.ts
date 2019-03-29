@@ -7,6 +7,7 @@ import { ToolIOData, GeoData, postData, uploadResponseData, LayerItem, DataForRu
 import * as Xml2js from 'xml2js';
 import { API } from "src/config";
 import { resolve } from "url";
+import { UserService } from "./user.service";
 
 @Injectable()
 export class HttpService {
@@ -18,6 +19,7 @@ export class HttpService {
         private dataTransmissionService: DataTransmissionService,
         private utilService: UtilService,
         private toast: ToastrService,
+        private userService:UserService,
         @Inject('API') public api,
         ) {
         // this.Ip = '172.21.212.119';
@@ -221,7 +223,7 @@ export class HttpService {
         })
     }
     //等待指定的模型运行完成
-    waitForResult(msr_id: string): Promise<any> {
+    waitForResult(msr_id: string,userId?:string): Promise<any> {
         return new Promise((resolve, reject) => {
             let timer = setInterval(() => {
                 this.getModelRunRecord(msr_id).then(res => {
@@ -229,11 +231,19 @@ export class HttpService {
                     if (JsonObject['data'] && JsonObject['data']['msr_span']!=null) {
                         if (JsonObject['data']['msr_span'] !== 0) {
                             this.dataTransmissionService.sendModelRunRecord(res);
+                            if(userId){
+                                console.log("模型运行成功，更新模型运行记录");
+                                this.userService.addToolRecord(userId,msr_id).subscribe();
+                            }
                             clearInterval(timer);
                         }
                     }
                 }, error => {
                     console.log(error);
+                    if(userId){
+                        console.log("模型运行失败，更新模型运行记录");
+                        this.userService.addToolRecord(userId,msr_id).subscribe();
+                    }
                     clearInterval(timer);
                 })
 

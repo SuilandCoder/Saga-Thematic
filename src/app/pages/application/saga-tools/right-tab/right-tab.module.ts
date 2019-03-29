@@ -12,24 +12,17 @@ import { NgxUploaderModule } from 'ngx-uploader';
 import { ListInputComponent, ListInputDialog } from './list-input/list-input.component'; 
 import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import { DataListComponent } from 'src/app/shared/data-list/data-list.component';
-import { DataPickComponent } from 'src/app/shared/data-pick/data-pick.component';
 import { MatIconModule, MatMenuModule } from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
+import { SharedModule } from 'src/app/_common';
+import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.component';
 @NgModule({
   imports: [
-    CommonModule,
-    OverlayModule,
+    SharedModule,
     CdkTreeModule,
     NgZorroAntdModule,
     NgxUploaderModule,
     MatDialogModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatIconModule, 
-    MatMenuModule,
-    FormsModule,
-    MatInputModule,
   ],
   declarations: [
     RightTabComponent,
@@ -37,8 +30,6 @@ import {MatInputModule} from '@angular/material/input';
     SingleInputComponent,
     ListInputComponent,
     ListInputDialog,
-    DataListComponent,
-    DataPickComponent,
   ],
   entryComponents:[
     ListInputDialog,

@@ -1,0 +1,62 @@
+.record_room {
+    overflow: overlay;
+}
+
+.record_item {
+    width: 700px;
+    margin-left: 30px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    >.tool_name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: bolder;
+    }
+
+    >.excute_time {
+        text-align: end;
+    }
+}
+
+.desp {}
+
+.input {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.output {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.excute_info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.time_span {
+    color: #03ada6;
+}
+
+.data_name {
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+}
+
+button{
+    
+}

@@ -1,5 +1,24 @@
 import { DataUploadStatus } from "../enum";
 
+
+export class ToolRecord{
+    public userId:string;
+    public recordId:string;
+    public excuteTime:string;
+    public toolDescription:string;
+    public toolName:string;
+    public timeSpan:string;
+    public excuteState:number;
+    public statusStr:string;
+    public outputList:Array<ToolDataInfo>;
+    public inputList:Array<ToolDataInfo>;
+}
+
+export class ToolDataInfo{
+    public dataId:string;
+    public dataName:string;
+}
+
 export class DataUploadInfo {
     public fileName: string;
     public sourceStoreId: string;

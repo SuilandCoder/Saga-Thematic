@@ -8,33 +8,34 @@ import { Location } from '@angular/common';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-    providedIn:'root'
+    providedIn: 'root'
 })
-export class UserService{
+export class UserService {
     private _jwt;
     private baseUrl;
-    
-    public logined$:BehaviorSubject<boolean>;
+    private baseMCUrl;
+    public logined$: BehaviorSubject<boolean>;
 
     constructor(
         private http: _HttpClient,
         private route: ActivatedRoute,
         private router: Router,
         private location: Location,
-        private userDataService:UserDataService,
+        private userDataService: UserDataService,
         @Inject("API") private api,
-    ){
+    ) {
         this.baseUrl = `${this.api.backend_user}`;
+        this.baseMCUrl = `${this.api.backend_model_container}`;
         var jwt = localStorage.getItem('jwt');
-        if(jwt){
+        if (jwt) {
             jwt = JSON.parse(jwt);
             this._jwt = jwt;
-            if(this.isLogined){
+            if (this.isLogined) {
                 this.logined$ = new BehaviorSubject<boolean>(true);
                 return;
             }
         }
-        this.logined$ = new BehaviorSubject<boolean>(false); 
+        this.logined$ = new BehaviorSubject<boolean>(false);
     }
 
     public set jwt(jwt) {
@@ -97,20 +98,72 @@ export class UserService{
             )
     }
 
-    signIn(user):Observable<any>{
+    signIn(user): Observable<any> {
         return this.http.post(`${this.baseUrl}/sign-in`, user)
             .pipe(
-                map(res=>{
-                    if(res.error){
+                map(res => {
+                    if (res.error) {
                         console.error('error in user.service:', `${res.error}`);
                         return res;
-                    }else{
+                    } else {
                         this.jwt = res.data;
                         this.http.setAuthHeaders();
                         return res;
                     }
                 })
             )
+    }
+
+    //* 增加运行记录
+    addToolRecord(userId: string, recordId: string): Observable<any> {
+        return this.http.get(`${this.baseUrl}/addToolRecord`, {
+            params: {
+                'userId': userId,
+                'recordId': recordId,
+            }
+        }).pipe(
+            map(res => {
+                if (res.error) {
+                    console.error('error in user.service:', `${res.error}`);
+                    return res;
+                } else {
+                    // this.jwt = res.data;
+                    // this.http.setAuthHeaders();
+                    console.log("addToolRecord:" + res);
+                    return res;
+                }
+            })
+        )
+    }
+
+    //* 获取用户的模型运行记录
+    getToolRecord(userId: string): Observable<any> {
+        return this.http.get(`${this.baseUrl}/getToolRecord`, {
+            params: {
+                'userId': userId,
+            }
+        }).pipe(
+            map(res => {
+                if (res.error) {
+                    console.error('error in user.service:', `${res.error}`);
+                    return res;
+                } else {
+                    console.log("addToolRecord:" + res);
+                    return res;
+                }
+            })
+        )
+    }
+
+    //* 下载输入输出数据
+    downloadRecordData(dataId:string){
+        let aLink = document.createElement('a');
+        let evt = document.createEvent("HTMLEvents");
+        evt.initEvent("click", false, false);
+        let dataPath = "http://" + window.location.host + this.baseMCUrl + "/"+dataId;
+        aLink.href = new URL(dataPath).toString();
+        aLink.click();
+        aLink.dispatchEvent(evt); 
     }
 
 

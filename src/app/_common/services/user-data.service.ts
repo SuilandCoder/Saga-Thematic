@@ -34,8 +34,6 @@ export class UserDataService{
     }
 
 
-
-
     //* 上传数据至数据容器：
     uploadData(dataInfo:DataInfo):Observable<any> {
         var fd = new FormData();
@@ -50,8 +48,15 @@ export class UserDataService{
     }
 
     //* 查询数据集
-    getDatas(method:FieldToGetData,content:string):Observable<any>{ 
-        return this.http.get(`${this.dataResUrl}/`+method+"/"+content);
+    getDatas(method:FieldToGetData,content:string,filter?:{
+        pageIndex:number,
+        pageSize:number,
+    }):Observable<any>{ 
+        var reqFilter = "";
+        if(filter){
+            reqFilter = "?page="+filter.pageIndex+"&pageSize="+filter.pageSize;
+        }
+        return this.http.get(`${this.dataResUrl}/`+method+"/"+content+reqFilter);
     }
 
 }
