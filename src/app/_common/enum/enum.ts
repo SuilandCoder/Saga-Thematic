@@ -10,3 +10,10 @@ export enum DataUploadStatus{
     ON_UPLOADING = 1,
     READY = 2,
 }
+
+
+export enum MODEL_RUN_STATUS{
+    FAILED = -1,
+    RUNNING = 0,
+    SUCCESS = 1,
+}

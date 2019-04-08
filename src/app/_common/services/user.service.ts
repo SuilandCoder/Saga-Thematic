@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Injectable, Inject } from "@angular/core";
 import { Location } from '@angular/common';
 import { map } from 'rxjs/operators';
+import { ToolParam } from '../data_model';
 
 @Injectable({
     providedIn: 'root'
@@ -115,11 +116,14 @@ export class UserService {
     }
 
     //* 增加运行记录
-    addToolRecord(userId: string, recordId: string): Observable<any> {
+    addToolRecord(userId: string, recordId: string,status:number,outputParams?:Array<ToolParam>,inputParams?:Array<ToolParam>): Observable<any> {
         return this.http.get(`${this.baseUrl}/addToolRecord`, {
             params: {
                 'userId': userId,
                 'recordId': recordId,
+                'status':status,
+                'outputParams':JSON.stringify(outputParams)||null,
+                'inputParams':JSON.stringify(inputParams)||null,
             }
         }).pipe(
             map(res => {

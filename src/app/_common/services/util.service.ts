@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import proj4 from 'proj4'
-import { VectorStyle, WktProjection, ImageLayer } from "../data_model";
-
+import { VectorStyle, WktProjection, ImageLayer, ShpMeta } from "../data_model";
+import * as _ from 'lodash';
 
 @Injectable()
 export class UtilService {
@@ -17,7 +17,7 @@ export class UtilService {
         return new ImageLayer(src, proj, extent);
     }
 
-    ResDataToImageLayer(resData:Object){
+    ResDataToImageLayer(resData: Object) {
         let src = resData['filePosition'];
         let projName = this.getProjByWkt(resData['srs']);
         let proj = new WktProjection(projName, resData['srs']);
@@ -71,7 +71,7 @@ export class UtilService {
         return FeatureType;
     }
 
-    //获取在地图上图层的几何图形的字段数组
+    //*获取在地图上图层的几何图形的字段数组
     getFieldArray(LayerOnMap: any): Array<string> {
         let RsltArray: Array<string> = null;
         if (LayerOnMap && LayerOnMap.getSource() && LayerOnMap.getSource().getFeatures()) {
@@ -84,7 +84,6 @@ export class UtilService {
                         return value !== "geometry";
                     })
                 }
-
             }
         }
         return RsltArray;
@@ -165,30 +164,69 @@ export class UtilService {
     }
 
 
-    getTableFieldArray(file:File,callback){
-       var reader = new FileReader();
-       reader.readAsText(file,"utf-8");
-       var fieldArr = new Array<string>();
-       var filedValue:Array<any>=[];
-       reader.onload = function(evt){
-        var result = reader.result;
-        var res =result.toString();
-        var arr = res.split("\n");
-        arr.forEach((element,index)=>{
-            var elArr = element.split("\t");
-            if(index==0){
-                fieldArr = elArr;
-            }else{
-                var obj={};
-                elArr.forEach((el,elIndex)=>{
-                    obj[fieldArr[elIndex]] = el;
-                })
-                filedValue.push(obj);
-            } 
+    getTableFieldArray(file: File, callback) {
+        var reader = new FileReader();
+        reader.readAsText(file, "utf-8");
+        var fieldArr = new Array<string>();
+        var filedValue: Array<any> = [];
+        reader.onload = function (evt) {
+            var result = reader.result;
+            var res = result.toString();
+            var arr = res.split("\n");
+            arr.forEach((element, index) => {
+                var elArr = element.split("\t");
+                if (index == 0) {
+                    fieldArr = elArr;
+                } else {
+                    var obj = {};
+                    elArr.forEach((el, elIndex) => {
+                        obj[fieldArr[elIndex]] = el;
+                    })
+                    filedValue.push(obj);
+                }
+            })
+            callback(fieldArr, filedValue);
+        }
+    }
+
+    //* 解析shapefile文件的 meta 字符串
+    getShpMetaObj(meta: any) {
+        if (meta == null || meta == undefined) {
+            return meta;
+        }
+        meta = JSON.parse(meta);
+        let shpMeta = new ShpMeta();
+        shpMeta.count = meta.count;
+        shpMeta.name = meta.name;
+        shpMeta.proj = meta.proj;
+        shpMeta.geometry = meta.geometry;
+        shpMeta.fields = meta.fields.map(item => {
+            return { "field": item.Field, "type": item.Type };
         })
-        callback(fieldArr,filedValue);
-       }
-      
+        shpMeta.extent = [];
+        let lower = meta.envelope.lowerConer;
+        let upper = meta.envelope.upperConer;
+        
+        shpMeta.extent = _.concat(lower,upper );
+        return shpMeta;
+    }
+
+    parseDataType(sagaType:string){
+        let type:string = "";
+        if(!sagaType){
+            type = "OTHER";
+        }else if(sagaType.includes("Shapes list")){
+            type="OTHER";
+        }else if(sagaType.includes("Shapes")){
+            type="SHAPEFILE";
+        }else if(sagaType.includes("Grid list")){
+            type="OTHER";
+        }else if(sagaType.includes("Grid")){
+            type="GEOTIFF";
+        }else{
+            type = "OTHER";
+        }
+        return type;
     }
 
 }

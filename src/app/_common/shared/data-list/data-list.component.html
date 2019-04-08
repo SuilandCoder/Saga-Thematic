@@ -33,7 +33,7 @@
           <div class="item_tags">
             <span *ngFor="let itemTags of item.tags">{{itemTags}}</span>
           </div>
-          <div class="btn_show">
+          <div class="btn_show" (click)="addToLayer(item)">
             <img src="/src/assets//images/data/eye.png" alt="">
           </div>
         </div>
@@ -51,7 +51,7 @@
       <img *ngIf="item.type=='SHAPEFILE'" src="/src/assets/images/data/vector.png" alt="">
       <img *ngIf="item.type=='OTHER'" src="/src/assets/images/data/other.png" alt="">
       <span title="{{item.fileName}}">{{item.fileName}}</span>
-      <div class="cover">
+      <div class="cover" (click)="addToLayer(item)">
           <img src="/src/assets//images/data/vision.png" alt="">
         </div>
     </div>

@@ -7,14 +7,14 @@ import {
   LoadingInfo,
   GeoData,
   GeoJsonLayer,
-  OlMapService, 
+  OlMapService,
   HttpService,
   UtilService,
   GlobeConfigService,
   DataTransmissionService,
 } from 'src/app/_common'
-import {TableInfo} from 'src/app/_common/data_model'
-import { remove,isEqual } from 'lodash'; 
+import { TableInfo } from 'src/app/_common/data_model'
+import { remove, isEqual } from 'lodash';
 import * as _ from 'lodash';
 
 declare var ol: any;
@@ -47,11 +47,13 @@ export class LayerListComponent implements OnInit, AfterViewInit {
     private httpService: HttpService,
     private toastr: ToastrService,
     private utilService: UtilService,
-    private globeConfigService: GlobeConfigService) {
+    private globeConfigService: GlobeConfigService,
+    private toast: ToastrService,
+    ) {
     this.CurrentTabIndex = 0;
   }
   ngOnInit() {
-    
+
     this.LayerListOptions = {
       animation: 150,
       onUpdate: () => {
@@ -67,7 +69,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       let newItem = new LayerItem(customFile.file.name.substr(0, customFile.file.name.lastIndexOf('.')),
         customFile.file,
         customFile.type)
-      this.LayerItems.splice(0,0,newItem);
+      this.LayerItems.splice(0, 0, newItem);
       // this.LayerItems.push(newItem);
       //* 添加到数组头部 
       // this.LayerItems=concat(newItem,this.LayerItems);
@@ -120,8 +122,10 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           remove(this.LayerItems, item => {
             return isEqual(item, newItem);
           });
-
-          this.LayerItems.splice(0,0,newItem);
+          if(this.olMapService.isDataOnLayer(data.id)){
+            return;
+          }
+          this.LayerItems.splice(0, 0, newItem);
 
           // this.LayerItems.push(newItem);
           //默认加载
@@ -144,8 +148,10 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         return value["id"] === onlineLayerId;
       })
       let newItem = new LayerItem(findOnlineLayer.name, null, "ONLINE", onlineLayerId);
-
-      this.LayerItems.splice(0,0,newItem);
+      if(this.olMapService.isDataOnLayer(onlineLayerId)){
+        return;
+      }
+      this.LayerItems.splice(0, 0, newItem);
       // this.LayerItems.push(newItem);
       // this.LayerItems=concat(newItem,this.LayerItems);
       //默认加载
@@ -161,13 +167,48 @@ export class LayerListComponent implements OnInit, AfterViewInit {
     })
 
     this.dataTransmissionService.getTabIndexSwitchedSubject().subscribe(TabIndex => {
-
       this.CurrentTabIndex = TabIndex;
     })
 
 
-    
-    
+    //* 模型容器geoserver做可视化
+    this.dataTransmissionService.getMCGeoServerSubject().subscribe(geoserverDataInfo => {
+      //* 新建 LayerItem对象，将 geoserverDataInfo 中的 id 暂时作为 dataId，用于唯一性识别方便图层添加及删除；
+
+      //*获取文件类型
+      let type = geoserverDataInfo.type === "GEOTIFF" ? "tif" : "shp";
+
+      let newItem = new LayerItem(geoserverDataInfo.fileName, null, type, geoserverDataInfo.id);
+      if(this.olMapService.isDataOnLayer(geoserverDataInfo.id)){
+        return;
+      }
+      if(newItem.type == "shp" && geoserverDataInfo.meta&& geoserverDataInfo.meta.proj){
+        newItem.proj = geoserverDataInfo.meta.proj;
+        if(geoserverDataInfo.meta.extent){
+          newItem.extent = geoserverDataInfo.meta.extent;
+        }
+      }
+      this.LayerItems.splice(0, 0, newItem);
+      newItem.visible = !newItem.visible;
+      // this.olMapService.getWFSGeojsonData(geoserverDataInfo.layerName).subscribe({
+      //   next: res=>{
+      //      if (res.error) {
+      //       this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+      //     } else {
+      //       console.log(res);
+      //       let geoJsonLayer = {'geojson':JSON.stringify(res),'proj':""};
+      //       this.olMapService.addVectorLayer(new GeoJsonLayer(newItem.dataId, geoJsonLayer));
+      //     }
+      //   },
+      //   error: e=>{
+      //     console.error(e);
+      //   }
+      // })
+      
+      this.olMapService.addGeoserverLayer(newItem,geoserverDataInfo);
+      newItem.isOnMap = true;
+      newItem.layerShowing = false;
+    }); 
     this.dataTransmissionService.sendOnlineLayerSubject("TDT");
   }
 
@@ -232,7 +273,10 @@ export class LayerListComponent implements OnInit, AfterViewInit {
             });
             resultData.forEach((item, i) => {
               currentItem = new LayerItem(layerItem.name + "_" + i, null, layerItem.type, data.Id);
-              this.LayerItems.splice(0,0,currentItem);
+              if(this.olMapService.isDataOnLayer(data.Id)){
+                return;
+              }
+              this.LayerItems.splice(0, 0, currentItem);
               // this.LayerItems.push(currentItem);
               // this.LayerItems=concat(currentItem,this.LayerItems);
               currentItem.visible = true;
@@ -278,7 +322,10 @@ export class LayerListComponent implements OnInit, AfterViewInit {
                   });
                   resultData.forEach((item, i) => {
                     currentItem = new LayerItem(layerItem.name + "_" + i, null, layerItem.type, layerItem.dataId + i);
-                    this.LayerItems.splice(0,0,currentItem);
+                    if(this.olMapService.isDataOnLayer(layerItem.dataId + i)){
+                      return;
+                    }
+                    this.LayerItems.splice(0, 0, currentItem);
                     // this.LayerItems.push(currentItem);
                     // this.LayerItems=concat(currentItem,this.LayerItems);
                     let imageLayer = this.utilService.ResDataToImageLayer(item);
@@ -336,9 +383,12 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         this.httpService.getColorMap(currentItem, null).then(ResponseData => {
           if (ResponseData && ResponseData["code"] !== undefined) {
             if (ResponseData["code"] === 0) {
-              if (ResponseData['data']) { 
+              if (ResponseData['data']) {
                 let imageLayer = this.utilService.ResToImageLayer(ResponseData);
                 imageLayer.id = currentItem.dataId;
+                if(this.olMapService.isDataOnLayer( currentItem.dataId)){
+                  return;
+                }
                 this.olMapService.addImageLayer(imageLayer);
                 currentItem.visible = !layerItem.visible;
                 currentItem.isOnMap = true;
@@ -383,7 +433,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
 
       case "txt":
         //* 如果是加载本地数据，则不处理
-        if(currentItem.file){
+        if (currentItem.file) {
           this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
           break;
         }
@@ -391,7 +441,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           if (response && response['code'] != undefined) {
             if (response['code'] === 0) {
               if (response['data'] && response['data']['fieldArr'] && response['data']['fieldValue'] && response['data']['dataPath']) {
-                let ti:TableInfo = new TableInfo();
+                let ti: TableInfo = new TableInfo();
                 ti.fieldArr = response['data']['fieldArr'];
                 ti.fieldVal = response['data']['fieldValue'];
                 currentItem.dataPath = response['data']['dataPath'];
@@ -419,6 +469,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         break;
       case "ONLINE":
         currentItem.visible = !layerItem.visible;
+        
         this.olMapService.addOnlineLayer(currentItem);
         currentItem.isOnMap = true;
         currentItem.layerShowing = false;
@@ -484,8 +535,6 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           default:
             break;
         }
-
-
         this.nameField = "name";
         this.popupPos = new Number_XY(ev.x, ev.y);
         this.bgColor = "#fff";
@@ -543,12 +592,8 @@ export class LayerListComponent implements OnInit, AfterViewInit {
             this.LayerItems.splice(this.LayerItems.indexOf(findedItem), 1);
             this.SelectedLayerItemId = null;
           }
-
-
         }
       }
     }
-
   }
-
 }

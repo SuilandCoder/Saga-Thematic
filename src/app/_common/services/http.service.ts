@@ -3,11 +3,13 @@ import { HttpClient } from "@angular/common/http";
 import { DataTransmissionService } from "./data-transmission.service";
 import { UtilService } from "./util.service";
 import { ToastrService } from 'ngx-toastr';
-import { ToolIOData, GeoData, postData, uploadResponseData, LayerItem, DataForRunModel, ImageLayer, WktProjection } from "../data_model";
+import { ToolIOData, GeoData, postData, uploadResponseData, LayerItem, DataForRunModel, ImageLayer, WktProjection, ToolRecord, ToolDataInfo, DataInfo } from "../data_model";
 import * as Xml2js from 'xml2js';
 import { API } from "src/config";
 import { resolve } from "url";
 import { UserService } from "./user.service";
+import { MODEL_RUN_STATUS } from "../enum";
+import { UserDataService } from "./user-data.service";
 
 @Injectable()
 export class HttpService {
@@ -20,6 +22,7 @@ export class HttpService {
         private utilService: UtilService,
         private toast: ToastrService,
         private userService:UserService,
+        private userDataService:UserDataService,
         @Inject('API') public api,
         ) {
         // this.Ip = '172.21.212.119';
@@ -222,7 +225,7 @@ export class HttpService {
 
         })
     }
-    //等待指定的模型运行完成
+    //* 等待指定的模型运行完成
     waitForResult(msr_id: string,userId?:string): Promise<any> {
         return new Promise((resolve, reject) => {
             let timer = setInterval(() => {
@@ -230,10 +233,32 @@ export class HttpService {
                     let JsonObject = JSON.parse(res['data']);
                     if (JsonObject['data'] && JsonObject['data']['msr_span']!=null) {
                         if (JsonObject['data']['msr_span'] !== 0) {
-                            this.dataTransmissionService.sendModelRunRecord(res);
+                            // this.dataTransmissionService.sendModelRunRecord(res);
                             if(userId){
                                 console.log("模型运行成功，更新模型运行记录");
-                                this.userService.addToolRecord(userId,msr_id).subscribe();
+                                this.userService.addToolRecord(userId,msr_id,MODEL_RUN_STATUS.SUCCESS).subscribe({
+                                    next: res => {
+                                        if (res.error) {
+                                            this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+                                        } else {
+                                            //* 输出数据已在后台上传至数据容器
+                                            //* 将输出数据加载至图层
+                                            let recordInfo:ToolRecord = res.data;
+                                            let outputs:Array<ToolDataInfo> = recordInfo.outputList;
+                                            outputs.forEach(element => {
+                                                let dataInfo = new DataInfo();
+                                                dataInfo.id = element.dataResourceId;
+                                                dataInfo.toGeoserver = false;
+                                                dataInfo.fileName = element.dataName;
+                                                dataInfo.type = this.utilService.parseDataType(element.type);
+                                                this.userDataService.addToLayer(dataInfo);
+                                            });
+                                        }
+                                    },
+                                    error: e => {
+                                        console.log(e);
+                                    }
+                                });
                             }
                             clearInterval(timer);
                         }
@@ -242,7 +267,7 @@ export class HttpService {
                     console.log(error);
                     if(userId){
                         console.log("模型运行失败，更新模型运行记录");
-                        this.userService.addToolRecord(userId,msr_id).subscribe();
+                        this.userService.addToolRecord(userId,msr_id,MODEL_RUN_STATUS.FAILED).subscribe();
                     }
                     clearInterval(timer);
                 })

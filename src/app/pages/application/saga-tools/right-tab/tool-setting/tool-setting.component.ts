@@ -9,7 +9,7 @@ import { ToolService } from 'src/app/_common/services/tool.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
-import { DataUploadStatus } from 'src/app/_common/enum';
+import { DataUploadStatus, MODEL_RUN_STATUS } from 'src/app/_common/enum';
 import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.component';
 @Component({
   selector: 'app-tool-setting',
@@ -136,6 +136,10 @@ export class ToolSettingComponent implements OnInit {
   }
 
   runModelUseDC() {
+    if(!this.userService.isLogined){
+      this.toastr.warning("please login.", "Warning", { timeOut: 3000 });
+      return;
+    }
     this.formData = new FormData();
     this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(true, "Calculating, please wait..."));
     this.formData.append("oid", this.toolInfo.oid);
@@ -146,17 +150,11 @@ export class ToolSettingComponent implements OnInit {
     if (inputAlready) {
       this.toolService.runSataModelByDC(this.formData).then(msr_id => {
         console.log("msr_id:", msr_id);
-        if (this.userService.isLogined) {
           let userId = this.userService.user.userId;
-          this.userService.addToolRecord(userId,msr_id).subscribe();
+          this.userService.addToolRecord(userId,msr_id,MODEL_RUN_STATUS.RUNNING,this.outputParams,this.inputParams).subscribe();
           this.httpService.waitForResult(msr_id,userId).then(data => {
             console.log(data);
           });
-        }else{
-          this.httpService.waitForResult(msr_id).then(data => {
-            console.log(data);
-          });
-        }
       }).catch(reason => {
         this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
         this.toastr.error("Run Model Failed.", "error");

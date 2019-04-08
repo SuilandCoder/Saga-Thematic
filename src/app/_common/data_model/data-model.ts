@@ -17,6 +17,11 @@ export class ToolRecord{
 export class ToolDataInfo{
     public dataId:string;
     public dataName:string;
+    public stateName:string;
+    public tag:string;
+    public url:string;
+    public dataResourceId:string;
+    public type:string;
 }
 
 export class DataUploadInfo {
@@ -27,6 +32,7 @@ export class DataUploadInfo {
 }
 
 export class DataInfo {
+    public id:string;
     public author: string;
     public dataItemId: string;
     public fileName: string;
@@ -38,10 +44,22 @@ export class DataInfo {
     public file: File;
     public createDate: string;
     public toGeoserver: boolean;
+    public layerName:string;
+    public meta:any;
     constructor() { 
         this.tags = new Array<string>();
     }
 }
+
+export class ShpMeta{
+    public extent:Array<number>;
+    public proj:string;
+    public geometry:string;
+    public fields:Array<any>;
+    public name:string;
+    public count:number;
+}
+
 
 export class ToolParam {
     public constraints: string;
@@ -201,6 +219,8 @@ export class LayerItem {
     public layerSetting: LayerSetting;
     public dataPath: string = "";
     public tableInfo: TableInfo;
+    public proj:string;
+    public extent:Array<number>;
     constructor(
         name: string,
         file?: File,

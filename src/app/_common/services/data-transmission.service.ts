@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from "rxjs";
-import { GeoJsonLayer, GeoData, ToolsTreeNode, LayerItem, Point, CustomFile, ImageLayer, ModifiedProjection, DataForPopup, LoadingInfo } from '../data_model'
+import { GeoJsonLayer, GeoData, ToolsTreeNode, LayerItem, Point, CustomFile, ImageLayer, ModifiedProjection, DataForPopup, LoadingInfo, DataInfo } from '../data_model'
 @Injectable()
 export class DataTransmissionService {
 
@@ -8,7 +8,8 @@ export class DataTransmissionService {
         console.log("init data DataTransmissionService");
     }
 
-
+    //用模型容器的 geoserve 做可视化
+    private MCGeoServerSubject = new Subject<any>();
     //传输文件
     private CustomFileSubject = new Subject<any>();
     //传输dataid，用于显示图层或者隐藏图层
@@ -80,6 +81,9 @@ export class DataTransmissionService {
 
 
 
+    sendMCGeoServerSubject(geoServerDataInfo:DataInfo){
+        this.MCGeoServerSubject.next(geoServerDataInfo);
+    }
 
     sendCustomFileSubject(file: CustomFile) {
         this.CustomFileSubject.next(file);
@@ -186,6 +190,9 @@ export class DataTransmissionService {
     }
 
 
+    getMCGeoServerSubject(): Observable<DataInfo> {
+        return this.MCGeoServerSubject.asObservable();
+    }
 
     getCustomFileSubject(): Observable<CustomFile> {
         return this.CustomFileSubject.asObservable();

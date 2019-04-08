@@ -20,9 +20,11 @@ import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.co
   imports: [
     SharedModule,
     CdkTreeModule,
+    ReactiveFormsModule,
     NgZorroAntdModule,
     NgxUploaderModule,
-    MatDialogModule,
+    MatDialogModule, 
+    FormsModule,
   ],
   declarations: [
     RightTabComponent,

@@ -10,6 +10,7 @@ import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 import { DataListComponent } from './shared/data-list/data-list.component';
 import { DataPickComponent } from './shared/data-pick/data-pick.component';
 import { MatButtonModule, MatButtonToggleModule, MatIconModule, MatMenuModule,MatInputModule,MatDialogModule } from '@angular/material';
+import { NgxUploaderModule } from 'ngx-uploader';
 // import { DataPickComponent } from './shared/data-pick/data-pick.component';
 
 
@@ -27,6 +28,7 @@ import { MatButtonModule, MatButtonToggleModule, MatIconModule, MatMenuModule,Ma
         MatMenuModule,
         MatInputModule,
         MatDialogModule,
+        NgxUploaderModule,
         NgZorroAntdModule.forRoot()
     ],
     declarations: [

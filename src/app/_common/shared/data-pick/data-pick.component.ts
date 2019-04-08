@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import { forkJoin } from "rxjs/observable/forkJoin";
 import { LayerItem, DataInfo, DataUploadInfo } from '../../data_model';
 import { FieldToGetData } from '../../enum';
+import { UtilService } from '../../services';
 
 enum DataSources {
   LOCAL = 1,
@@ -52,6 +53,7 @@ export class DataPickComponent {
     private userService: UserService,
     private toast: ToastrService,
     private cdr: ChangeDetectorRef,
+    private utilService:UtilService,
     @Inject(MAT_DIALOG_DATA) public data: LayerData
   ) { }
 
@@ -101,6 +103,7 @@ export class DataPickComponent {
   fromLayers() {
     this.dataSources = DataSources.LAYER_LIST;
     this.dataResources = this.layerList;
+    this.dataResources.sort(this.compare);
   }
 
 
@@ -120,8 +123,15 @@ export class DataPickComponent {
           this.dataResources = res.data.filter(item => {
             return item.type == this.dataType;
           });
+          this.dataResources = this.dataResources.map(data=>{
+            if(data.type=="SHAPEFILE"){
+              data.meta = this.utilService.getShpMetaObj(data.meta);
+            } 
+            return data;
+          })
           this.cdr.markForCheck();
           this.cdr.detectChanges();
+          this.dataResources.sort(this.compare);
           console.log(this.dataResources);
         }
       },
@@ -140,8 +150,15 @@ export class DataPickComponent {
         } else {
           if (res.data) {
             this.dataResources = res.data;
+            this.dataResources = this.dataResources.map(data=>{
+              if(data.type=="SHAPEFILE"){
+                data.meta = this.utilService.getShpMetaObj(data.meta);
+              } 
+              return data;
+            })
             this.cdr.markForCheck();
             this.cdr.detectChanges();
+            this.dataResources.sort(this.compare);
           }
           console.log(res.data);
         }
@@ -153,6 +170,7 @@ export class DataPickComponent {
   }
 
   onUploadOutput(ev: any, InputElement: HTMLInputElement) {
+    console.log(ev);
     if (ev.file && ev.type === "addedToQueue") {
       let currentFile = ev.file.nativeFile;
       //* 判断传入的是否为压缩文件
@@ -245,8 +263,15 @@ export class DataPickComponent {
           this.dataResources = res.data.filter(item => {
             return item.type == this.dataType;
           });
+          this.dataResources = this.dataResources.map(data=>{
+            if(data.type=="SHAPEFILE"){
+              data.meta = this.utilService.getShpMetaObj(data.meta);
+            } 
+            return data;
+          })
           this.cdr.markForCheck();
           this.cdr.detectChanges();
+          this.dataResources.sort(this.compare);
           console.log(this.dataResources);
         }
       },
@@ -302,6 +327,15 @@ export class DataPickComponent {
             return dataUploadInfo;
           })
 
+          //* 获取数据的 meta
+          let getMetaList = results.map(item=>{
+            if(item.data.id){
+              return this.userDataService.getMeta(item.data.id);
+            } 
+          })
+
+          forkJoin(getMetaList).subscribe();
+
           console.log("resultDatas: ", resultDatas);
           this.inputDataList = resultDatas.concat(datasReady);
           console.log("inputDataList:" + this.inputDataList);
@@ -314,6 +348,19 @@ export class DataPickComponent {
         console.log(error);
         this.toast.warning("Failed to upload datas.", "Warning", { timeOut: 2000 });
       }
+    }
+  }
+
+  compare(v1,v2){ 
+    let date1 = new Date(v1.createDate);
+    let date2 = new Date(v2.createDate);
+    let num = date1.getTime()-date2.getTime();
+    if(num>0){
+      return -1;
+    }else if(num<0){
+      return 1;
+    }else{
+      return 0;
     }
   }
 }
