@@ -7,6 +7,7 @@ import 'rxjs/add/operator/mergeMap';
 import { FieldToGetData } from '../enum';
 import { ToastrService } from 'ngx-toastr';
 import { DataTransmissionService } from './data-transmission.service';
+import { properties } from 'ng-zorro-antd';
 
 @Injectable({
     providedIn: 'root'
@@ -57,24 +58,39 @@ export class UserDataService {
 
     //* 查询数据集
     getDatas(method: FieldToGetData, content: string, filter?: {
+        asc: boolean,
         pageIndex: number,
-        pageSize: number
+        pageSize: number,
+        properties: Array<string>,
     }): Observable<any> {
         var reqFilter = "";
         if (filter) {
-            reqFilter = "?page=" + filter.pageIndex + "&pageSize=" + filter.pageSize;
+            reqFilter = "?asc=" + filter.asc + "&page=" + filter.pageIndex + "&pageSize=" + filter.pageSize;
+            filter.properties.forEach(item => {
+                reqFilter = reqFilter + "&properties=" + item;
+            })
         }
-        return this.http.get(`${this.dataResUrl}/` + method + "/" + content + reqFilter);
+        if (method == FieldToGetData.BY_AUTHOR) {
+            return this.http.get(`${this.dataResUrl}` + "/" + reqFilter + "&type=" + method + "&value=" + content);
+        } else {
+            return this.http.get(`${this.dataResUrl}/listByCondition` + "?type=" + method + "&value=" + content);
+        }
+
+    }
+
+    //* 根据 id 查询 数据
+    getDataById(id:string):Observable<any>{
+        return this.http.get(`${this.dataResUrl}/`+id);
     }
 
     //* 发布数据到geoserver
     dataToGeoServer(id: string): Observable<any> {
-        return this.http.get(`${this.dataResUrl}/toGeoserver/` + id);
+        return this.http.get(`${this.dataResUrl}/` + id+"/toGeoserver");
     }
 
     //* 获取数据 meta
     getMeta(id: string): Observable<any> {
-        return this.http.get(`${this.dataResUrl}/getMeta/` + id);
+        return this.http.get(`${this.dataResUrl}/` + id+"/getMeta");
     }
 
     //* 将数据添加进图层并显示
@@ -89,11 +105,8 @@ export class UserDataService {
                         if (res.error) {
                             this.toast.warning(res.error, "Warning", { timeOut: 2000 });
                         } else {
-                            let data: string = res.data;
-                            let layerName = data.substring(data.indexOf('fileName:'), data.indexOf('发布成功'));
-                            dataInfo.layerName = layerName;
-                            dataInfo.toGeoserver = true;
-                            console.log("geoserver服务发布成功:", layerName);
+                            dataInfo = res.data;
+                            console.log("geoserver服务发布成功:", dataInfo.layerName);
                             //* 发布成功，将数据添加至图层：
                             this.dataTransmissionService.sendMCGeoServerSubject(dataInfo);
                         }

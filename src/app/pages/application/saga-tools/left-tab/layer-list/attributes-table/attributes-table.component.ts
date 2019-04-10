@@ -59,8 +59,13 @@ export class AttributesTableComponent implements OnInit {
         });
       } 
     }else{
-      this.fieldArray = this.utilService.getFieldArray(LayerOnMap);
-      this.fieldValues = this.utilService.getFieldValue(LayerOnMap);
+      //* 从feature中取得
+      // this.fieldArray = this.utilService.getFieldArray(LayerOnMap);
+      // this.fieldValues = this.utilService.getFieldValue(LayerOnMap);
+
+
+      
+
     } 
     this.itemWidth = 100;
     this.scrollX = this.fieldArray.length * this.itemWidth + 400;

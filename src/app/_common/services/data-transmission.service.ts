@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from "rxjs";
-import { GeoJsonLayer, GeoData, ToolsTreeNode, LayerItem, Point, CustomFile, ImageLayer, ModifiedProjection, DataForPopup, LoadingInfo, DataInfo } from '../data_model'
+import { GeoJsonLayer, GeoData, ToolsTreeNode, LayerItem, Point, CustomFile, ImageLayer, ModifiedProjection, DataForPopup, LoadingInfo, DataInfo, ToolDataInfo } from '../data_model'
 @Injectable()
 export class DataTransmissionService {
 
@@ -8,6 +8,9 @@ export class DataTransmissionService {
         console.log("init data DataTransmissionService");
     }
 
+    //输出数据添加进 output列表
+    private OutputDataSubject = new Subject<any>();
+    
     //用模型容器的 geoserve 做可视化
     private MCGeoServerSubject = new Subject<any>();
     //传输文件
@@ -80,6 +83,9 @@ export class DataTransmissionService {
     private ViewExtentSubject = new Subject<Array<number>>();
 
 
+    sendOutputDataSubject(toolDataInfo:ToolDataInfo){
+        this.OutputDataSubject.next(toolDataInfo);
+    }
 
     sendMCGeoServerSubject(geoServerDataInfo:DataInfo){
         this.MCGeoServerSubject.next(geoServerDataInfo);
@@ -189,6 +195,11 @@ export class DataTransmissionService {
         this.ViewExtentSubject.next(extent);
     }
 
+
+
+    getOutputDataSubject():Observable<ToolDataInfo>{
+        return this.OutputDataSubject.asObservable();
+    }
 
     getMCGeoServerSubject(): Observable<DataInfo> {
         return this.MCGeoServerSubject.asObservable();

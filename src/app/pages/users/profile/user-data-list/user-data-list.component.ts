@@ -25,21 +25,25 @@ export class UserDataListComponent implements OnInit {
 
   ngOnInit() {
     if (this.userService.isLogined) {
-      this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, {pageIndex: this.pageIndex, pageSize: this.pageSize}).subscribe({
+      this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, {asc:false,pageIndex: this.pageIndex, pageSize: this.pageSize,properties:["createDate"]}).subscribe({
         next: res => {
           if (res.error) {
             this.toast.warning(res.error, "Warning", { timeOut: 2000 });
           } else {
-            this.userDatas = res.data.content;
-            this.dataLength = res.data.totalElements;
-            this.userDatas = this.userDatas.map(data=>{
-              if(data.type=="SHAPEFILE"){
-                data.meta = this.utilService.getShpMetaObj(data.meta);
-              } 
-              return data;
-            })
-            this.userDatas.sort(this.compare);
-            console.log(this.userDatas);
+            if(res.data.content){
+              this.userDatas = res.data.content;
+              this.dataLength = res.data.totalElements;
+              this.userDatas = this.userDatas.map(data=>{
+                if(data.type=="SHAPEFILE"){
+                  data.meta = this.utilService.getShpMetaObj(data.meta);
+                } else if (data.type == "GEOTIFF") {
+                  data.meta = this.utilService.getTiffMetaObj(data.meta);
+                }
+                return data;
+              })
+              // this.userDatas.sort(this.compare);
+              console.log(this.userDatas);
+            } 
           }
         },
         error: e => {
@@ -52,21 +56,25 @@ export class UserDataListComponent implements OnInit {
   onPageChange(pageEvent) {
     this.pageIndex = pageEvent.pageIndex;
     this.pageSize = pageEvent.pageSize;
-    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, {pageIndex: this.pageIndex, pageSize: this.pageSize}).subscribe({
+    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, {asc:false,pageIndex: this.pageIndex, pageSize: this.pageSize,properties:["createDate"]}).subscribe({
       next: res => {
         if (res.error) {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
         } else {
-          this.userDatas = res.data.content;
-          this.dataLength = res.data.totalElements;
-          this.userDatas = this.userDatas.map(data=>{
-            if(data.type=="SHAPEFILE"){
-              data.meta = this.utilService.getShpMetaObj(data.meta);
-            } 
-            return data;
-          })
-          this.userDatas.sort(this.compare);
-          console.log(this.userDatas);
+          if(res.data.content){
+            this.userDatas = res.data.content;
+            this.dataLength = res.data.totalElements;
+            this.userDatas = this.userDatas.map(data=>{
+              if(data.type=="SHAPEFILE"){
+                data.meta = this.utilService.getShpMetaObj(data.meta);
+              } else if (data.type == "GEOTIFF") {
+                data.meta = this.utilService.getTiffMetaObj(data.meta);
+              }
+              return data;
+            })
+            // this.userDatas.sort(this.compare);
+            console.log(this.userDatas);
+          } 
         }
       },
       error: e => {

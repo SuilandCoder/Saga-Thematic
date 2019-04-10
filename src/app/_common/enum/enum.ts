@@ -1,8 +1,8 @@
 export enum FieldToGetData {
-    BY_AUTHOR = "listByAuthor",
-    BY_DATA_ITEM_ID = "listByDataItemId",
-    BY_FILE_NAME = "listByFileNameContains",
-    BY_MDL_ID = "listByMdlId"
+    BY_AUTHOR = "author",
+    BY_DATA_ITEM_ID = "dataItem",
+    BY_FILE_NAME = "fileName",
+    BY_MDL_ID = "mdl"
 }
 
 export enum DataUploadStatus{

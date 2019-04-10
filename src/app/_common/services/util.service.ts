@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import proj4 from 'proj4'
-import { VectorStyle, WktProjection, ImageLayer, ShpMeta } from "../data_model";
+import { VectorStyle, WktProjection, ImageLayer, ShpMeta, TiffMeta } from "../data_model";
 import * as _ from 'lodash';
 
 @Injectable()
@@ -196,7 +196,7 @@ export class UtilService {
         }
         meta = JSON.parse(meta);
         let shpMeta = new ShpMeta();
-        shpMeta.count = meta.count;
+        shpMeta.count = meta.featureCount;
         shpMeta.name = meta.name;
         shpMeta.proj = meta.proj;
         shpMeta.geometry = meta.geometry;
@@ -204,11 +204,48 @@ export class UtilService {
             return { "field": item.Field, "type": item.Type };
         })
         shpMeta.extent = [];
-        let lower = meta.envelope.lowerConer;
-        let upper = meta.envelope.upperConer;
-        
-        shpMeta.extent = _.concat(lower,upper );
+        let lower = meta.lowerCorner;
+        let upper = meta.upperCorner;
+        if(lower==null && upper==null){
+            shpMeta.extent =[73,18,126,53]
+        }else if(lower==null){
+            shpMeta.extent = _.concat(upper,upper);
+        }else if(upper==null){
+            shpMeta.extent = _.concat(lower,lower);
+        }else{
+            shpMeta.extent = _.concat(lower,upper);
+        }
+        console.log(JSON.stringify(shpMeta));
         return shpMeta;
+    }
+
+
+    getTiffMetaObj(meta:any){
+        if (meta == null || meta == undefined) {
+            return meta;
+        }
+        meta = JSON.parse(meta);
+        let tiffMeta = new TiffMeta();
+        tiffMeta.proj = meta.proj;
+        tiffMeta.bandCount = meta.bandCount;
+        tiffMeta.high = meta.high;
+        tiffMeta.low = meta.low;
+        tiffMeta.name = meta.name;
+        tiffMeta.pixelScales = meta.pixelScales;
+        tiffMeta.extent = [];
+        let lower = meta.lowerCorner;
+        let upper = meta.upperCorner;
+        if(lower==null && upper==null){
+            tiffMeta.extent =[73,18,126,53]
+        }else if(lower==null){
+            tiffMeta.extent = _.concat(upper,upper);
+        }else if(upper==null){
+            tiffMeta.extent = _.concat(lower,lower);
+        }else{
+            tiffMeta.extent = _.concat(lower,upper);
+        }
+        console.log(JSON.stringify(tiffMeta));
+        return tiffMeta;
     }
 
     parseDataType(sagaType:string){

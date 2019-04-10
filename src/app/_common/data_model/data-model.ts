@@ -60,6 +60,15 @@ export class ShpMeta{
     public count:number;
 }
 
+export class TiffMeta{
+    public bandCount:number;
+    public high:Array<number>;
+    public low:Array<number>;
+    public extent:Array<number>;
+    public name:string;
+    public pixelScales:Array<number>;
+    public proj:string;
+}
 
 export class ToolParam {
     public constraints: string;

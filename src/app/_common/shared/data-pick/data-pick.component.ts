@@ -23,7 +23,7 @@ export interface LayerData {
   type: string;
   eventName: string;
   toolName: string;
-  mdlId:string;
+  mdlId: string;
 }
 
 @Component({
@@ -43,6 +43,9 @@ export class DataPickComponent {
   isInputList: boolean;
 
   eventName: string;
+  pageIndex: number = 0;
+  pageSize: number = 12;
+  dataLength: number;
 
   @Input()
   searchContent: string = "";
@@ -53,7 +56,7 @@ export class DataPickComponent {
     private userService: UserService,
     private toast: ToastrService,
     private cdr: ChangeDetectorRef,
-    private utilService:UtilService,
+    private utilService: UtilService,
     @Inject(MAT_DIALOG_DATA) public data: LayerData
   ) { }
 
@@ -114,25 +117,28 @@ export class DataPickComponent {
       this.toast.warning("please login.", "Warning", { timeOut: 3000 });
       return;
     }
-    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
+    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
       next: res => {
         if (res.error) {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
         } else {
-          this.userDataService.userDatas = res.data;
-          this.dataResources = res.data.filter(item => {
-            return item.type == this.dataType;
-          });
-          this.dataResources = this.dataResources.map(data=>{
-            if(data.type=="SHAPEFILE"){
-              data.meta = this.utilService.getShpMetaObj(data.meta);
-            } 
-            return data;
-          })
-          this.cdr.markForCheck();
-          this.cdr.detectChanges();
-          this.dataResources.sort(this.compare);
-          console.log(this.dataResources);
+          // this.userDataService.userDatas = res.data;
+          this.dataLength = res.data.totalElements;
+          if (res.data.content) {
+            this.dataResources = res.data.content;
+            this.dataResources = this.dataResources.map(data => {
+              if (data.type == "SHAPEFILE") {
+                data.meta = this.utilService.getShpMetaObj(data.meta);
+              } else if (data.type == "GEOTIFF") {
+                data.meta = this.utilService.getTiffMetaObj(data.meta);
+              }
+              return data;
+            })
+            this.cdr.markForCheck();
+            this.cdr.detectChanges();
+            // this.dataResources.sort(this.compare);
+            console.log(this.dataResources);
+          }
         }
       },
       error: e => {
@@ -143,22 +149,61 @@ export class DataPickComponent {
 
   fromDataContainer() {
     this.dataSources = DataSources.DATA_CONTAINER;
-    this.userDataService.getDatas(FieldToGetData.BY_MDL_ID, this.data.mdlId).subscribe({
+    this.userDataService.getDatas(FieldToGetData.BY_MDL_ID, this.data.mdlId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
       next: res => {
         if (res.error) {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
         } else {
           if (res.data) {
-            this.dataResources = res.data;
-            this.dataResources = this.dataResources.map(data=>{
-              if(data.type=="SHAPEFILE"){
-                data.meta = this.utilService.getShpMetaObj(data.meta);
-              } 
-              return data;
-            })
-            this.cdr.markForCheck();
-            this.cdr.detectChanges();
-            this.dataResources.sort(this.compare);
+            this.dataLength = res.data.totalElements;
+            if (res.data.content) {
+              this.dataResources = res.data.content;
+              this.dataResources = this.dataResources.map(data => {
+                if (data.type == "SHAPEFILE") {
+                  data.meta = this.utilService.getShpMetaObj(data.meta);
+                } else if (data.type == "GEOTIFF") {
+                  data.meta = this.utilService.getTiffMetaObj(data.meta);
+                }
+                return data;
+              })
+              this.cdr.markForCheck();
+              this.cdr.detectChanges();
+            }
+
+            // this.dataResources.sort(this.compare);
+          }
+          console.log(res.data);
+        }
+      },
+      error: e => {
+        console.log(e);
+      }
+    });
+  }
+
+  onPageChange(pageEvent) {
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
+      next: res => {
+        if (res.error) {
+          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+        } else {
+          if (res.data) {
+            this.dataLength = res.data.totalElements;
+            if (res.data.content) {
+              this.dataResources = res.data.content;
+              this.dataResources = this.dataResources.map(data => {
+                if (data.type == "SHAPEFILE") {
+                  data.meta = this.utilService.getShpMetaObj(data.meta);
+                } else if (data.type == "GEOTIFF") {
+                  data.meta = this.utilService.getTiffMetaObj(data.meta);
+                }
+                return data;
+              })
+              this.cdr.markForCheck();
+              this.cdr.detectChanges();
+            }
           }
           console.log(res.data);
         }
@@ -260,13 +305,12 @@ export class DataPickComponent {
         if (res.error) {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
         } else {
-          this.dataResources = res.data.filter(item => {
-            return item.type == this.dataType;
-          });
-          this.dataResources = this.dataResources.map(data=>{
-            if(data.type=="SHAPEFILE"){
+          this.dataResources = res.data.map(data => {
+            if (data.type == "SHAPEFILE") {
               data.meta = this.utilService.getShpMetaObj(data.meta);
-            } 
+            } else if (data.type == "GEOTIFF") {
+              data.meta = this.utilService.getTiffMetaObj(data.meta);
+            }
             return data;
           })
           this.cdr.markForCheck();
@@ -328,10 +372,10 @@ export class DataPickComponent {
           })
 
           //* 获取数据的 meta
-          let getMetaList = results.map(item=>{
-            if(item.data.id){
+          let getMetaList = results.map(item => {
+            if (item.data.id) {
               return this.userDataService.getMeta(item.data.id);
-            } 
+            }
           })
 
           forkJoin(getMetaList).subscribe();
@@ -351,15 +395,15 @@ export class DataPickComponent {
     }
   }
 
-  compare(v1,v2){ 
+  compare(v1, v2) {
     let date1 = new Date(v1.createDate);
     let date2 = new Date(v2.createDate);
-    let num = date1.getTime()-date2.getTime();
-    if(num>0){
+    let num = date1.getTime() - date2.getTime();
+    if (num > 0) {
       return -1;
-    }else if(num<0){
+    } else if (num < 0) {
       return 1;
-    }else{
+    } else {
       return 0;
     }
   }

@@ -8,7 +8,7 @@
           (uploadOutput)="onUploadOutput($event,fileInput)" />
         <span style="margin-bottom:25px">From Local Data</span>
       </label>
-      <button mat-menu-item (click)="fromLayers()">From Layer List</button>
+      <!-- <button mat-menu-item (click)="fromLayers()">From Layer List</button> -->
       <button mat-menu-item (click)="fromUser()">From User Storage</button>
       <button mat-menu-item (click)="fromDataContainer()">Search From Data Container</button>
     </mat-menu>
@@ -21,7 +21,6 @@
           <mat-form-field class="example-form-field">
             <input matInput type="text" placeholder="Search from remote" [(ngModel)]="searchContent">
             <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="searchContent=''">
-
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
@@ -45,10 +44,14 @@
             </a>
           </div>
         </div>
+        <mat-paginator *ngIf="dataLength>12" [length]="dataLength" [pageSizeOptions]="[12,24,36]" [pageSize]="pageSize"
+          [pageIndex]='pageIndex' (page)="onPageChange($event)">
+        </mat-paginator>
       </div>
     </div>
-
     <hr>
+
+
     <div class="picked" scrollbar>
       <div class="item" *ngFor="let item of dataPicked" title="{{item.fileName}}" (click)="discard(item)">
         <img *ngIf="item.type=='GEOTIFF'" src="/src/assets/images/data/tiff.png" alt="">

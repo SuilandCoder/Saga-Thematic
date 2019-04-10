@@ -14,7 +14,6 @@
     </mat-button-toggle-group>
   </div>
   <div *ngIf="group.value=='list' else grid">
-
     <div class="list_item_room" *ngFor="let item of userDatas">
       <div class="left_img">
         <img *ngIf="item.type=='GEOTIFF'" src="/src/assets/images/data/tiff.png" alt="">
@@ -40,7 +39,9 @@
       </div>
     </div>
   </div>
-
+  <mat-paginator *ngIf="dataLength>12" [length]="dataLength" [pageSizeOptions]="[12,24,36]" [pageSize]="pageSize" [pageIndex]='pageIndex'
+    (page)="onPageChange($event)">
+  </mat-paginator>
 </div>
 
 
@@ -52,8 +53,8 @@
       <img *ngIf="item.type=='OTHER'" src="/src/assets/images/data/other.png" alt="">
       <span title="{{item.fileName}}">{{item.fileName}}</span>
       <div class="cover" (click)="addToLayer(item)">
-          <img src="/src/assets//images/data/vision.png" alt="">
-        </div>
+        <img src="/src/assets//images/data/vision.png" alt="">
+      </div>
     </div>
   </div>
 </ng-template>

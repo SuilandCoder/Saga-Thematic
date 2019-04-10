@@ -20,7 +20,7 @@
       </div>
     </div>
   </div>
-  <mat-paginator [length]="dataLength" [pageSizeOptions]="[10,20,30]" [pageSize]="pageSize" [pageIndex]='pageIndex'
+  <mat-paginator *ngIf="dataLength>10" [length]="dataLength" [pageSizeOptions]="[10,20,30]" [pageSize]="pageSize" [pageIndex]='pageIndex'
     (page)="onPageChange($event)">
   </mat-paginator>
 

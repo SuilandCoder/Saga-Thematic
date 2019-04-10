@@ -1,3 +1,4 @@
+import { Extent } from 'ol/extent';
 import { _HttpClient } from './../httpUtils/http.client';
 import { Inject } from '@angular/core';
 import { Injectable } from '@angular/core'
@@ -13,7 +14,7 @@ import { Observable } from 'rxjs';
 declare let ol: any;
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-
+import * as _ from 'lodash';
 
 @Injectable()
 export class OlMapService {
@@ -229,7 +230,7 @@ export class OlMapService {
             this.setProjection(null, SourceExtentArray, modifyExtentOfProj, is4326);
         }
         this.MapObject.addLayer(vectorLayer);
-        //保证地图加载不变形
+        //*保证地图加载不变形
         this.MapObject.updateSize();
         this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
     }
@@ -333,41 +334,15 @@ export class OlMapService {
         let geoserverLayerName = geoserverDataInfo.layerName;
         let proj = "";
         let extent: Array<number>;
-        if (geoserverDataInfo.type === "SHAPEFILE" && geoserverDataInfo.meta) {
+        if ((geoserverDataInfo.type === "SHAPEFILE" || geoserverDataInfo.type === "GEOTIFF") && geoserverDataInfo.meta) {
             proj = geoserverDataInfo.meta.proj;
             console.log("投影信息：", proj);
             extent = geoserverDataInfo.meta.extent;
+            let lower = proj4(proj).inverse([extent[0], extent[1]]);
+            let upper = proj4(proj).inverse([extent[2], extent[3]]);
+            extent = _.concat(lower, upper);
+            console.log("extent信息：", extent);
         }
-        //样式改变测试
-        let VectorFill = new ol.style.Fill({
-            color: 'rgba(255,255,255,0.4)'
-        })
-
-        let pointFill = new ol.style.Fill({
-            color: '#3399CC'
-        })
-
-        let VectorStroke = new ol.style.Stroke({
-            color: '#3399CC',
-            width: 1.25
-        })
-
-        let TextStyle = new ol.style.Text({
-            color: '#777'
-        })
-
-        let ImgaeStyle = new ol.style.Circle({
-            fill: pointFill,
-            stroke: VectorStroke,
-            radius: 4
-        })
-
-        let LayerStyles = new ol.style.Style({
-            fill: VectorFill,
-            stroke: VectorStroke,
-            image: ImgaeStyle,
-            text: TextStyle
-        })
 
         let layerName = geoserverLayerName.substring(0, geoserverLayerName.lastIndexOf('.'));
         console.log("layerName:", layerName);
@@ -381,12 +356,21 @@ export class OlMapService {
                 serverType: 'geoserver'    //服务器类型
             })
         });
+        let extent_test: Array<number> = newLayer.getExtent();
+        console.log("从图层读取extent:", extent_test);
+
+        //* 已知 proj 和 extent, 设置图层的proj和 extent
+        let newProjectionCode;
+        if (proj && proj !== "null") {
+            newProjectionCode = this.utilService.getProjByWkt(proj);
+            newLayer.proj = new WktProjection(newProjectionCode, proj);
+        }
 
         if (extent) {
             let newView = new ol.View({
                 projection: ol.proj.get('EPSG:4326'),
                 center: ol.extent.getCenter(extent),
-                zoom: 1
+                zoom: 3
             });
             this.MapObject.setView(newView);
             newView.fit(extent);
@@ -396,7 +380,6 @@ export class OlMapService {
         this.MapObject.addLayer(newLayer);
         //保证地图加载不变形
         this.MapObject.updateSize();
-
     }
 
     //显示或者隐藏图层
@@ -472,9 +455,9 @@ export class OlMapService {
 
         } else {
             let newProj = ol.proj.get(code);
-            if (transformProj) {
-                ol.proj.transform(newProj, 'EPSG:3857', 'EPSG:4326')
-            }
+            // if (transformProj) {
+            ol.proj.transform(newProj, code, 'EPSG:4326')
+            // }
             if (!newProj) {
                 console.warn(`unknown EPSG_CODE ${code}. switch to EPSG:4326.`)
                 newProj = ol.proj.get('EPSG:4326');
@@ -501,9 +484,7 @@ export class OlMapService {
             this.MapObject.updateSize();
             //缩放到图层范围
             newView.fit(LayerExtent);
-
         }
-
     }
 
     //获取所有的layer
@@ -594,7 +575,6 @@ export class OlMapService {
     //full extent
     setFullExtent(LayerId?: string, extent?: Array<number>) {
         if (this.MapObject) {
-
             let CurrentLayer;
             let Layers: Array<any> = this.MapObject.getLayers().getArray();
             if (Layers.length > 0) {
@@ -619,6 +599,9 @@ export class OlMapService {
                     let SourceExtentArray: Array<number>;
                     if (findLayer.extent) {
                         SourceExtentArray = findLayer.extent;
+                        let lower = proj4(findLayer.proj).inverse([SourceExtentArray[0], SourceExtentArray[1]]);
+                        let upper = proj4(findLayer.proj).inverse([SourceExtentArray[2], SourceExtentArray[3]]);
+                        SourceExtentArray = _.concat(lower, upper);
                     } else {
                         SourceExtentArray = CurrentLayer.getSource().getExtent();
                     }

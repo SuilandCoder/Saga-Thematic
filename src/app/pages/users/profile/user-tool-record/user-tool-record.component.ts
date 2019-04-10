@@ -26,21 +26,23 @@ export class UserToolRecordComponent implements OnInit {
           if (res.error) {
             this.toast.warning(res.error, "Warning", { timeOut: 2000 });
           } else {
-            this.toolRecords = res.data.map(item => {
-              let hasOutput = item.outputList.some(output => {
-                return output.dataId != "";
+            if(res.data){
+              this.toolRecords = res.data.map(item => {
+                let hasOutput = item.outputList.some(output => {
+                  return output.dataId != "";
+                })
+                if (item.excuteState === 0) {
+                  item.statusStr = "运行中";
+                } else if (item.excuteState === 1 && hasOutput) {
+                  item.statusStr = "成功";
+                } else {
+                  item.statusStr = "失败";
+                }
+                return item;
               })
-              if (item.excuteState === 0) {
-                item.statusStr = "运行中";
-              } else if (item.excuteState === 1 && hasOutput) {
-                item.statusStr = "成功";
-              } else {
-                item.statusStr = "失败";
-              }
-              return item;
-            })
-            this.toolRecords.sort(this.compare);
-            console.log("获取到用户运行的模型记录信息：", this.toolRecords);
+              this.toolRecords.sort(this.compare);
+              console.log("获取到用户运行的模型记录信息：", this.toolRecords);
+            } 
           }
         },
         error: e => {

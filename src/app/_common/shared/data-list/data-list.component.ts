@@ -5,6 +5,7 @@ import { FieldToGetData } from 'src/app/_common/enum';
 import { UserService } from 'src/app/_common/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataTransmissionService, UtilService } from '../../services';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'share-data-list',
@@ -14,17 +15,19 @@ import { DataTransmissionService, UtilService } from '../../services';
 export class DataListComponent implements OnInit {
 
   @Input()
-  newData:DataInfo;
+  newData: DataInfo;
   userDatas: Array<DataInfo>;
+  pageIndex: number = 0;
+  pageSize: number = 12;
+  dataLength: number;
   userDataContainerHeight: number;
-  dataListHeight: number;
   constructor(
     private userDataService: UserDataService,
     private userService: UserService,
     private toast: ToastrService,
     private dataTransmissionService: DataTransmissionService,
     private cdr: ChangeDetectorRef,
-    private utilService:UtilService,
+    private utilService: UtilService,
   ) { }
 
   ngOnInit() {
@@ -32,23 +35,25 @@ export class DataListComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
     })
-    // this.dataListHeight = 500;
     if (this.userService.isLogined) {
-      this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
+      this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
         next: res => {
           if (res.error) {
             this.toast.warning(res.error, "Warning", { timeOut: 2000 });
           } else {
-            this.userDataService.userDatas = res.data;
-            this.userDataService.userDatas.sort(this.compare);
-            this.userDatas = this.userDataService.userDatas;
-            this.userDatas = this.userDatas.map(data=>{
-              if(data.type=="SHAPEFILE"){
-                data.meta = this.utilService.getShpMetaObj(data.meta);
-              } 
-              return data;
-            })
-            console.log("用户数据",this.userDatas);
+            this.dataLength = res.data.totalElements;
+            if (res.data.content) {
+              this.userDatas = res.data.content;
+              this.userDatas = this.userDatas.map(data => {
+                if (data.type == "SHAPEFILE") {
+                  data.meta = this.utilService.getShpMetaObj(data.meta);
+                } else if (data.type == "GEOTIFF") {
+                  data.meta = this.utilService.getTiffMetaObj(data.meta);
+                }
+                return data;
+              })
+              console.log("用户数据", this.userDatas);
+            }
           }
         },
         error: e => {
@@ -61,23 +66,23 @@ export class DataListComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-    console.log("数据列表变化",changes);
-    if(changes["newData"]&&!changes["newData"].firstChange){
+    console.log("数据列表变化", changes);
+    if (changes["newData"] && !changes["newData"].firstChange) {
       let newData = changes["newData"].currentValue;
-      this.userDatas.splice(0,0,newData);
+      this.userDatas.splice(0, 0, newData);
       // this.cdr.markForCheck();
       // this.cdr.detectChanges();
-      console.log("更新后的数据：",this.userDatas);
-    } 
+      console.log("更新后的数据：", this.userDatas);
+    }
   }
 
 
-  addToLayer(dataInfo:DataInfo){
-    this.userDataService.addToLayer(dataInfo);
-  }
+  // addToLayer(dataInfo: DataInfo) {
+  //   this.userDataService.addToLayer(dataInfo);
+  // }
 
 
-  addToLayer_abandon(dataInfo: DataInfo) {
+  addToLayer(dataInfo: DataInfo) {
     console.log("添加至图层按钮被点击");
     //*判断是否为shp或geotiff格式
     if (dataInfo.type === "GEOTIFF" || dataInfo.type === "SHAPEFILE") {
@@ -88,12 +93,9 @@ export class DataListComponent implements OnInit {
             if (res.error) {
               this.toast.warning(res.error, "Warning", { timeOut: 2000 });
             } else {
-              
-              let data:string = res.data;
-              let layerName = data.substring(data.indexOf('fileName:'),data.indexOf('发布成功'));
-              dataInfo.layerName = layerName;
-              dataInfo.toGeoserver = true;
-              console.log("geoserver服务发布成功:",layerName);
+              dataInfo = res.data;
+              this.userDatas = this.updateData(dataInfo, this.userDatas)
+              console.log("geoserver服务发布成功:", dataInfo.layerName);
               //* 发布成功，将数据添加至图层：
               this.dataTransmissionService.sendMCGeoServerSubject(dataInfo);
             }
@@ -102,24 +104,67 @@ export class DataListComponent implements OnInit {
             console.log(e);
           }
         })
-      }else{
+      } else {
         //* 已发布，将数据添加至图层：
         this.dataTransmissionService.sendMCGeoServerSubject(dataInfo);
       }
     } else {
       this.toast.warning("Does not support this type.", "Warning", { timeOut: 2000 });
-    } 
+    }
   }
 
-  compare(v1,v2){ 
+  onPageChange(pageEvent) {
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
+      next: res => {
+        if (res.error) {
+          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+        } else {
+          if (res.data.content) {
+            this.userDatas = res.data.content;
+            this.dataLength = res.data.totalElements;
+            this.userDatas = this.userDatas.map(data => {
+              if (data.type == "SHAPEFILE") {
+                data.meta = this.utilService.getShpMetaObj(data.meta);
+              } else if (data.type == "GEOTIFF") {
+                data.meta = this.utilService.getTiffMetaObj(data.meta);
+              }
+              return data;
+            })
+            // this.userDatas.sort(this.compare);
+            console.log(this.userDatas);
+          }
+        }
+      },
+      error: e => {
+        console.log(e);
+      }
+    });
+  }
+
+  updateData(dataItem: DataInfo, dataList: Array<DataInfo>) {
+    console.log("更新前：", dataList);
+    let index = _.findIndex(dataList, ["id", dataItem.id]);
+    if (index >= 0) {
+      dataItem.meta = dataList[index].meta;
+      dataList.splice(index, 1, dataItem);
+      console.log("更新后：", dataList);
+      return dataList;
+    } else {
+      return dataList;
+    }
+  }
+
+  compare(v1, v2) {
     let date1 = new Date(v1.createDate);
     let date2 = new Date(v2.createDate);
-    let num = date1.getTime()-date2.getTime();
-    if(num>0){
+    let num = date1.getTime() - date2.getTime();
+    if (num > 0) {
       return -1;
-    }else if(num<0){
+    } else if (num < 0) {
       return 1;
-    }else{
+    } else {
       return 0;
     }
   }

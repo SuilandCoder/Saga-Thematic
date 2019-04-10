@@ -89,9 +89,11 @@ export class AddLayerComponent implements OnInit {
                       } else {
                         console.log("metaRes:", metaRes);
                         //* 判断是否是 shp 文件
-                        if (dataInfo.type === "SHAPEFILE") {
-                          let meta = metaRes.data;
+                        let meta = metaRes.data;
+                        if (dataInfo.type === "SHAPEFILE") { 
                           dataInfo.meta = this.utilService.getShpMetaObj(meta);
+                        }else if (dataInfo.type == "GEOTIFF") {
+                          dataInfo.meta = this.utilService.getTiffMetaObj(meta);
                         }
                       }
                     },

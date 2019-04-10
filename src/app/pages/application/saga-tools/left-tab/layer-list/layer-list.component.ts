@@ -182,7 +182,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       if(this.olMapService.isDataOnLayer(geoserverDataInfo.id)){
         return;
       }
-      if(newItem.type == "shp" && geoserverDataInfo.meta&& geoserverDataInfo.meta.proj){
+      if((newItem.type == "shp" || newItem.type=="tif" )&& geoserverDataInfo.meta&& geoserverDataInfo.meta.proj){
         newItem.proj = geoserverDataInfo.meta.proj;
         if(geoserverDataInfo.meta.extent){
           newItem.extent = geoserverDataInfo.meta.extent;

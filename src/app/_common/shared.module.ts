@@ -9,7 +9,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 import { DataListComponent } from './shared/data-list/data-list.component';
 import { DataPickComponent } from './shared/data-pick/data-pick.component';
-import { MatButtonModule, MatButtonToggleModule, MatIconModule, MatMenuModule,MatInputModule,MatDialogModule } from '@angular/material';
+import { MatButtonModule, MatButtonToggleModule, MatIconModule, MatMenuModule,MatInputModule,MatDialogModule, MatPaginatorModule } from '@angular/material';
 import { NgxUploaderModule } from 'ngx-uploader';
 // import { DataPickComponent } from './shared/data-pick/data-pick.component';
 
@@ -29,6 +29,7 @@ import { NgxUploaderModule } from 'ngx-uploader';
         MatInputModule,
         MatDialogModule,
         NgxUploaderModule,
+        MatPaginatorModule,
         NgZorroAntdModule.forRoot()
     ],
     declarations: [

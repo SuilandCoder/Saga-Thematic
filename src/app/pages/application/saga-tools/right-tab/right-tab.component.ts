@@ -80,26 +80,28 @@ export class RightTabComponent implements OnInit {
     if (changes['tag'] && !changes['tag'].firstChange) {
       if (changes['tag'].currentValue === 'data' && (this.userDataService.userDatas == null || this.userDataService.userDatas.length === 0)) {
         //*请求数据
-        this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
-          next: res => {
-            if (res.error) {
-              this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-            } else {
-              this.userDataService.userDatas = res.data;
-              this.userDatas = res.data;
-              this.userDatas = this.userDatas.map(data=>{
-                if(data.type=="SHAPEFILE"){
-                  data.meta = this.utilService.getShpMetaObj(data.meta);
-                } 
-                return data;
-              })
-              console.log(this.userDatas);
-            }
-          },
-          error: e => {
-            console.log(e);
-          }
-        });
+        // this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
+        //   next: res => {
+        //     if (res.error) {
+        //       this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+        //     } else {
+        //       this.userDataService.userDatas = res.data;
+        //       this.userDatas = res.data;
+        //       this.userDatas = this.userDatas.map(data=>{
+        //         if(data.type=="SHAPEFILE"){
+        //           data.meta = this.utilService.getShpMetaObj(data.meta);
+        //         } else if (data.type == "GEOTIFF") {
+        //           data.meta = this.utilService.getTiffMetaObj(data.meta);
+        //         }
+        //         return data;
+        //       })
+        //       console.log(this.userDatas);
+        //     }
+        //   },
+        //   error: e => {
+        //     console.log(e);
+        //   }
+        // });
       }
     }
   }
@@ -187,9 +189,11 @@ export class RightTabComponent implements OnInit {
                       } else {
                         console.log("metaRes:", metaRes);
                         //* 判断是否是 shp 文件
+                        let meta = metaRes.data;
                         if (this.newData.type === "SHAPEFILE") {
-                          let meta = metaRes.data;
                           this.newData.meta = this.utilService.getShpMetaObj(meta);
+                        }else if (this.newData.type == "GEOTIFF") {
+                          this.newData.meta = this.utilService.getTiffMetaObj(meta);
                         }
                       }
                     },
