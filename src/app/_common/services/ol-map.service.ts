@@ -15,6 +15,7 @@ declare let ol: any;
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
+import { DC_DATA_TYPE } from '../enum';
 
 @Injectable()
 export class OlMapService {
@@ -334,7 +335,7 @@ export class OlMapService {
         let geoserverLayerName = geoserverDataInfo.layerName;
         let proj = "";
         let extent: Array<number>;
-        if ((geoserverDataInfo.type === "SHAPEFILE" || geoserverDataInfo.type === "GEOTIFF") && geoserverDataInfo.meta) {
+        if ((geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE || geoserverDataInfo.type === DC_DATA_TYPE.GEOTIFF || geoserverDataInfo.type === DC_DATA_TYPE.SDAT) && geoserverDataInfo.meta) {
             proj = geoserverDataInfo.meta.proj;
             console.log("投影信息：", proj);
             extent = geoserverDataInfo.meta.extent;

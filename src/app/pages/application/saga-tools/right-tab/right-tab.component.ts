@@ -10,7 +10,7 @@ import { ToolParam, DataTransmissionService, CustomFile, UtilService } from 'src
 import { Subscription } from 'rxjs/Subscription';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as JSZip from 'jszip';
-import { FieldToGetData } from 'src/app/_common/enum';
+import { FieldToGetData, DC_DATA_TYPE } from 'src/app/_common/enum';
 import * as _ from 'lodash';
 
 @Component({
@@ -150,13 +150,13 @@ export class RightTabComponent implements OnInit {
             let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
             switch (extName) {
               case "shp":
-                type = "SHAPEFILE";
+                type = DC_DATA_TYPE.SHAPEFILE;
                 break;
               case "tif":
-                type = "GEOTIFF";
+                type = DC_DATA_TYPE.GEOTIFF;
                 break;
-              case "sgrd":
-                type = "OTHER";
+              case "sdat":
+                type = DC_DATA_TYPE.SDAT;
                 break;
               default:
                 break;
@@ -190,9 +190,9 @@ export class RightTabComponent implements OnInit {
                         console.log("metaRes:", metaRes);
                         //* 判断是否是 shp 文件
                         let meta = metaRes.data;
-                        if (this.newData.type === "SHAPEFILE") {
+                        if (this.newData.type === DC_DATA_TYPE.SHAPEFILE) {
                           this.newData.meta = this.utilService.getShpMetaObj(meta);
-                        }else if (this.newData.type == "GEOTIFF") {
+                        } else if (this.newData.type == DC_DATA_TYPE.GEOTIFF || this.newData.type==DC_DATA_TYPE.SDAT) {
                           this.newData.meta = this.utilService.getTiffMetaObj(meta);
                         }
                       }

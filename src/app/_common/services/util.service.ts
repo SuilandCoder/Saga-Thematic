@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import proj4 from 'proj4'
 import { VectorStyle, WktProjection, ImageLayer, ShpMeta, TiffMeta } from "../data_model";
 import * as _ from 'lodash';
+import { DC_DATA_TYPE } from "../enum";
 
 @Injectable()
 export class UtilService {
@@ -251,17 +252,17 @@ export class UtilService {
     parseDataType(sagaType:string){
         let type:string = "";
         if(!sagaType){
-            type = "OTHER";
+            type = DC_DATA_TYPE.OTHER;
         }else if(sagaType.includes("Shapes list")){
-            type="OTHER";
+            type=DC_DATA_TYPE.OTHER;
         }else if(sagaType.includes("Shapes")){
-            type="SHAPEFILE";
+            type=DC_DATA_TYPE.SHAPEFILE;
         }else if(sagaType.includes("Grid list")){
-            type="OTHER";
+            type=DC_DATA_TYPE.OTHER;
         }else if(sagaType.includes("Grid")){
-            type="GEOTIFF";
+            type=DC_DATA_TYPE.SDAT;
         }else{
-            type = "OTHER";
+            type = DC_DATA_TYPE.OTHER;
         }
         return type;
     }

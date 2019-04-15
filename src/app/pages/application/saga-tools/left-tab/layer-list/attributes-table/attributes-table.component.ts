@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LayerItem, UtilService, OlMapService } from 'src/app/_common';
+import { UserDataService } from 'src/app/_common/services/user-data.service';
 
 
 
@@ -34,7 +35,9 @@ export class AttributesTableComponent implements OnInit {
 
 
   constructor(private utilService: UtilService,
-    private olMapService: OlMapService) {
+    private olMapService: OlMapService,
+    private userDataService:UserDataService,
+    ) {
     this.rows = [
       {
         'GRID_CODE': 'dasdsa',
@@ -63,8 +66,22 @@ export class AttributesTableComponent implements OnInit {
       // this.fieldArray = this.utilService.getFieldArray(LayerOnMap);
       // this.fieldValues = this.utilService.getFieldValue(LayerOnMap);
 
+      this.fieldArray = this.CurrentLayerItem.fields.map((item:any)=>{
+        return item.field;
+      });
+      this.userDataService.getShpDBF(this.CurrentLayerItem.dataId).subscribe({
+        next: res=>{
+          if(res.error){
+            console.error(res.error);
+          }else{
+            this.fieldValues = res.data;
+          }
+        },
+        error: e=>{
+          console.error(e);
+        }
+      })
 
-      
 
     } 
     this.itemWidth = 100;

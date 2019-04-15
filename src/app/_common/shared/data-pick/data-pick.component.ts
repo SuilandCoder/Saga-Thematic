@@ -1,3 +1,4 @@
+import { DC_DATA_TYPE } from './../../enum/enum';
 import { UserService } from 'src/app/_common/services/user.service';
 import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { Inject } from '@angular/core';
@@ -71,11 +72,11 @@ export class DataPickComponent {
       this.isInputList = false;
     }
     if (type.includes("Grid")) {
-      this.dataType = "GEOTIFF";
+      this.dataType = DC_DATA_TYPE.GEOTIFF;
     } else if (type.includes("Shapes")) {
-      this.dataType = "SHAPEFILE";
+      this.dataType = DC_DATA_TYPE.SHAPEFILE;
     } else {
-      this.dataType = "OTHER";
+      this.dataType = DC_DATA_TYPE.OTHER;
     }
     layerItems.forEach(item => {
       let dataItem = new DataInfo();
@@ -89,11 +90,11 @@ export class DataPickComponent {
       } else {
         dataItem.suffix = "zip";
       }
-      if (type.includes("Grid") && (item.type == "tif" || item.type == "sgrd")) {
-        dataItem.type = "GEOTIFF";
+      if (type.includes("Grid") && (item.type == "tif" || item.type == "sdat")) {
+        dataItem.type = DC_DATA_TYPE.GEOTIFF;
         this.layerList.push(dataItem);
       } else if (type.includes("Shapes") && item.type == "shp") {
-        dataItem.type = "SHAPEFILE";
+        dataItem.type = DC_DATA_TYPE.SHAPEFILE;
         this.layerList.push(dataItem);
       }
     })
@@ -127,9 +128,9 @@ export class DataPickComponent {
           if (res.data.content) {
             this.dataResources = res.data.content;
             this.dataResources = this.dataResources.map(data => {
-              if (data.type == "SHAPEFILE") {
+              if (data.type == DC_DATA_TYPE.SHAPEFILE) {
                 data.meta = this.utilService.getShpMetaObj(data.meta);
-              } else if (data.type == "GEOTIFF") {
+              } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
                 data.meta = this.utilService.getTiffMetaObj(data.meta);
               }
               return data;
@@ -159,9 +160,9 @@ export class DataPickComponent {
             if (res.data.content) {
               this.dataResources = res.data.content;
               this.dataResources = this.dataResources.map(data => {
-                if (data.type == "SHAPEFILE") {
+                if (data.type == DC_DATA_TYPE.SHAPEFILE) {
                   data.meta = this.utilService.getShpMetaObj(data.meta);
-                } else if (data.type == "GEOTIFF") {
+                } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
                   data.meta = this.utilService.getTiffMetaObj(data.meta);
                 }
                 return data;
@@ -194,9 +195,9 @@ export class DataPickComponent {
             if (res.data.content) {
               this.dataResources = res.data.content;
               this.dataResources = this.dataResources.map(data => {
-                if (data.type == "SHAPEFILE") {
+                if (data.type == DC_DATA_TYPE.SHAPEFILE) {
                   data.meta = this.utilService.getShpMetaObj(data.meta);
-                } else if (data.type == "GEOTIFF") {
+                } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
                   data.meta = this.utilService.getTiffMetaObj(data.meta);
                 }
                 return data;
@@ -235,13 +236,13 @@ export class DataPickComponent {
             let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
             switch (extName) {
               case "shp":
-                type = "SHAPEFILE";
+                type = DC_DATA_TYPE.SHAPEFILE;
                 break;
               case "tif":
-                type = "GEOTIFF";
+                type = DC_DATA_TYPE.GEOTIFF;
                 break;
-              case "sgrd":
-                type = "OTHER";
+              case "sdat":
+                type = DC_DATA_TYPE.SDAT;
                 break;
               default:
                 break;
@@ -250,7 +251,7 @@ export class DataPickComponent {
               return false;
             }
           });
-          if (type == this.dataType) {
+          if (type == this.dataType || (type == DC_DATA_TYPE.SDAT && this.dataType == DC_DATA_TYPE.GEOTIFF)) {
             //* 将压缩文件上传至数据容器
             let dataInfo = new DataInfo();
             dataInfo.author = this.userService.user.userId;
@@ -306,9 +307,9 @@ export class DataPickComponent {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
         } else {
           this.dataResources = res.data.map(data => {
-            if (data.type == "SHAPEFILE") {
+            if (data.type == DC_DATA_TYPE.SHAPEFILE) {
               data.meta = this.utilService.getShpMetaObj(data.meta);
-            } else if (data.type == "GEOTIFF") {
+            } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
               data.meta = this.utilService.getTiffMetaObj(data.meta);
             }
             return data;

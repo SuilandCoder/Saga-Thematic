@@ -1,9 +1,11 @@
 .data_list_container {
-    overflow: overlay;
+  overflow: overlay;
 }
+
 .img i {
   font-size: 76px;
 }
+
 .tags span {
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -22,8 +24,14 @@
 .left_img {
   flex: 0 0 20%;
   margin: 5px;
-  text-align: center;  
+  text-align: center;
   padding-top: 10px;
+}
+
+.shp_img {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 2px;
 }
 
 .left_img>img {
@@ -74,7 +82,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom:10px;
+    margin-bottom: 10px;
+
     >span {
       border: 1px solid #ddd;
       border-radius: 5px;
@@ -89,6 +98,7 @@
     flex: 0 0 30%;
     height: 35px;
     text-align: center;
+
     >img {
       width: 25px;
     }
@@ -96,33 +106,34 @@
 }
 
 .cover {
-    height: 0;
-    width: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.3) none repeat scroll 0 0;
-    position: absolute;
-    bottom: 0;
-    color: rgb(255, 255, 255);
-    font-size: 0;
-    border-radius: 10px;
-  }
-  
-  .cover>img{
-    width: 0px;
+  height: 0;
+  width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3) none repeat scroll 0 0;
+  position: absolute;
+  bottom: 0;
+  color: rgb(255, 255, 255);
+  font-size: 0;
+  border-radius: 10px;
+}
+
+.cover>img {
+  width: 0px;
+}
+
+.grid:hover .cover {
+  height: 80px;
+  width: 90px;
+  // vertical-align: middle;
+  font-size: 14px;
+  text-align: center;
+
+  >img {
+    width: 25px;
+    height: 25px;
   }
 
-  .grid:hover .cover {
-    height: 80px;
-    width: 90px;
-    // vertical-align: middle;
-    font-size: 14px;
-    text-align: center;
-    >img{
-        width: 25px;
-        height: 25px;
-    }
-    transition: all 0.7s ease 0s;
-  }
-
+  transition: all 0.7s ease 0s;
+}

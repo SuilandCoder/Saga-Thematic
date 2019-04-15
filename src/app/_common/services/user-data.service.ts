@@ -4,7 +4,7 @@ import { DataInfo } from './../data_model/data-model';
 import { Injectable, Inject } from "@angular/core";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
-import { FieldToGetData } from '../enum';
+import { FieldToGetData, DC_DATA_TYPE } from '../enum';
 import { ToastrService } from 'ngx-toastr';
 import { DataTransmissionService } from './data-transmission.service';
 import { properties } from 'ng-zorro-antd';
@@ -78,26 +78,31 @@ export class UserDataService {
 
     }
 
+    //* 根据id查询shapefile dbf
+    getShpDBF(id: string): Observable<any> {
+        return this.http.get(`${this.dataResUrl}/` + id + "/getDbf");
+    }
+
     //* 根据 id 查询 数据
-    getDataById(id:string):Observable<any>{
-        return this.http.get(`${this.dataResUrl}/`+id);
+    getDataById(id: string): Observable<any> {
+        return this.http.get(`${this.dataResUrl}/` + id);
     }
 
     //* 发布数据到geoserver
     dataToGeoServer(id: string): Observable<any> {
-        return this.http.get(`${this.dataResUrl}/` + id+"/toGeoserver");
+        return this.http.get(`${this.dataResUrl}/` + id + "/toGeoserver");
     }
 
     //* 获取数据 meta
     getMeta(id: string): Observable<any> {
-        return this.http.get(`${this.dataResUrl}/` + id+"/getMeta");
+        return this.http.get(`${this.dataResUrl}/` + id + "/getMeta");
     }
 
     //* 将数据添加进图层并显示
     addToLayer(dataInfo: DataInfo) {
         console.log("添加至图层按钮被点击");
         //*判断是否为shp或geotiff格式
-        if (dataInfo.type === "GEOTIFF" || dataInfo.type === "SHAPEFILE") {
+        if (dataInfo.type === DC_DATA_TYPE.GEOTIFF || dataInfo.type === DC_DATA_TYPE.SHAPEFILE || dataInfo.type === DC_DATA_TYPE.SDAT) {
             //*判断有没有发布服务
             if (!dataInfo.toGeoserver) {
                 this.dataToGeoServer(dataInfo.id).subscribe({

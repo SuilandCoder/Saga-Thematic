@@ -230,6 +230,7 @@ export class LayerItem {
     public tableInfo: TableInfo;
     public proj:string;
     public extent:Array<number>;
+    public fields:Array<any>;
     constructor(
         name: string,
         file?: File,

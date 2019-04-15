@@ -1,9 +1,13 @@
 <div class="data_list_container">
   <div class="list_item_room" *ngFor="let item of userDatas">
     <div class="left_img">
-      <img *ngIf="item.type=='GEOTIFF'" src="/src/assets/images/data/tiff.png" alt="">
-      <img *ngIf="item.type=='SHAPEFILE'" src="/src/assets/images/data/vector.png" alt="">
-      <img *ngIf="item.type=='OTHER'" src="/src/assets/images/data/other.png" alt="">
+      <img  *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">
+      <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiLineString'||item.meta.geometry=='LineString')" src="assets/images/data/line-vector.png" alt="">
+      <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPoint'||item.meta.geometry=='Point')" src="assets/images/data/points-vector.png" alt="">
+      <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPolygon'||item.meta.geometry=='Polygon')" src="assets/images/data/polygon-vector.png" alt="">
+      <img *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='GeometryCollection'||item.meta.geometry=='Geometry')" src="assets/images/data/vector.png" alt="">
+      <img *ngIf="item.type=='SHAPEFILE'&& item.meta==null" src="assets/images/data/vector.png" alt="">
+      <img *ngIf="item.type=='OTHER'" src="assets/images/data/other.png" alt="">
     </div>
     <div class="right_content">
       <div class="item_top">

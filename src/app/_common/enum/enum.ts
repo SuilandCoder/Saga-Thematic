@@ -17,3 +17,11 @@ export enum MODEL_RUN_STATUS{
     RUNNING = 0,
     SUCCESS = 1,
 }
+
+export enum DC_DATA_TYPE{
+    SHAPEFILE = "SHAPEFILE",
+    GEOTIFF = "GEOTIFF",
+    UDX = "UDX",
+    OTHER ="OTHER",
+    SDAT="SDAT"
+}

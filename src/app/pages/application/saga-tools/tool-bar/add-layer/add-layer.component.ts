@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as JSZip from 'jszip';
 import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { UserService } from 'src/app/_common/services/user.service';
+import { DC_DATA_TYPE } from 'src/app/_common/enum';
 @Component({
   selector: 'app-add-layer',
   templateUrl: './add-layer.component.html',
@@ -46,13 +47,13 @@ export class AddLayerComponent implements OnInit {
             let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
             switch (extName) {
               case "shp":
-                type = "SHAPEFILE";
+                type = DC_DATA_TYPE.SHAPEFILE;
                 break;
               case "tif":
-                type = "GEOTIFF";
+                type = DC_DATA_TYPE.GEOTIFF;
                 break;
-              case "sgrd":
-                type = "OTHER";
+              case "sdat":
+                type = DC_DATA_TYPE.SDAT;
                 break;
               default:
                 break;
@@ -90,9 +91,9 @@ export class AddLayerComponent implements OnInit {
                         console.log("metaRes:", metaRes);
                         //* 判断是否是 shp 文件
                         let meta = metaRes.data;
-                        if (dataInfo.type === "SHAPEFILE") { 
+                        if (dataInfo.type ===  DC_DATA_TYPE.SHAPEFILE) { 
                           dataInfo.meta = this.utilService.getShpMetaObj(meta);
-                        }else if (dataInfo.type == "GEOTIFF") {
+                        }else if (dataInfo.type == DC_DATA_TYPE.GEOTIFF || dataInfo.type == DC_DATA_TYPE.SDAT) {
                           dataInfo.meta = this.utilService.getTiffMetaObj(meta);
                         }
                       }

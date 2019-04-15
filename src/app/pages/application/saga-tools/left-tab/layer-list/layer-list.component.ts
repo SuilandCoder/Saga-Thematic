@@ -49,7 +49,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
     private utilService: UtilService,
     private globeConfigService: GlobeConfigService,
     private toast: ToastrService,
-    ) {
+  ) {
     this.CurrentTabIndex = 0;
   }
   ngOnInit() {
@@ -122,7 +122,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           remove(this.LayerItems, item => {
             return isEqual(item, newItem);
           });
-          if(this.olMapService.isDataOnLayer(data.id)){
+          if (this.olMapService.isDataOnLayer(data.id)) {
             return;
           }
           this.LayerItems.splice(0, 0, newItem);
@@ -148,7 +148,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         return value["id"] === onlineLayerId;
       })
       let newItem = new LayerItem(findOnlineLayer.name, null, "ONLINE", onlineLayerId);
-      if(this.olMapService.isDataOnLayer(onlineLayerId)){
+      if (this.olMapService.isDataOnLayer(onlineLayerId)) {
         return;
       }
       this.LayerItems.splice(0, 0, newItem);
@@ -179,13 +179,16 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       let type = geoserverDataInfo.type === "GEOTIFF" ? "tif" : "shp";
 
       let newItem = new LayerItem(geoserverDataInfo.fileName, null, type, geoserverDataInfo.id);
-      if(this.olMapService.isDataOnLayer(geoserverDataInfo.id)){
+      if (this.olMapService.isDataOnLayer(geoserverDataInfo.id)) {
         return;
       }
-      if((newItem.type == "shp" || newItem.type=="tif" )&& geoserverDataInfo.meta&& geoserverDataInfo.meta.proj){
+      if ((newItem.type == "shp" || newItem.type == "tif") && geoserverDataInfo.meta && geoserverDataInfo.meta.proj) {
         newItem.proj = geoserverDataInfo.meta.proj;
-        if(geoserverDataInfo.meta.extent){
+        if (geoserverDataInfo.meta.extent) {
           newItem.extent = geoserverDataInfo.meta.extent;
+        }
+        if (newItem.type == "shp" && geoserverDataInfo.meta.fields) {
+          newItem.fields = geoserverDataInfo.meta.fields;
         }
       }
       this.LayerItems.splice(0, 0, newItem);
@@ -204,11 +207,11 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       //     console.error(e);
       //   }
       // })
-      
-      this.olMapService.addGeoserverLayer(newItem,geoserverDataInfo);
+
+      this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo);
       newItem.isOnMap = true;
       newItem.layerShowing = false;
-    }); 
+    });
     this.dataTransmissionService.sendOnlineLayerSubject("TDT");
   }
 
@@ -273,7 +276,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
             });
             resultData.forEach((item, i) => {
               currentItem = new LayerItem(layerItem.name + "_" + i, null, layerItem.type, data.Id);
-              if(this.olMapService.isDataOnLayer(data.Id)){
+              if (this.olMapService.isDataOnLayer(data.Id)) {
                 return;
               }
               this.LayerItems.splice(0, 0, currentItem);
@@ -322,7 +325,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
                   });
                   resultData.forEach((item, i) => {
                     currentItem = new LayerItem(layerItem.name + "_" + i, null, layerItem.type, layerItem.dataId + i);
-                    if(this.olMapService.isDataOnLayer(layerItem.dataId + i)){
+                    if (this.olMapService.isDataOnLayer(layerItem.dataId + i)) {
                       return;
                     }
                     this.LayerItems.splice(0, 0, currentItem);
@@ -386,7 +389,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
               if (ResponseData['data']) {
                 let imageLayer = this.utilService.ResToImageLayer(ResponseData);
                 imageLayer.id = currentItem.dataId;
-                if(this.olMapService.isDataOnLayer( currentItem.dataId)){
+                if (this.olMapService.isDataOnLayer(currentItem.dataId)) {
                   return;
                 }
                 this.olMapService.addImageLayer(imageLayer);
@@ -469,7 +472,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         break;
       case "ONLINE":
         currentItem.visible = !layerItem.visible;
-        
+
         this.olMapService.addOnlineLayer(currentItem);
         currentItem.isOnMap = true;
         currentItem.layerShowing = false;

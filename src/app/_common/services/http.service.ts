@@ -1,3 +1,4 @@
+import { DC_DATA_TYPE } from './../enum/enum';
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { DataTransmissionService } from "./data-transmission.service";
@@ -262,9 +263,9 @@ export class HttpService {
                                                                 this.userDataService.addToLayer(dataInfo);
                                                             } else {
                                                                 dataInfo = res.data;
-                                                                if(dataInfo.type=="SHAPEFILE"){
+                                                                if (dataInfo.type == DC_DATA_TYPE.SHAPEFILE) {
                                                                     dataInfo.meta = this.utilService.getShpMetaObj(dataInfo.meta);
-                                                                }else if(dataInfo.type == "GEOTIFF"){
+                                                                } else if (dataInfo.type == DC_DATA_TYPE.GEOTIFF || dataInfo.type == DC_DATA_TYPE.SDAT) {
                                                                     dataInfo.meta = this.utilService.getTiffMetaObj(dataInfo.meta);
                                                                 }
                                                                 this.userDataService.addToLayer(dataInfo);

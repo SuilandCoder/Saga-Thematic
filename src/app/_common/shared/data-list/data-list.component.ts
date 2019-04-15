@@ -1,3 +1,4 @@
+import { DC_DATA_TYPE } from './../../enum/enum';
 import { DataInfo } from 'src/app/_common/data_model/data-model';
 import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { UserDataService } from 'src/app/_common/services/user-data.service';
@@ -45,9 +46,9 @@ export class DataListComponent implements OnInit {
             if (res.data.content) {
               this.userDatas = res.data.content;
               this.userDatas = this.userDatas.map(data => {
-                if (data.type == "SHAPEFILE") {
+                if (data.type == DC_DATA_TYPE.SHAPEFILE) {
                   data.meta = this.utilService.getShpMetaObj(data.meta);
-                } else if (data.type == "GEOTIFF") {
+                } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type==DC_DATA_TYPE.SDAT) {
                   data.meta = this.utilService.getTiffMetaObj(data.meta);
                 }
                 return data;
@@ -85,7 +86,7 @@ export class DataListComponent implements OnInit {
   addToLayer(dataInfo: DataInfo) {
     console.log("添加至图层按钮被点击");
     //*判断是否为shp或geotiff格式
-    if (dataInfo.type === "GEOTIFF" || dataInfo.type === "SHAPEFILE") {
+    if (dataInfo.type === DC_DATA_TYPE.GEOTIFF || dataInfo.type === DC_DATA_TYPE.SHAPEFILE || dataInfo.type===DC_DATA_TYPE.SDAT) {
       //*判断有没有发布服务
       if (!dataInfo.toGeoserver) {
         this.userDataService.dataToGeoServer(dataInfo.id).subscribe({
@@ -125,9 +126,9 @@ export class DataListComponent implements OnInit {
             this.userDatas = res.data.content;
             this.dataLength = res.data.totalElements;
             this.userDatas = this.userDatas.map(data => {
-              if (data.type == "SHAPEFILE") {
+              if (data.type == DC_DATA_TYPE.SHAPEFILE) {
                 data.meta = this.utilService.getShpMetaObj(data.meta);
-              } else if (data.type == "GEOTIFF") {
+              } else if (data.type == DC_DATA_TYPE.GEOTIFF|| data.type==DC_DATA_TYPE.SDAT) {
                 data.meta = this.utilService.getTiffMetaObj(data.meta);
               }
               return data;

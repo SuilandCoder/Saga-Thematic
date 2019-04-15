@@ -17,7 +17,7 @@
 ##### debug模式：
 > npm start
 ##### release模式：
-> npm build/npm build:prod
+> npm run build/npm run build:prod
 
 #### 3、部署位置：
 > 门户地址：**222.192.7.75**
