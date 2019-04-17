@@ -1,17 +1,17 @@
 import { UserService } from 'src/app/_common/services/user.service';
-import { DataInfo, ToolInfo } from 'src/app/_common/data_model/data-model';
+import { DataInfo, ToolInfo, ShpMeta } from 'src/app/_common/data_model/data-model';
 import { UserDataService } from 'src/app/_common/services/user-data.service';
 
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 import { ToolService } from 'src/app/_common/services/tool.service';
 import { ToastrService } from 'ngx-toastr';
 import { NzTabChangeEvent } from 'ng-zorro-antd';
-import { ToolParam, DataTransmissionService, CustomFile } from 'src/app/_common';
+import { ToolParam, DataTransmissionService, CustomFile, UtilService } from 'src/app/_common';
 import { Subscription } from 'rxjs/Subscription';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as JSZip from 'jszip';
-import { FieldToGetData } from 'src/app/_common/enum';
-
+import { FieldToGetData, DC_DATA_TYPE } from 'src/app/_common/enum';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-right-tab',
@@ -30,6 +30,7 @@ export class RightTabComponent implements OnInit {
   private descriptionPath = "";
   private descriptionHtml = "";
   private userDatas: Array<DataInfo> = [];
+  private newData: DataInfo;
 
   @Input() opened: boolean = false;
   @Input() tag: string = "";
@@ -42,7 +43,8 @@ export class RightTabComponent implements OnInit {
     private dataTransmissionService: DataTransmissionService,
     private toast: ToastrService,
     private userDataService: UserDataService,
-    private userService: UserService
+    private userService: UserService,
+    private utilService: UtilService,
   ) {
     console.log("rightTab");
   }
@@ -78,20 +80,28 @@ export class RightTabComponent implements OnInit {
     if (changes['tag'] && !changes['tag'].firstChange) {
       if (changes['tag'].currentValue === 'data' && (this.userDataService.userDatas == null || this.userDataService.userDatas.length === 0)) {
         //*请求数据
-        this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
-          next: res => {
-            if (res.error) {
-              this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-            } else {
-              this.userDataService.userDatas = res.data;
-              this.userDatas = res.data;
-              console.log(res.data);
-            }
-          },
-          error: e => {
-            console.log(e);
-          }
-        });
+        // this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
+        //   next: res => {
+        //     if (res.error) {
+        //       this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+        //     } else {
+        //       this.userDataService.userDatas = res.data;
+        //       this.userDatas = res.data;
+        //       this.userDatas = this.userDatas.map(data=>{
+        //         if(data.type=="SHAPEFILE"){
+        //           data.meta = this.utilService.getShpMetaObj(data.meta);
+        //         } else if (data.type == "GEOTIFF") {
+        //           data.meta = this.utilService.getTiffMetaObj(data.meta);
+        //         }
+        //         return data;
+        //       })
+        //       console.log(this.userDatas);
+        //     }
+        //   },
+        //   error: e => {
+        //     console.log(e);
+        //   }
+        // });
       }
     }
   }
@@ -140,13 +150,13 @@ export class RightTabComponent implements OnInit {
             let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
             switch (extName) {
               case "shp":
-                type = "SHAPEFILE";
+                type = DC_DATA_TYPE.SHAPEFILE;
                 break;
               case "tif":
-                type = "GEOTIFF";
+                type = DC_DATA_TYPE.GEOTIFF;
                 break;
-              case "sgrd":
-                type = "OTHER";
+              case "sdat":
+                type = DC_DATA_TYPE.SDAT;
                 break;
               default:
                 break;
@@ -170,6 +180,27 @@ export class RightTabComponent implements OnInit {
                   this.toast.warning(res.error, "Warning", { timeOut: 2000 });
                 } else {
                   this.userDatas.push(res.data);
+                  this.newData = res.data;
+                  console.log("列表数据更新了");
+                  this.userDataService.getMeta(res.data.id).subscribe({
+                    next: metaRes => {
+                      if (res.error) {
+                        this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+                      } else {
+                        console.log("metaRes:", metaRes);
+                        //* 判断是否是 shp 文件
+                        let meta = metaRes.data;
+                        if (this.newData.type === DC_DATA_TYPE.SHAPEFILE) {
+                          this.newData.meta = this.utilService.getShpMetaObj(meta);
+                        } else if (this.newData.type == DC_DATA_TYPE.GEOTIFF || this.newData.type==DC_DATA_TYPE.SDAT) {
+                          this.newData.meta = this.utilService.getTiffMetaObj(meta);
+                        }
+                      }
+                    },
+                    error: e => {
+                      console.log(e);
+                    }
+                  });
                 }
               },
               error: e => {

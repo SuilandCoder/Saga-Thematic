@@ -1,0 +1,38 @@
+<div class="record_room">
+  <div class="record_item" *ngFor="let item of toolRecords">
+    <div class="top">
+      <span class="tool_name">{{item.toolName}}</span>
+      <span class="excute_time">{{item.excuteTime | date:'yyyy-MM-dd HH:mm:ss'}} </span>
+    </div>
+    <div class="excute_info">
+      <span>status: <span class="status" [style.color]="getColor(item.statusStr)">{{item.statusStr}}</span></span>
+      <span>Time Span: <span class="time_span">{{item.timeSpan}} s</span></span> 
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            input
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="input" *ngFor="let input of item.inputList">
+          <span class="data_name">{{input.dataName}}</span>
+          <button mat-stroked-button [disabled]="input.dataId==''" (click)="downloadData(input.dataId)">download</button>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            output
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="output" *ngFor="let output of item.outputList">
+            <span class="data_name">{{output.dataName}}</span>
+            <button mat-stroked-button [disabled]="output.dataId==''" (click)="downloadData(output.dataId)">download</button>
+          </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

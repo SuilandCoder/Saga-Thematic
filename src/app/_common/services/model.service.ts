@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core'
 import { ToolIOData, uploadResponseData, postData, GeoData } from '../data_model';
 import { HttpService } from './http.service';
+import { _HttpClient } from '../httpUtils';
 
 @Injectable()
 export class ModelService {
     //上传文件
 
-    constructor(private httpService: HttpService) {
-
-    }
+    constructor(
+        private httpService: HttpService,
+        ) {}
 
     //获取模型信息
     getModelInfo(ToolId: string): Promise<ToolIOData> {
@@ -65,7 +66,7 @@ export class ModelService {
         })
     }
 
-    getRemoteTextFile(remoteIp: string, remoteDataId: String): Promise<any> {
+    getRemoteTextFile(remoteIp: string, remoteDataId: string): Promise<any> {
 
         return new Promise((resolve, reject) => {
             let url = "http://"
@@ -81,5 +82,4 @@ export class ModelService {
         })
 
     }
-
 }

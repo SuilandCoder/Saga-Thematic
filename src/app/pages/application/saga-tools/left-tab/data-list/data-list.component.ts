@@ -41,6 +41,11 @@ export class DataListComponent implements OnInit {
       this.ListItems.push(new LayerItem(data.name, null, data.type, data.id));
     });
 
+    this.dataTransmissionService.getOutputDataSubject().subscribe(data=>{
+      let item = new LayerItem(data.dataName,null,data.type,data.dataId);
+      this.ListItems.push(item);
+    })
+
     this.dataTransmissionService.getTabIndexSwitchedSubject().subscribe(TabIndex => { 
       this.CurrentTabIndex = TabIndex;
     });

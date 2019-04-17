@@ -1,25 +1,31 @@
-import { Injectable,Inject } from "@angular/core";
-import { HttpClient } from "@angular/common/http"; 
+import { DC_DATA_TYPE } from './../enum/enum';
+import { Injectable, Inject } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 import { DataTransmissionService } from "./data-transmission.service";
 import { UtilService } from "./util.service";
 import { ToastrService } from 'ngx-toastr';
-import { ToolIOData, GeoData, postData, uploadResponseData, LayerItem, DataForRunModel, ImageLayer, WktProjection } from "../data_model";
+import { ToolIOData, GeoData, postData, uploadResponseData, LayerItem, DataForRunModel, ImageLayer, WktProjection, ToolRecord, ToolDataInfo, DataInfo, LoadingInfo } from "../data_model";
 import * as Xml2js from 'xml2js';
 import { API } from "src/config";
 import { resolve } from "url";
+import { UserService } from "./user.service";
+import { MODEL_RUN_STATUS } from "../enum";
+import { UserDataService } from "./user-data.service";
 
 @Injectable()
 export class HttpService {
     Ip: string; //default ip of model container.
-    SagaIp:string; 
-    
-    baseUrl:string;
+    SagaIp: string;
+
+    baseUrl: string;
     constructor(private http: HttpClient,
         private dataTransmissionService: DataTransmissionService,
         private utilService: UtilService,
         private toast: ToastrService,
+        private userService: UserService,
+        private userDataService: UserDataService,
         @Inject('API') public api,
-        ) {
+    ) {
         // this.Ip = '172.21.212.119';
         this.SagaIp = '172.21.212.75';
         this.Ip = '172.21.212.75';
@@ -57,7 +63,7 @@ export class HttpService {
                     let StateId = '';
                     let StateName = '';
                     let StateDesc = '';
-                    
+
                     if (data && data.States && data.States[0] && data.States[0].$ && data.States[0].Event) {
                         StateId = data.States[0].$.id;
                         StateName = data.States[0].$.name;
@@ -220,20 +226,80 @@ export class HttpService {
 
         })
     }
-    //等待指定的模型运行完成
-    waitForResult(msr_id: string): Promise<any> {
+    //* 等待指定的模型运行完成
+    waitForResult(msr_id: string, userId?: string): Promise<any> {
         return new Promise((resolve, reject) => {
             let timer = setInterval(() => {
                 this.getModelRunRecord(msr_id).then(res => {
                     let JsonObject = JSON.parse(res['data']);
-                    if (JsonObject['data'] && JsonObject['data']['msr_span']!=null) {
+                    if (JsonObject['data'] && JsonObject['data']['msr_span'] != null) {
                         if (JsonObject['data']['msr_span'] !== 0) {
-                            this.dataTransmissionService.sendModelRunRecord(res);
+                            // this.dataTransmissionService.sendModelRunRecord(res);
+                            if (userId) {
+                                console.log("模型运行成功，更新模型运行记录");
+                                this.userService.addToolRecord(userId, msr_id, MODEL_RUN_STATUS.SUCCESS).subscribe({
+                                    next: res => {
+                                        this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+                                        if (res.error) {
+                                            this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+                                        } else {
+                                            //* 输出数据已在后台上传至数据容器
+                                            //* 将输出数据加载至图层
+                                            let recordInfo: ToolRecord = res.data;
+                                            let outputs: Array<ToolDataInfo> = recordInfo.outputList;
+                                            let success: boolean = false;
+                                            outputs.forEach(element => {
+                                                if (element.dataId) {
+                                                    this.dataTransmissionService.sendOutputDataSubject(element);
+                                                    success = true;
+                                                    this.userDataService.getDataById(element.dataResourceId).subscribe({
+                                                        next: res => {
+                                                            let dataInfo = new DataInfo();
+                                                            if (res.error) {
+                                                                dataInfo.id = element.dataResourceId;
+                                                                dataInfo.toGeoserver = false;
+                                                                dataInfo.fileName = element.dataName;
+                                                                dataInfo.type = this.utilService.parseDataType(element.type);
+                                                                this.userDataService.addToLayer(dataInfo);
+                                                            } else {
+                                                                dataInfo = res.data;
+                                                                if (dataInfo.type == DC_DATA_TYPE.SHAPEFILE) {
+                                                                    dataInfo.meta = this.utilService.getShpMetaObj(dataInfo.meta);
+                                                                } else if (dataInfo.type == DC_DATA_TYPE.GEOTIFF || dataInfo.type == DC_DATA_TYPE.SDAT) {
+                                                                    dataInfo.meta = this.utilService.getTiffMetaObj(dataInfo.meta);
+                                                                }
+                                                                this.userDataService.addToLayer(dataInfo);
+                                                            }
+                                                        },
+                                                        error: e => {
+                                                            console.error(e);
+                                                        }
+                                                    })
+
+                                                }
+                                            });
+                                            if (success) {
+                                                this.toast.success("Calculation completed.", "SUCCESS");
+                                            } else {
+                                                this.toast.error("Calculation Failed.");
+                                            }
+                                        }
+                                    },
+                                    error: e => {
+                                        this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
+                                        console.log(e);
+                                    }
+                                });
+                            }
                             clearInterval(timer);
                         }
                     }
                 }, error => {
                     console.log(error);
+                    if (userId) {
+                        console.log("模型运行失败，更新模型运行记录");
+                        this.userService.addToolRecord(userId, msr_id, MODEL_RUN_STATUS.FAILED).subscribe();
+                    }
                     clearInterval(timer);
                 })
 
@@ -316,12 +382,12 @@ export class HttpService {
         })
     }
 
-    getTableFile(layerItem:LayerItem):Promise<Object>{
-        return new Promise((resolve,reject)=>{
-            if(!layerItem){
+    getTableFile(layerItem: LayerItem): Promise<Object> {
+        return new Promise((resolve, reject) => {
+            if (!layerItem) {
                 return reject("LayerItem is null");
             }
-            if(layerItem.uploaded && layerItem.dataId !==null){
+            if (layerItem.uploaded && layerItem.dataId !== null) {
                 let postData = new FormData();
                 postData.append('id', layerItem.dataId);
                 postData.append('ip', this.SagaIp);
@@ -335,13 +401,13 @@ export class HttpService {
     }
 
 
-    get_SGRD_ColorMap(layerItem:LayerItem):Promise<Object>{
-        return new Promise((resolve,reject)=>{
-            if(!layerItem){
+    get_SGRD_ColorMap(layerItem: LayerItem): Promise<Object> {
+        return new Promise((resolve, reject) => {
+            if (!layerItem) {
                 return reject("LayerItem is null");
             }
             //* 远程
-            if(layerItem.uploaded && layerItem.dataId !==null){
+            if (layerItem.uploaded && layerItem.dataId !== null) {
                 let postData = new FormData();
                 postData.append('id', layerItem.dataId);
                 postData.append('ip', this.SagaIp);
@@ -350,7 +416,7 @@ export class HttpService {
                 }).catch(error => {
                     reject(error);
                 })
-            }else{
+            } else {
                 if (!layerItem.file) {
                     return reject("File in layerItem is null");
                 }
@@ -547,13 +613,13 @@ export class HttpService {
     }
 
     //获取模型服务容器上的文件
-    getRemoteData(url:string):Promise<any>{
-        return new Promise((resolve,reject)=>{
-            this.http.get(`${this.baseUrl}/remoteGet`,{
-                params:{
-                    url:url
+    getRemoteData(url: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.get(`${this.baseUrl}/remoteGet`, {
+                params: {
+                    url: url
                 }
-            }).toPromise().then(res=>{
+            }).toPromise().then(res => {
                 resolve(res);
             })
         })

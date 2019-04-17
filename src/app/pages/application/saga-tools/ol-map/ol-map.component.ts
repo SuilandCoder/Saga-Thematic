@@ -197,7 +197,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
 
 
     //mouse move
-    document.getElementsByClassName('ol-viewport')[0].addEventListener('pointermove', (ev) => {
+    document.getElementsByClassName('ol-viewport')[0].addEventListener('pointermove', (ev:any) => {
       let TempPosition = this.MapObject.getCoordinateFromPixel([ev.layerX, ev.layerY])
       if (TempPosition) {
         this.MouseMovePosition.x = TempPosition[0];

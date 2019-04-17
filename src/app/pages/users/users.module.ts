@@ -1,3 +1,4 @@
+import { DataListComponent } from './../application/saga-tools/left-tab/data-list/data-list.component';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule, Component } from '@angular/core';
@@ -16,13 +17,16 @@ import {
   MatChipsModule,
   MatCardModule,
   MatDialogModule,
-  MatTabsModule
+  MatTabsModule,
+  MatPaginatorModule,
+  MatExpansionModule,
 } from '@angular/material';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { Routes, RouterModule } from '@angular/router';
-
-
-
+import { SharedModule } from 'src/app/_common';
+import { UserDataListComponent } from './profile/user-data-list/user-data-list.component';
+import { UserToolRecordComponent } from './profile/user-tool-record/user-tool-record.component';
+import { API } from 'src/config';
 
 @Component({
   selector: "app-user",
@@ -63,7 +67,7 @@ const routes: Routes = [
 ];
 
 const modules = [
-  CommonModule,
+  SharedModule,
   ReactiveFormsModule,
   MatFormFieldModule,
   MatInputModule,
@@ -75,11 +79,22 @@ const modules = [
   MatCardModule,
   MatDialogModule,
   MatTabsModule,
+  MatPaginatorModule,
+  MatExpansionModule,
   RouterModule.forChild(routes),
 ]
 
 @NgModule({
   imports: [...modules],
-  declarations: [UserComponent, SignInComponent, SignUpComponent, ProfileComponent, UserSettingComponent, TopBarComponent]
+  declarations: [
+    UserComponent,
+    SignInComponent,
+    SignUpComponent,
+    ProfileComponent,
+    UserSettingComponent,
+    TopBarComponent,
+    UserDataListComponent,
+    UserToolRecordComponent
+  ],
 })
 export class UsersModule { }

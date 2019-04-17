@@ -1,16 +1,16 @@
+import { DC_DATA_TYPE } from './../../enum/enum';
+import { UserService } from 'src/app/_common/services/user.service';
+import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { Inject } from '@angular/core';
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { UserDataService } from 'src/app/_common/services/user-data.service';
-import { UserService } from 'src/app/_common/services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { FieldToGetData } from 'src/app/_common/enum';
-import { DataInfo, LayerItem, DataUploadInfo } from 'src/app/_common';
 import * as JSZip from 'jszip';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { forkJoin } from "rxjs/observable/forkJoin";
-import { stringify } from '@angular/core/src/util';
+import { LayerItem, DataInfo, DataUploadInfo } from '../../data_model';
+import { FieldToGetData } from '../../enum';
+import { UtilService } from '../../services';
 
 enum DataSources {
   LOCAL = 1,
@@ -24,7 +24,7 @@ export interface LayerData {
   type: string;
   eventName: string;
   toolName: string;
-  mdlId:string;
+  mdlId: string;
 }
 
 @Component({
@@ -44,6 +44,9 @@ export class DataPickComponent {
   isInputList: boolean;
 
   eventName: string;
+  pageIndex: number = 0;
+  pageSize: number = 12;
+  dataLength: number;
 
   @Input()
   searchContent: string = "";
@@ -54,6 +57,7 @@ export class DataPickComponent {
     private userService: UserService,
     private toast: ToastrService,
     private cdr: ChangeDetectorRef,
+    private utilService: UtilService,
     @Inject(MAT_DIALOG_DATA) public data: LayerData
   ) { }
 
@@ -68,11 +72,11 @@ export class DataPickComponent {
       this.isInputList = false;
     }
     if (type.includes("Grid")) {
-      this.dataType = "GEOTIFF";
+      this.dataType = DC_DATA_TYPE.GEOTIFF;
     } else if (type.includes("Shapes")) {
-      this.dataType = "SHAPEFILE";
+      this.dataType = DC_DATA_TYPE.SHAPEFILE;
     } else {
-      this.dataType = "OTHER";
+      this.dataType = DC_DATA_TYPE.OTHER;
     }
     layerItems.forEach(item => {
       let dataItem = new DataInfo();
@@ -86,11 +90,11 @@ export class DataPickComponent {
       } else {
         dataItem.suffix = "zip";
       }
-      if (type.includes("Grid") && (item.type == "tif" || item.type == "sgrd")) {
-        dataItem.type = "GEOTIFF";
+      if (type.includes("Grid") && (item.type == "tif" || item.type == "sdat")) {
+        dataItem.type = DC_DATA_TYPE.GEOTIFF;
         this.layerList.push(dataItem);
       } else if (type.includes("Shapes") && item.type == "shp") {
-        dataItem.type = "SHAPEFILE";
+        dataItem.type = DC_DATA_TYPE.SHAPEFILE;
         this.layerList.push(dataItem);
       }
     })
@@ -103,6 +107,7 @@ export class DataPickComponent {
   fromLayers() {
     this.dataSources = DataSources.LAYER_LIST;
     this.dataResources = this.layerList;
+    this.dataResources.sort(this.compare);
   }
 
 
@@ -113,18 +118,28 @@ export class DataPickComponent {
       this.toast.warning("please login.", "Warning", { timeOut: 3000 });
       return;
     }
-    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId).subscribe({
+    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
       next: res => {
         if (res.error) {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
         } else {
-          this.userDataService.userDatas = res.data;
-          this.dataResources = res.data.filter(item => {
-            return item.type == this.dataType;
-          });
-          this.cdr.markForCheck();
-          this.cdr.detectChanges();
-          console.log(this.dataResources);
+          // this.userDataService.userDatas = res.data;
+          this.dataLength = res.data.totalElements;
+          if (res.data.content) {
+            this.dataResources = res.data.content;
+            this.dataResources = this.dataResources.map(data => {
+              if (data.type == DC_DATA_TYPE.SHAPEFILE) {
+                data.meta = this.utilService.getShpMetaObj(data.meta);
+              } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
+                data.meta = this.utilService.getTiffMetaObj(data.meta);
+              }
+              return data;
+            })
+            this.cdr.markForCheck();
+            this.cdr.detectChanges();
+            // this.dataResources.sort(this.compare);
+            console.log(this.dataResources);
+          }
         }
       },
       error: e => {
@@ -135,15 +150,61 @@ export class DataPickComponent {
 
   fromDataContainer() {
     this.dataSources = DataSources.DATA_CONTAINER;
-    this.userDataService.getDatas(FieldToGetData.BY_MDL_ID, this.data.mdlId).subscribe({
+    this.userDataService.getDatas(FieldToGetData.BY_MDL_ID, this.data.mdlId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
       next: res => {
         if (res.error) {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
         } else {
           if (res.data) {
-            this.dataResources = res.data;
-            this.cdr.markForCheck();
-            this.cdr.detectChanges();
+            this.dataLength = res.data.totalElements;
+            if (res.data.content) {
+              this.dataResources = res.data.content;
+              this.dataResources = this.dataResources.map(data => {
+                if (data.type == DC_DATA_TYPE.SHAPEFILE) {
+                  data.meta = this.utilService.getShpMetaObj(data.meta);
+                } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
+                  data.meta = this.utilService.getTiffMetaObj(data.meta);
+                }
+                return data;
+              })
+              this.cdr.markForCheck();
+              this.cdr.detectChanges();
+            }
+
+            // this.dataResources.sort(this.compare);
+          }
+          console.log(res.data);
+        }
+      },
+      error: e => {
+        console.log(e);
+      }
+    });
+  }
+
+  onPageChange(pageEvent) {
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
+      next: res => {
+        if (res.error) {
+          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+        } else {
+          if (res.data) {
+            this.dataLength = res.data.totalElements;
+            if (res.data.content) {
+              this.dataResources = res.data.content;
+              this.dataResources = this.dataResources.map(data => {
+                if (data.type == DC_DATA_TYPE.SHAPEFILE) {
+                  data.meta = this.utilService.getShpMetaObj(data.meta);
+                } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
+                  data.meta = this.utilService.getTiffMetaObj(data.meta);
+                }
+                return data;
+              })
+              this.cdr.markForCheck();
+              this.cdr.detectChanges();
+            }
           }
           console.log(res.data);
         }
@@ -155,6 +216,7 @@ export class DataPickComponent {
   }
 
   onUploadOutput(ev: any, InputElement: HTMLInputElement) {
+    console.log(ev);
     if (ev.file && ev.type === "addedToQueue") {
       let currentFile = ev.file.nativeFile;
       //* 判断传入的是否为压缩文件
@@ -174,13 +236,13 @@ export class DataPickComponent {
             let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
             switch (extName) {
               case "shp":
-                type = "SHAPEFILE";
+                type = DC_DATA_TYPE.SHAPEFILE;
                 break;
               case "tif":
-                type = "GEOTIFF";
+                type = DC_DATA_TYPE.GEOTIFF;
                 break;
-              case "sgrd":
-                type = "OTHER";
+              case "sdat":
+                type = DC_DATA_TYPE.SDAT;
                 break;
               default:
                 break;
@@ -189,7 +251,7 @@ export class DataPickComponent {
               return false;
             }
           });
-          if (type == this.dataType) {
+          if (type == this.dataType || (type == DC_DATA_TYPE.SDAT && this.dataType == DC_DATA_TYPE.GEOTIFF)) {
             //* 将压缩文件上传至数据容器
             let dataInfo = new DataInfo();
             dataInfo.author = this.userService.user.userId;
@@ -244,11 +306,17 @@ export class DataPickComponent {
         if (res.error) {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
         } else {
-          this.dataResources = res.data.filter(item => {
-            return item.type == this.dataType;
-          });
+          this.dataResources = res.data.map(data => {
+            if (data.type == DC_DATA_TYPE.SHAPEFILE) {
+              data.meta = this.utilService.getShpMetaObj(data.meta);
+            } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
+              data.meta = this.utilService.getTiffMetaObj(data.meta);
+            }
+            return data;
+          })
           this.cdr.markForCheck();
           this.cdr.detectChanges();
+          this.dataResources.sort(this.compare);
           console.log(this.dataResources);
         }
       },
@@ -304,6 +372,15 @@ export class DataPickComponent {
             return dataUploadInfo;
           })
 
+          //* 获取数据的 meta
+          let getMetaList = results.map(item => {
+            if (item.data.id) {
+              return this.userDataService.getMeta(item.data.id);
+            }
+          })
+
+          forkJoin(getMetaList).subscribe();
+
           console.log("resultDatas: ", resultDatas);
           this.inputDataList = resultDatas.concat(datasReady);
           console.log("inputDataList:" + this.inputDataList);
@@ -316,6 +393,19 @@ export class DataPickComponent {
         console.log(error);
         this.toast.warning("Failed to upload datas.", "Warning", { timeOut: 2000 });
       }
+    }
+  }
+
+  compare(v1, v2) {
+    let date1 = new Date(v1.createDate);
+    let date2 = new Date(v2.createDate);
+    let num = date1.getTime() - date2.getTime();
+    if (num > 0) {
+      return -1;
+    } else if (num < 0) {
+      return 1;
+    } else {
+      return 0;
     }
   }
 }

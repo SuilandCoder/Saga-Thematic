@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import proj4 from 'proj4'
-import { VectorStyle, WktProjection, ImageLayer } from "../data_model";
-
+import { VectorStyle, WktProjection, ImageLayer, ShpMeta, TiffMeta } from "../data_model";
+import * as _ from 'lodash';
+import { DC_DATA_TYPE } from "../enum";
 
 @Injectable()
 export class UtilService {
@@ -17,7 +18,7 @@ export class UtilService {
         return new ImageLayer(src, proj, extent);
     }
 
-    ResDataToImageLayer(resData:Object){
+    ResDataToImageLayer(resData: Object) {
         let src = resData['filePosition'];
         let projName = this.getProjByWkt(resData['srs']);
         let proj = new WktProjection(projName, resData['srs']);
@@ -71,7 +72,7 @@ export class UtilService {
         return FeatureType;
     }
 
-    //获取在地图上图层的几何图形的字段数组
+    //*获取在地图上图层的几何图形的字段数组
     getFieldArray(LayerOnMap: any): Array<string> {
         let RsltArray: Array<string> = null;
         if (LayerOnMap && LayerOnMap.getSource() && LayerOnMap.getSource().getFeatures()) {
@@ -84,7 +85,6 @@ export class UtilService {
                         return value !== "geometry";
                     })
                 }
-
             }
         }
         return RsltArray;
@@ -165,30 +165,106 @@ export class UtilService {
     }
 
 
-    getTableFieldArray(file:File,callback){
-       var reader = new FileReader();
-       reader.readAsText(file,"utf-8");
-       var fieldArr = new Array<string>();
-       var filedValue:Array<any>=[];
-       reader.onload = function(evt){
-        var result = reader.result;
-        var res =result.toString();
-        var arr = res.split("\n");
-        arr.forEach((element,index)=>{
-            var elArr = element.split("\t");
-            if(index==0){
-                fieldArr = elArr;
-            }else{
-                var obj={};
-                elArr.forEach((el,elIndex)=>{
-                    obj[fieldArr[elIndex]] = el;
-                })
-                filedValue.push(obj);
-            } 
+    getTableFieldArray(file: File, callback) {
+        var reader = new FileReader();
+        reader.readAsText(file, "utf-8");
+        var fieldArr = new Array<string>();
+        var filedValue: Array<any> = [];
+        reader.onload = function (evt) {
+            var result = reader.result;
+            var res = result.toString();
+            var arr = res.split("\n");
+            arr.forEach((element, index) => {
+                var elArr = element.split("\t");
+                if (index == 0) {
+                    fieldArr = elArr;
+                } else {
+                    var obj = {};
+                    elArr.forEach((el, elIndex) => {
+                        obj[fieldArr[elIndex]] = el;
+                    })
+                    filedValue.push(obj);
+                }
+            })
+            callback(fieldArr, filedValue);
+        }
+    }
+
+    //* 解析shapefile文件的 meta 字符串
+    getShpMetaObj(meta: any) {
+        if (meta == null || meta == undefined) {
+            return meta;
+        }
+        meta = JSON.parse(meta);
+        let shpMeta = new ShpMeta();
+        shpMeta.count = meta.featureCount;
+        shpMeta.name = meta.name;
+        shpMeta.proj = meta.proj;
+        shpMeta.geometry = meta.geometry;
+        shpMeta.fields = meta.fields.map(item => {
+            return { "field": item.Field, "type": item.Type };
         })
-        callback(fieldArr,filedValue);
-       }
-      
+        shpMeta.extent = [];
+        let lower = meta.lowerCorner;
+        let upper = meta.upperCorner;
+        if(lower==null && upper==null){
+            shpMeta.extent =[73,18,126,53]
+        }else if(lower==null){
+            shpMeta.extent = _.concat(upper,upper);
+        }else if(upper==null){
+            shpMeta.extent = _.concat(lower,lower);
+        }else{
+            shpMeta.extent = _.concat(lower,upper);
+        }
+        console.log(JSON.stringify(shpMeta));
+        return shpMeta;
+    }
+
+
+    getTiffMetaObj(meta:any){
+        if (meta == null || meta == undefined) {
+            return meta;
+        }
+        meta = JSON.parse(meta);
+        let tiffMeta = new TiffMeta();
+        tiffMeta.proj = meta.proj;
+        tiffMeta.bandCount = meta.bandCount;
+        tiffMeta.high = meta.high;
+        tiffMeta.low = meta.low;
+        tiffMeta.name = meta.name;
+        tiffMeta.pixelScales = meta.pixelScales;
+        tiffMeta.extent = [];
+        let lower = meta.lowerCorner;
+        let upper = meta.upperCorner;
+        if(lower==null && upper==null){
+            tiffMeta.extent =[73,18,126,53]
+        }else if(lower==null){
+            tiffMeta.extent = _.concat(upper,upper);
+        }else if(upper==null){
+            tiffMeta.extent = _.concat(lower,lower);
+        }else{
+            tiffMeta.extent = _.concat(lower,upper);
+        }
+        console.log(JSON.stringify(tiffMeta));
+        return tiffMeta;
+    }
+
+    parseDataType(sagaType:string){
+        let type:string = "";
+        if(!sagaType){
+            type = DC_DATA_TYPE.OTHER;
+        }else if(sagaType.includes("Shapes list")){
+            type=DC_DATA_TYPE.OTHER;
+        }else if(sagaType.includes("Shapes")){
+            type=DC_DATA_TYPE.SHAPEFILE;
+        }else if(sagaType.includes("Grid list")){
+            type=DC_DATA_TYPE.OTHER;
+        }else if(sagaType.includes("Grid")){
+            type=DC_DATA_TYPE.SDAT;
+        }else{
+            type = DC_DATA_TYPE.OTHER;
+        }
+        return type;
     }
 
 }

@@ -1,3 +1,4 @@
+import { MainPageComponent } from './pages/application/saga-tools/main-page/main-page.component';
 import { MatDialogModule } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { ToastrModule } from 'ngx-toastr';
@@ -15,7 +16,8 @@ import { MainPageModule } from './pages/application/saga-tools/main-page/main-pa
 const routes: Routes = [
   // { path: '', loadChildren: './pages/pages.module#PagesModule' },
   { path: 'saga-tools', loadChildren: './pages/application/saga-tools/main-page/main-page.module#MainPageModule' },
-  { path: 'user', loadChildren: './pages/users/users.module#UsersModule' }
+  { path: 'user', loadChildren: './pages/users/users.module#UsersModule' },
+  { path: "", redirectTo: "saga-tools", pathMatch: 'full' }
 ];
 @NgModule({
   declarations: [

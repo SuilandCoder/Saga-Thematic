@@ -5,33 +5,33 @@
 }
 
 .profile_room {
-    padding-top: 24px;
+    padding-top: 50px;
     padding-bottom: 24px;
     width: 1012px;
     margin-right: auto;
     margin-left: auto;
     display: flex;
+    background-color: #fff;
+    overflow: overlay;
+}
+
+.profile_left{
+    float: left;
+    padding-right: 16px;
+    padding-left: 16px;
+    flex: 1;
 }
 
 .profile_right{
     float: left;
-    padding-right: 16px;
-    padding-left: 16px;
-    padding-top: 30px; 
-    flex: 1;
-}
-
-.profile-right{
-    float: left;
     padding-left: 8px;
-    flex: 3;
+    flex: 5;
 }
 
 .avatarHolder {
     text-align: center;
-
     >img {
-        width: 200px; 
+        width: 100px; 
         display: inline-block;
         overflow: hidden;
         line-height: 1;
@@ -83,7 +83,7 @@
 
         
         &.email{
-          background: url("/src/assets/icon/mailbox.svg");
+          background: url("/assets/icon/mailbox.svg");
         }
     }
     

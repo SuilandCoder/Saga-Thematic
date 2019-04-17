@@ -1,4 +1,4 @@
-import { DataPickComponent } from './../../../../shared/data-pick/data-pick.component';
+
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { Overlay, OverlayModule } from '@angular/cdk/overlay';

@@ -6,7 +6,7 @@
       </button>
       <mat-menu #userMenuTemp='matMenu'>
           <button mat-menu-item [routerLink]='["/user", username]'>Profile</button>
-          <button mat-menu-item [routerLink]='["/user", username, "settings"]'>Setting</button>
+          <!-- <button mat-menu-item [routerLink]='["/user", username, "settings"]'>Setting</button> -->
           <button mat-menu-item (click)='signOut()'>Sign Out</button>
       </mat-menu>
   </div>

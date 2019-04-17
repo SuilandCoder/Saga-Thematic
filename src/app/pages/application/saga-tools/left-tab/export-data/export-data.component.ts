@@ -147,7 +147,4 @@ export class ExportDataComponent implements OnInit, AfterViewInit {
       })
     }
   }
-
-
-
 }
