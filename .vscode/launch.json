@@ -4,6 +4,15 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program":"${workspaceFolder}\\src\\app\\_common\\scripts\\addClassifyOid.js"
+            // "program":"${workspaceFolder}\\src\\app\\_common\\scripts\\checkUniqueName.js"
+        },
         {
             "type": "chrome",
             "request": "launch",
@@ -13,7 +22,7 @@
             "webRoot": "${workspaceRoot}",
             "trace": true,
             "userDataDir": "${workspaceRoot}/.vscode/chrome",
-            // "program": "${workspaceFolder}\\src\\app\\scripts\\generateNg2TreeJson.js"
+            // "program": "${workspaceFolder}\\src\\app\\_common\\scripts\\addClassifyOid.js"
         }
     ]
 }

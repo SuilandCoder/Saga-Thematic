@@ -17,7 +17,7 @@ const routes: Routes = [
   // { path: '', loadChildren: './pages/pages.module#PagesModule' },
   { path: 'saga-tools', loadChildren: './pages/application/saga-tools/main-page/main-page.module#MainPageModule' },
   { path: 'user', loadChildren: './pages/users/users.module#UsersModule' },
-  { path: "", redirectTo: "MainPageComponent", pathMatch: 'full' }
+  { path: "", redirectTo: "saga-tools", pathMatch: 'full' }
 ];
 @NgModule({
   declarations: [

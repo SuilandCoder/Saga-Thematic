@@ -349,7 +349,7 @@ export class OlMapService {
         console.log("layerName:", layerName);
         let newLayer = new ol.layer.Tile({
             source: new ol.source.TileWMS({
-                url: this.geoserverWfsUrl,
+                url: this.geoserverWmsUrl,
                 params: {
                     'LAYERS': layerName,
                     'TILED': false
