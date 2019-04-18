@@ -46,7 +46,7 @@ span i {
 
 .layer-name {
     float: left;
-    max-width: 250px;
+    max-width: 200px;
     min-width: 100px;
     white-space: nowrap;
     border-radius: 0px;

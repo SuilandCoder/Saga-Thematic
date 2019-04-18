@@ -30,6 +30,7 @@ div[nz-col].Coordinates {
     border-radius: 0px;
     text-overflow: ellipsis;
     overflow: hidden;
+    float: right;
 }
 .crs-icon{
     display: inline-block;

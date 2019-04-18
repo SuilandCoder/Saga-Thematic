@@ -1,4 +1,4 @@
-<div class="record_room">
+<div class="scrollbar record_room" [style.height]="toolRecordHeight.toString()+'px'">
   <div class="record_item" *ngFor="let item of toolRecords">
     <div class="top">
       <span class="tool_name">{{item.toolName}}</span>

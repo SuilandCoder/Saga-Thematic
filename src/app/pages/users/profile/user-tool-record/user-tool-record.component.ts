@@ -10,7 +10,7 @@ import { ToolRecord } from 'src/app/_common';
   styleUrls: ['./user-tool-record.component.scss']
 })
 export class UserToolRecordComponent implements OnInit {
-
+  toolRecordHeight:number;
   toolRecords: Array<ToolRecord>;
   constructor(
     private userService: UserService,
@@ -18,6 +18,11 @@ export class UserToolRecordComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.toolRecordHeight = window.innerHeight*0.9-80;
+    window.addEventListener('resize',()=>{
+      this.toolRecordHeight = window.innerHeight*0.9-80;
+    })
+
     //* 获取用户运行的模型记录
     if (this.userService.isLogined) {
       let userId = this.userService.user.userId;

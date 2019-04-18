@@ -16,6 +16,8 @@ export interface DialogData {
 })
 export class ToolListComponent implements OnInit {
 
+  toolListHeight: number;
+
   public CurrentIndex = 1;
   CurrentSelected: any;
   public ButtonText = 'Next';
@@ -34,6 +36,12 @@ export class ToolListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.toolListHeight = window.innerHeight * 0.9-65;
+    window.addEventListener('resize', () => {
+      this.toolListHeight = window.innerHeight * 0.9-65;
+    })
+
+
     this.initTree();
     this.CurrentSelected = null;
     this.tree.loadChildren = (callback => {

@@ -60,8 +60,10 @@ export class SignUpComponent implements OnInit {
 
   equalValidator(ctrl) {
     // console.log('this in customer-validator: ', this)
+    console.log("value:",ctrl.value.value);
+    console.log("repeat:",ctrl.value.repeat);
     if (ctrl.value.value === ctrl.value.repeat) {
-      return null;
+      return  null;
     }
     else {
       return {

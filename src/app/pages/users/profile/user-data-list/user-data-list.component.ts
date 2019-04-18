@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class UserDataListComponent implements OnInit {
 
+  dataListHeight:number;
   userDatas: Array<DataInfo>;
   pageIndex: number = 0;
   pageSize: number = 10;
@@ -24,6 +25,11 @@ export class UserDataListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.dataListHeight = window.innerHeight*0.9-80;
+    window.addEventListener("resize",()=>{
+      this.dataListHeight = window.innerHeight*0.9-80;
+    })
+
     if (this.userService.isLogined) {
       this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
         next: res => {

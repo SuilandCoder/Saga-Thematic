@@ -1,4 +1,48 @@
-<div class=" layer-container scrollbar bg_color max_w_6" [style.height]="LayersListHeight.toString()+'px'">
+<div class="layer-container scrollbar bg_color max_w_6" [style.height]="LayersListHeight.toString()+'px'">
+  <button class="closeLeft" (click)="leftSideToogle()">
+    <i *ngIf="opened; else left" class="fa fa-chevron-left" aria-hidden="true"></i>
+    <ng-template #left>
+      <i class="fa fa-chevron-right" aria-hidden="true"></i>
+    </ng-template>
+  </button>
+  <div class="full_extent">
+    <a href="javascript:;" style="text-align:center" title="full extent" (click)="onFullExtentClick()">
+      <img src="assets/images/map/full_extent.png" alt="">
+    </a>
+  </div>
+  <div class="map_control">
+    <a href="javascript:;" style="text-align:center" title="" [matMenuTriggerFor]="menu">
+      <img src="assets/images/map/bottomLayer.png" alt="">
+    </a>
+    <mat-menu #menu="matMenu">
+      <div class="map_layer_item osm" >
+        <span class="map_type">osm:</span>
+        <a href="javascript:;" (click)="addOnlineLayer_test('osm')">
+          <img class="thumbnail_map" src="assets/images/map/osm.png" alt="">
+        </a>
+      </div>
+
+      <div class="map_layer_item tdt" >
+        <span class="map_type">天地图:</span>
+        <a href="javascript:;" (click)="addOnlineLayer_test('TDT')">
+          <img class="thumbnail_map" src="assets/images/map/tdt1.png" alt="">
+        </a>
+        <a href="javascript:;" (click)="addOnlineLayer_test('TDT_img')">
+          <img class="thumbnail_map" src="assets/images/map/tdt2.png" alt="">
+        </a>
+      </div>
+
+      <div class="map_layer_item bing" >
+        <span class="map_type">Bing Map:</span>
+        <a href="javascript:;" (click)="addOnlineLayer_test('Road')">
+          <img class="thumbnail_map" src="assets/images/map/road.png" alt="">
+        </a>
+        <a href="javascript:;" (click)="addOnlineLayer_test('AerialWithLabels')">
+          <img class="thumbnail_map" src="assets/images/map/ariel.png" alt="">
+        </a>
+      </div>
+    </mat-menu>
+  </div>
   <nz-tabset (nzSelectChange)="onTabChanged($event)">
     <nz-tab [nzTitle]="TabItems[0]">
       <span>
@@ -16,6 +60,6 @@
       <span>
         <app-data-list></app-data-list>
       </span>
-    </nz-tab> 
-  </nz-tabset> 
+    </nz-tab>
+  </nz-tabset>
 </div>

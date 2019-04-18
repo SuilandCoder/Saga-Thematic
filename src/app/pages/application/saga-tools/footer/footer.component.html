@@ -27,14 +27,14 @@
       <span *ngIf="StateShowFlag" class="state-text" [title]="StateInfo">{{StateInfo}}</span>
     </div>
 
-    <div nz-col class="Coordinates" [nzSpan]="6">
+    <div nz-col class="Coordinates" [nzSpan]="3">
       <span>
         <i class="fa fa-map-marker" aria-hidden="true" title="Coordinates"></i>
         {{Coordinates?(Coordinates.x|number:'1.1-5'):''}}{{Coordinates?'，':''}}{{Coordinates?(Coordinates.y|number:'1.1-5'):''}}
       </span>
     </div>
 
-    <div nz-col [nzSpan]="4">
+    <!-- <div nz-col [nzSpan]="4">
       <span [title]="Unit">
         <strong>Unit: </strong>{{Unit}}
       </span>
@@ -42,8 +42,7 @@
 
     <div nz-col [nzSpan]="4">
 
-        <!-- all projection -->
-        <!-- <app-projection-list [class.show]="ShowSwitchProjectionFlag"></app-projection-list> -->
+        <app-projection-list [class.show]="ShowSwitchProjectionFlag"></app-projection-list>
         <span class="crs-icon"><i class="fa fa-globe" aria-hidden="true"></i></span>
         <span title="CRS Name" class="crs-text noselect" (click)="switchProjection()"> {{CrsName}}</span>
 
@@ -53,6 +52,6 @@
       <span title="download map">
         <i class="fa fa-cloud-download" (click)="downloadMap()" aria-hidden="true"></i>
       </span>
-    </div>
+    </div> -->
   </div>
 </div>

@@ -1,3 +1,4 @@
+import { MainPageModule } from './../main-page/main-page.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -16,6 +17,7 @@ import { MatIconModule, MatMenuModule } from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import { SharedModule } from 'src/app/_common';
 import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.component';
+import { RightBarComponent } from '../right-bar/right-bar.component';
 @NgModule({
   imports: [
     SharedModule,
@@ -24,7 +26,7 @@ import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.co
     NgZorroAntdModule,
     NgxUploaderModule,
     MatDialogModule, 
-    FormsModule,
+    FormsModule
   ],
   declarations: [
     RightTabComponent,

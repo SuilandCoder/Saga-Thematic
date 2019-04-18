@@ -144,6 +144,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
 
     //获取在线图层
     this.dataTransmissionService.getOnlineLayerSubject().subscribe(onlineLayerId => {
+      this.dataTransmissionService.sendVisibleMapSubject(onlineLayerId);
       let findOnlineLayer: any = this.globeConfigService.onlineLayers.find(value => {
         return value["id"] === onlineLayerId;
       })
@@ -193,26 +194,13 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       }
       this.LayerItems.splice(0, 0, newItem);
       newItem.visible = !newItem.visible;
-      // this.olMapService.getWFSGeojsonData(geoserverDataInfo.layerName).subscribe({
-      //   next: res=>{
-      //      if (res.error) {
-      //       this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-      //     } else {
-      //       console.log(res);
-      //       let geoJsonLayer = {'geojson':JSON.stringify(res),'proj':""};
-      //       this.olMapService.addVectorLayer(new GeoJsonLayer(newItem.dataId, geoJsonLayer));
-      //     }
-      //   },
-      //   error: e=>{
-      //     console.error(e);
-      //   }
-      // })
 
       this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo);
       newItem.isOnMap = true;
       newItem.layerShowing = false;
     });
-    this.dataTransmissionService.sendOnlineLayerSubject("TDT");
+    // this.dataTransmissionService.sendOnlineLayerSubject("TDT");
+    this.dataTransmissionService.sendOnlineLayerSubject("osm");
   }
 
   ngAfterViewInit() {
@@ -246,8 +234,8 @@ export class LayerListComponent implements OnInit, AfterViewInit {
     }
     //! 已经在地图上
     if (currentItem.isOnMap) {
-      this.dataTransmissionService.sendVisibleByIdSubject(currentItem.dataId);
       currentItem.visible = !layerItem.visible;
+      this.dataTransmissionService.sendVisibleByIdSubject(currentItem.dataId);
       this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
       return;
     }
@@ -558,8 +546,8 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         case "REMOVE":
           //删除选中的item
           if (this.SelectedLayerItem) {
-            this.dataTransmissionService.sendDeleteLayerSubject(this.SelectedLayerItemId);
             this.LayerItems.splice(this.LayerItems.indexOf(this.SelectedLayerItem), 1);
+            this.dataTransmissionService.sendDeleteLayerSubject(this.SelectedLayerItemId);
             this.SelectedLayerItemId = null;
           }
           break;

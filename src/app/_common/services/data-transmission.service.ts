@@ -8,6 +8,10 @@ export class DataTransmissionService {
         console.log("init data DataTransmissionService");
     }
 
+
+    //获取当前可见底图的id->用于右下角版权信息切换
+    private visibleMapSubject = new Subject<any>();
+
     //输出数据添加进 output列表
     private OutputDataSubject = new Subject<any>();
     
@@ -82,6 +86,11 @@ export class DataTransmissionService {
     //当重设投影范围时
     private ViewExtentSubject = new Subject<Array<number>>();
 
+
+
+    sendVisibleMapSubject(id:string){
+        this.visibleMapSubject.next(id);
+    }
 
     sendOutputDataSubject(toolDataInfo:ToolDataInfo){
         this.OutputDataSubject.next(toolDataInfo);
@@ -196,6 +205,9 @@ export class DataTransmissionService {
     }
 
 
+    getVisibleMapSubject():Observable<string>{
+        return this.visibleMapSubject.asObservable();
+    }
 
     getOutputDataSubject():Observable<ToolDataInfo>{
         return this.OutputDataSubject.asObservable();

@@ -1,4 +1,4 @@
-<div class="data_list_container">
+<div class="scrollbar data_list_container" [style.height]="dataListHeight.toString()+'px'">
   <div class="list_item_room" *ngFor="let item of userDatas">
     <div class="left_img">
       <img  *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">

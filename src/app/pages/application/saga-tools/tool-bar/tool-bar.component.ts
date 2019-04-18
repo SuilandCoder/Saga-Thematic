@@ -3,7 +3,7 @@ import { DataTransmissionService } from 'src/app/_common'
 @Component({
   selector: 'app-tool-bar',
   templateUrl: './tool-bar.component.html',
-  styleUrls: ['./tool-bar.component.css']
+  styleUrls: ['./tool-bar.component.scss']
 })
 export class ToolBarComponent implements OnInit {
 

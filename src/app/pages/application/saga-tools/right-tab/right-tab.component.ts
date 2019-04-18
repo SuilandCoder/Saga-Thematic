@@ -21,6 +21,7 @@ import * as _ from 'lodash';
 export class RightTabComponent implements OnInit {
   subscription: Subscription;
   LayersListHeight: number;
+  toolDesHeight:number;
   toolInfo;
   private inputParams: Array<ToolParam>;
   private outputParams: Array<ToolParam>;
@@ -54,6 +55,12 @@ export class RightTabComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.LayersListHeight = window.innerHeight * 0.9;
     })
+
+    this.toolDesHeight = window.innerHeight*0.9-65;
+    window.addEventListener('resize', () => {
+      this.toolDesHeight = window.innerHeight * 0.9-65;
+    })
+
     this.TabItems = ['Description', 'Settings'];
     this.subscription = this.toolService.getModelInfoMessage().subscribe(({ path, id }) => {
       this.path = path;

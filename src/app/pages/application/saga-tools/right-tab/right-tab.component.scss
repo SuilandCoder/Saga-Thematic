@@ -10,31 +10,39 @@
   // margin-right: 25px;
 }
 
+.right_tab{
+  margin-bottom: 0px;
+  margin-left: 30px;
+  margin-right: 30px;
+  background-color: #fffd;
+  width: 350px;
+}
+
 nz-tabset {
   text-align: center;
   height: 100%;
-  overflow-y: auto;
+  // overflow-y: auto;
 }
 
 app-tool-setting {
-  padding: 20px 0 0 20px;
+  // padding: 20px 0 0 20px;
 }
 
-#tool_description {
+.tool_description {
   text-align: initial;
   margin-left: 20px;
-  margin-right: 40px;
+  // margin-right: 40px;
   margin-bottom: 20px;
   // max-height: 800px;
-  overflow: hidden;
+  overflow: auto;
 }
 
-#tool_settings {
+.tool_settings {
   overflow-x: auto;
 }
 
 .bg_color {
-  background-color: #fff;
+  background-color: #fffb;
 }
 
 .max_w {
@@ -45,12 +53,16 @@ app-tool-setting {
   width: 400px;
 }
 
+.w_350{
+  width:350px;
+}
+
 
 .closeRight {
   position: absolute;
   margin-left: -20px;
   height: 43px;
-  background-color: #fff;
+  background-color: #fffb;
   border: none;
 }
 
@@ -109,3 +121,5 @@ label {
     height: 500px;
   }
 }
+
+

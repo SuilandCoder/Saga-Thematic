@@ -9,6 +9,7 @@ import { Overlay,OverlayModule } from '@angular/cdk/overlay';
 import { LayerListModule } from './layer-list/layer-list.module';
 import { DataListComponent } from './data-list/data-list.component';
 import { ToolListComponent } from './tool-list/tool-list.component';
+import { MatMenuModule } from '@angular/material';
 @NgModule({
     imports: [
         SharedModule,
@@ -17,6 +18,7 @@ import { ToolListComponent } from './tool-list/tool-list.component';
         NgZorroAntdModule,
         LayerListModule,
         TreeModule,
+        MatMenuModule,
         MatDialogModule, 
     ],
     declarations: [

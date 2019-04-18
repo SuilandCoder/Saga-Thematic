@@ -17,6 +17,7 @@ import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.co
   styleUrls: ['./tool-setting.component.scss']
 })
 export class ToolSettingComponent implements OnInit {
+  toolSettingHeight:number;
   @Input() toolInfo;
   inputParams: Array<ToolParam>;
   private outputParams: Array<ToolParam>;
@@ -46,6 +47,12 @@ export class ToolSettingComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+    this.toolSettingHeight = window.innerHeight*0.9-65;
+    window.addEventListener('resize', () => {
+      this.toolSettingHeight = window.innerHeight * 0.9-65;
+    })
+
     if (this.toolInfo["parameters"][0]) {
       this.inputParams = this.toolInfo["parameters"][0]["inputs"];
     }

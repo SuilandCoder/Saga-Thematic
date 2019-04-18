@@ -7,24 +7,24 @@
       <div class="form-horizontal">
         <form [formGroup]='signUpFG'>
           <mat-form-field>
-            <input matInput placeholder='Username' formControlName='userId'>
-            <mat-error *ngIf='"required"'>必填</mat-error>
+            <input matInput placeholder='Username' formControlName='userId' required>
+            <!-- <mat-error *ngIf='"required"'>必填</mat-error> -->
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="Email" formControlName='email'>
-            <mat-error *ngIf='"required"'>必填</mat-error>
+            <input matInput placeholder="Email" formControlName='email' required>
+            <!-- <mat-error *ngIf='"required"'>必填</mat-error> -->
             <mat-error *ngIf='"email"'>邮件格式不对</mat-error>
           </mat-form-field>
           <ng-container formGroupName='password'>
             <mat-form-field>
-              <input [type]='hide? "password": "text"' matInput placeholder="Password" formControlName='value'>
-              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-              <mat-error *ngIf='"required"'>必填</mat-error>
+              <input [type]='hide? "password": "text"' matInput placeholder="Password" formControlName='value' required>
+              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              <!-- <mat-error *ngIf='"required"'>必填</mat-error> -->
             </mat-form-field>
             <mat-form-field>
-              <input [type]='hideRepeat? "password": "text"' matInput placeholder="Password repeat" formControlName='repeat'>
-              <mat-icon matSuffix (click)="hideRepeat = !hideRepeat">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-              <mat-error *ngIf='"required"'>必填</mat-error>
+              <input [type]='hideRepeat? "password": "text"' matInput placeholder="Password repeat" formControlName='repeat'required>
+              <mat-icon matSuffix (click)="hideRepeat = !hideRepeat">{{hideRepeat ? 'visibility_off' : 'visibility'}}</mat-icon>
+              <!-- <mat-error *ngIf='"required"'>必填</mat-error> -->
               <mat-error *ngIf='"passwordEqual"'>密码不匹配</mat-error>
             </mat-form-field>
           </ng-container>
