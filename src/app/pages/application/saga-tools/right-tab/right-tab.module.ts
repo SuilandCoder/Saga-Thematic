@@ -1,3 +1,4 @@
+import { UploadListComponent } from './../../../../_common/shared/upload-list/upload-list.component';
 import { MainPageModule } from './../main-page/main-page.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkTreeModule } from '@angular/cdk/tree';
@@ -38,6 +39,7 @@ import { RightBarComponent } from '../right-bar/right-bar.component';
   entryComponents:[
     ListInputDialog,
     DataPickComponent,
+    UploadListComponent,
   ],
   exports:[
     RightTabComponent

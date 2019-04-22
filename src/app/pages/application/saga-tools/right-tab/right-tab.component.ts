@@ -21,7 +21,7 @@ import * as _ from 'lodash';
 export class RightTabComponent implements OnInit {
   subscription: Subscription;
   LayersListHeight: number;
-  toolDesHeight:number;
+  toolDesHeight: number;
   toolInfo;
   private inputParams: Array<ToolParam>;
   private outputParams: Array<ToolParam>;
@@ -56,9 +56,9 @@ export class RightTabComponent implements OnInit {
       this.LayersListHeight = window.innerHeight * 0.9;
     })
 
-    this.toolDesHeight = window.innerHeight*0.9-65;
+    this.toolDesHeight = window.innerHeight * 0.9 - 65;
     window.addEventListener('resize', () => {
-      this.toolDesHeight = window.innerHeight * 0.9-65;
+      this.toolDesHeight = window.innerHeight * 0.9 - 65;
     })
 
     this.TabItems = ['Description', 'Settings'];
@@ -78,6 +78,10 @@ export class RightTabComponent implements OnInit {
     if (this.userDataService.userDatas != null) {
       this.userDatas = this.userDataService.userDatas;
     }
+  }
+
+  openMyDialog() {
+    this.dataTransmissionService.sendUploadListControlSubject();
   }
 
   onTabChanged(nzTabChangeEvent: NzTabChangeEvent) { }
@@ -199,7 +203,7 @@ export class RightTabComponent implements OnInit {
                         let meta = metaRes.data;
                         if (this.newData.type === DC_DATA_TYPE.SHAPEFILE) {
                           this.newData.meta = this.utilService.getShpMetaObj(meta);
-                        } else if (this.newData.type == DC_DATA_TYPE.GEOTIFF || this.newData.type==DC_DATA_TYPE.SDAT) {
+                        } else if (this.newData.type == DC_DATA_TYPE.GEOTIFF || this.newData.type == DC_DATA_TYPE.SDAT) {
                           this.newData.meta = this.utilService.getTiffMetaObj(meta);
                         }
                       }

@@ -49,6 +49,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   //   source: new ol.source.OSM()
   // });
 
+
   private BingLayer = new ol.layer.Tile({
     preload: Infinity,
     source: new ol.source.BingMaps({

@@ -1,5 +1,5 @@
 <div class="data_list_container" [style.height]="userDataContainerHeight.toString()+'px'">
-  <div class="btn_container">
+  <!-- <div class="btn_container">
     <mat-button-toggle-group #group="matButtonToggleGroup">
       <mat-button-toggle checked value="list">
         <i class="material-icons">
@@ -12,9 +12,9 @@
         </i>
       </mat-button-toggle>
     </mat-button-toggle-group>
-  </div>
-  <div *ngIf="group.value=='list' else grid">
-    <div class="list_item_room" *ngFor="let item of userDatas">
+  </div> -->
+  <div >
+    <div class="list_item_room" *ngFor="let item of userData trackBy:trackByDataId">
       <div class="left_img">
         <img  *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">
         <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiLineString'||item.meta.geometry=='LineString')" src="assets/images/data/line-vector.png" alt="">
@@ -43,7 +43,7 @@
       </div>
     </div>
   </div>
-  <mat-paginator *ngIf="dataLength>12" [length]="dataLength" [pageSizeOptions]="[12,24,36]" [pageSize]="pageSize" [pageIndex]='pageIndex'
+  <mat-paginator *ngIf="dataLength>12" [length]="dataLength" [pageSize]="pageSize" [pageIndex]='pageIndex'
     (page)="onPageChange($event)">
   </mat-paginator>
 </div>

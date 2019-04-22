@@ -17,7 +17,7 @@ export class DataListComponent implements OnInit {
 
   @Input()
   newData: DataInfo;
-  userDatas: Array<DataInfo>;
+  userData: Array<DataInfo>;
   pageIndex: number = 0;
   pageSize: number = 12;
   dataLength: number;
@@ -36,32 +36,11 @@ export class DataListComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
     })
-    if (this.userService.isLogined) {
-      this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
-        next: res => {
-          if (res.error) {
-            this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-          } else {
-            this.dataLength = res.data.totalElements;
-            if (res.data.content) {
-              this.userDatas = res.data.content;
-              this.userDatas = this.userDatas.map(data => {
-                if (data.type == DC_DATA_TYPE.SHAPEFILE) {
-                  data.meta = this.utilService.getShpMetaObj(data.meta);
-                } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type==DC_DATA_TYPE.SDAT) {
-                  data.meta = this.utilService.getTiffMetaObj(data.meta);
-                }
-                return data;
-              })
-              console.log("用户数据", this.userDatas);
-            }
-          }
-        },
-        error: e => {
-          console.log(e);
-        }
-      });
-    }
+    this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+
+    this.dataTransmissionService.getLoadUserDataSubject().subscribe(_=>{
+      this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -70,16 +49,44 @@ export class DataListComponent implements OnInit {
     console.log("数据列表变化", changes);
     if (changes["newData"] && !changes["newData"].firstChange) {
       let newData = changes["newData"].currentValue;
-      this.userDatas.splice(0, 0, newData);
+      this.userData.splice(0, 0, newData);
       // this.cdr.markForCheck();
       // this.cdr.detectChanges();
-      console.log("更新后的数据：", this.userDatas);
+      console.log("更新后的数据：", this.userData);
     }
+  }
+
+  loadUserData(userName:string,filter:any){
+    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, userName, filter).subscribe({
+      next: res => {
+        if (res.error) {
+          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+        } else {
+          if (res.data.content) {
+            this.userData = res.data.content;
+            this.dataLength = res.data.totalElements;
+            this.userData = this.userData.map(data => {
+              if (data.type == DC_DATA_TYPE.SHAPEFILE) {
+                data.meta = this.utilService.getShpMetaObj(data.meta);
+              } else if (data.type == DC_DATA_TYPE.GEOTIFF|| data.type==DC_DATA_TYPE.SDAT) {
+                data.meta = this.utilService.getTiffMetaObj(data.meta);
+              }
+              return data;
+            })
+            // this.userData.sort(this.compare);
+            console.log(this.userData);
+          }
+        }
+      },
+      error: e => {
+        console.log(e);
+      }
+    });
   }
 
 
   // addToLayer(dataInfo: DataInfo) {
-  //   this.userDataService.addToLayer(dataInfo);
+  //   this.userDataervice.addToLayer(dataInfo);
   // }
 
 
@@ -95,7 +102,7 @@ export class DataListComponent implements OnInit {
               this.toast.warning(res.error, "Warning", { timeOut: 2000 });
             } else {
               dataInfo = res.data;
-              this.userDatas = this.updateData(dataInfo, this.userDatas)
+              this.userData = this.updateData(dataInfo, this.userData)
               console.log("geoserver服务发布成功:", dataInfo.layerName);
               //* 发布成功，将数据添加至图层：
               this.dataTransmissionService.sendMCGeoServerSubject(dataInfo);
@@ -117,31 +124,11 @@ export class DataListComponent implements OnInit {
   onPageChange(pageEvent) {
     this.pageIndex = pageEvent.pageIndex;
     this.pageSize = pageEvent.pageSize;
-    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
-      next: res => {
-        if (res.error) {
-          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-        } else {
-          if (res.data.content) {
-            this.userDatas = res.data.content;
-            this.dataLength = res.data.totalElements;
-            this.userDatas = this.userDatas.map(data => {
-              if (data.type == DC_DATA_TYPE.SHAPEFILE) {
-                data.meta = this.utilService.getShpMetaObj(data.meta);
-              } else if (data.type == DC_DATA_TYPE.GEOTIFF|| data.type==DC_DATA_TYPE.SDAT) {
-                data.meta = this.utilService.getTiffMetaObj(data.meta);
-              }
-              return data;
-            })
-            // this.userDatas.sort(this.compare);
-            console.log(this.userDatas);
-          }
-        }
-      },
-      error: e => {
-        console.log(e);
-      }
-    });
+    this.loadUserData(this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+  }
+
+  trackByDataId(index:number,data:DataInfo){
+    return data.id;
   }
 
   updateData(dataItem: DataInfo, dataList: Array<DataInfo>) {

@@ -28,13 +28,13 @@
     </button>
 
     <div class="user_data_title">
-      <label class="upload-button">
-        <input type="file" ngFileSelect #fileInput (uploadOutput)="onUploadOutput($event,fileInput)" (beforeUpload)='beforeFileUpload($event)'>
-        <i class="fa fa-plus upload-tag" aria-hidden="true" title="add layer"></i>
+      <label class="upload-button" (click)="openMyDialog()">
+        <!-- <input type="file" ngFileSelect #fileInput (uploadOutput)="onUploadOutput($event,fileInput)" (beforeUpload)='beforeFileUpload($event)'> -->
+        <i class="fa fa-plus upload-tag" aria-hidden="true"></i>
         <span>File Upload</span>
       </label>
     </div> 
-
+    
     <share-data-list [newData] = "newData"></share-data-list>
   </div>
 </ng-template>

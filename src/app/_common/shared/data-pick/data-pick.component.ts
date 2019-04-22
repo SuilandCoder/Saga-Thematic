@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 import { forkJoin } from "rxjs/observable/forkJoin";
 import { LayerItem, DataInfo, DataUploadInfo } from '../../data_model';
 import { FieldToGetData } from '../../enum';
-import { UtilService } from '../../services';
+import { UtilService, DataTransmissionService } from '../../services';
 
 enum DataSources {
   LOCAL = 1,
@@ -58,6 +58,7 @@ export class DataPickComponent {
     private toast: ToastrService,
     private cdr: ChangeDetectorRef,
     private utilService: UtilService,
+    private dataTransmissionService:DataTransmissionService,
     @Inject(MAT_DIALOG_DATA) public data: LayerData
   ) { }
 
@@ -103,6 +104,8 @@ export class DataPickComponent {
 
   fromLocal() {
     this.dataSources = DataSources.LOCAL;
+    this.dialogRef.close("on loading");
+    this.dataTransmissionService.sendUploadListControlSubject();
   }
   fromLayers() {
     this.dataSources = DataSources.LAYER_LIST;

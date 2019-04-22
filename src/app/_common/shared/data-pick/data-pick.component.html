@@ -4,8 +4,8 @@
     <button class="btn_add_data" mat-stroked-button [matMenuTriggerFor]="menu">add data</button>
     <mat-menu #menu="matMenu">
       <label mat-menu-item class="upload-button" (click)="fromLocal()">
-        <input type="file" ngFileSelect accept="application/zip" #fileInput
-          (uploadOutput)="onUploadOutput($event,fileInput)" />
+        <!-- <input type="file" ngFileSelect accept="application/zip" #fileInput
+          (uploadOutput)="onUploadOutput($event,fileInput)" /> -->
         <span style="margin-bottom:25px">From Local Data</span>
       </label>
       <!-- <button mat-menu-item (click)="fromLayers()">From Layer List</button> -->

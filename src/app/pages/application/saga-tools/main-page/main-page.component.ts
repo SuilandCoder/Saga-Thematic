@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToolService } from 'src/app/_common/services/tool.service';
+import { DataTransmissionService } from 'src/app/_common';
 
 @Component({
   selector: 'app-main-page',
@@ -19,9 +20,10 @@ export class MainPageComponent implements OnInit {
   right_tag = "";
 
   rightDock = false;
-
+  private showUploadList:boolean = false;
   constructor(
-    private toolService:ToolService
+    private toolService:ToolService,
+    private dataTransmissionService:DataTransmissionService,
   ) { 
 
   }
@@ -41,6 +43,10 @@ export class MainPageComponent implements OnInit {
 
     this.toolService.getRightSideMessage().subscribe(_=>{
       this.rightOpened = !this.rightOpened;
+    })
+
+    this.dataTransmissionService.getUploadListControlSubject().subscribe(_=>{
+      this.showUploadList = !this.showUploadList;
     })
   }
 

@@ -1,8 +1,11 @@
 import { Injectable } from "@angular/core";
+import * as SparkMd5 from "spark-md5";
 import proj4 from 'proj4'
-import { VectorStyle, WktProjection, ImageLayer, ShpMeta, TiffMeta } from "../data_model";
+import { VectorStyle, WktProjection, ImageLayer, ShpMeta, TiffMeta, DataInfo } from "../data_model";
 import * as _ from 'lodash';
 import { DC_DATA_TYPE } from "../enum";
+import { Observable } from "rxjs";
+import * as JSZip from 'jszip';
 
 @Injectable()
 export class UtilService {
@@ -207,21 +210,21 @@ export class UtilService {
         shpMeta.extent = [];
         let lower = meta.lowerCorner;
         let upper = meta.upperCorner;
-        if(lower==null && upper==null){
-            shpMeta.extent =[73,18,126,53]
-        }else if(lower==null){
-            shpMeta.extent = _.concat(upper,upper);
-        }else if(upper==null){
-            shpMeta.extent = _.concat(lower,lower);
-        }else{
-            shpMeta.extent = _.concat(lower,upper);
+        if (lower == null && upper == null) {
+            shpMeta.extent = [73, 18, 126, 53]
+        } else if (lower == null) {
+            shpMeta.extent = _.concat(upper, upper);
+        } else if (upper == null) {
+            shpMeta.extent = _.concat(lower, lower);
+        } else {
+            shpMeta.extent = _.concat(lower, upper);
         }
         console.log(JSON.stringify(shpMeta));
         return shpMeta;
     }
 
 
-    getTiffMetaObj(meta:any){
+    getTiffMetaObj(meta: any) {
         if (meta == null || meta == undefined) {
             return meta;
         }
@@ -236,35 +239,131 @@ export class UtilService {
         tiffMeta.extent = [];
         let lower = meta.lowerCorner;
         let upper = meta.upperCorner;
-        if(lower==null && upper==null){
-            tiffMeta.extent =[73,18,126,53]
-        }else if(lower==null){
-            tiffMeta.extent = _.concat(upper,upper);
-        }else if(upper==null){
-            tiffMeta.extent = _.concat(lower,lower);
-        }else{
-            tiffMeta.extent = _.concat(lower,upper);
+        if (lower == null && upper == null) {
+            tiffMeta.extent = [73, 18, 126, 53]
+        } else if (lower == null) {
+            tiffMeta.extent = _.concat(upper, upper);
+        } else if (upper == null) {
+            tiffMeta.extent = _.concat(lower, lower);
+        } else {
+            tiffMeta.extent = _.concat(lower, upper);
         }
         console.log(JSON.stringify(tiffMeta));
         return tiffMeta;
     }
 
-    parseDataType(sagaType:string){
-        let type:string = "";
-        if(!sagaType){
+    parseDataType(sagaType: string) {
+        let type: string = "";
+        if (!sagaType) {
             type = DC_DATA_TYPE.OTHER;
-        }else if(sagaType.includes("Shapes list")){
-            type=DC_DATA_TYPE.OTHER;
-        }else if(sagaType.includes("Shapes")){
-            type=DC_DATA_TYPE.SHAPEFILE;
-        }else if(sagaType.includes("Grid list")){
-            type=DC_DATA_TYPE.OTHER;
-        }else if(sagaType.includes("Grid")){
-            type=DC_DATA_TYPE.SDAT;
-        }else{
+        } else if (sagaType.includes("Shapes list")) {
+            type = DC_DATA_TYPE.OTHER;
+        } else if (sagaType.includes("Shapes")) {
+            type = DC_DATA_TYPE.SHAPEFILE;
+        } else if (sagaType.includes("Grid list")) {
+            type = DC_DATA_TYPE.OTHER;
+        } else if (sagaType.includes("Grid")) {
+            type = DC_DATA_TYPE.SDAT;
+        } else {
             type = DC_DATA_TYPE.OTHER;
         }
         return type;
+    }
+
+    getFileMd5(file: File, chunkSize: number = 5242880): Observable<any> {
+        let blobSlice = File.prototype.slice,                     // Read in chunks of 2MB
+            chunks = Math.ceil(file.size / chunkSize),
+            currentChunk = 0,
+            spark = new SparkMd5.ArrayBuffer(),
+            fileReader = new FileReader();
+
+        return Observable.create(observer => {
+            fileReader.onload = function (e: any) {
+                console.log('read chunk nr', currentChunk + 1, 'of', chunks);
+                spark.append(e.target.result);                   // Append array buffer
+                currentChunk++;
+
+                if (currentChunk < chunks) {
+                    loadNext();
+                } else {
+                    console.log('finished loading');
+
+                    let md5 = spark.end();
+                    console.info('computed hash', md5);  // Compute hash
+                    observer.next({
+                        data: md5
+                    })
+                    observer.complete();
+                }
+            }
+            fileReader.onerror = function () {
+                console.warn('oops, something went wrong.');
+                observer.next({
+                    error: 'oops, something went wrong.'
+                })
+                observer.complete();
+            };
+
+            function loadNext() {
+                var start = currentChunk * chunkSize,
+                    end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+
+                fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+            }
+            loadNext();
+        })
+    }
+
+    getZipFileDataInfo(file: File, fileName: string, userName: string = "") {
+        let dataInfo = new DataInfo();
+        let type = "";
+        let suffix = "";
+        let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase();
+        let fileNameNoExt = fileName.substr(0, fileName.lastIndexOf("."));
+        dataInfo.author = userName;
+        dataInfo.fileName = fileNameNoExt;
+        if (zipExt == "txt") {
+            suffix = "txt";
+            type = "OTHER";
+            dataInfo.suffix = suffix;
+            dataInfo.type = type;
+            dataInfo.file = file;
+        } else {
+            suffix = "zip";
+            JSZip.loadAsync(file).then(data => {
+                data.forEach((relativePath, file) => {
+                    let currentFileName: string = relativePath;
+                    let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
+                    switch (extName) {
+                        case "shp":
+                            type = DC_DATA_TYPE.SHAPEFILE;
+                            break;
+                        case "tif":
+                            type = DC_DATA_TYPE.GEOTIFF;
+                            break;
+                        case "sdat":
+                            type = DC_DATA_TYPE.SDAT;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (type !== "") {
+                        return;
+                    }
+                });
+                if (type != "") {
+                    //* 将压缩文件上传至数据容器 
+                    dataInfo.suffix = suffix;
+                    dataInfo.type = type;
+                    dataInfo.file = file; 
+                } else {
+                    dataInfo = null;
+                }
+            }, error => {
+                dataInfo = null;
+            });
+        }
+        return dataInfo;
     }
 
 }

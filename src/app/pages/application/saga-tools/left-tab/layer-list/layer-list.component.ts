@@ -177,13 +177,31 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       //* 新建 LayerItem对象，将 geoserverDataInfo 中的 id 暂时作为 dataId，用于唯一性识别方便图层添加及删除；
 
       //*获取文件类型
-      let type = geoserverDataInfo.type === "GEOTIFF" ? "tif" : "shp";
+      // let type = geoserverDataInfo.type === "GEOTIFF" ? "tif" : "shp";
+
+      let type: string;
+      if (geoserverDataInfo.type === "GEOTIFF") {
+        type = "tif";
+        if (!geoserverDataInfo.meta.proj) {
+          geoserverDataInfo.meta = this.utilService.getTiffMetaObj(geoserverDataInfo.meta);
+        }
+      } else if (geoserverDataInfo.type === "SDAT") {
+        type = "sdat";
+        if (!geoserverDataInfo.meta.proj) {
+          geoserverDataInfo.meta = this.utilService.getTiffMetaObj(geoserverDataInfo.meta);
+        }
+      } else if (geoserverDataInfo.type === "SHAPEFILE") {
+        type = "shp";
+        if (!geoserverDataInfo.meta.proj) {
+          geoserverDataInfo.meta = this.utilService.getShpMetaObj(geoserverDataInfo.meta);
+        }
+      }
 
       let newItem = new LayerItem(geoserverDataInfo.fileName, null, type, geoserverDataInfo.id);
       if (this.olMapService.isDataOnLayer(geoserverDataInfo.id)) {
         return;
       }
-      if ((newItem.type == "shp" || newItem.type == "tif") && geoserverDataInfo.meta && geoserverDataInfo.meta.proj) {
+      if ((newItem.type == "shp" || newItem.type == "tif" || newItem.type == "sdat") && geoserverDataInfo.meta && geoserverDataInfo.meta.proj) {
         newItem.proj = geoserverDataInfo.meta.proj;
         if (geoserverDataInfo.meta.extent) {
           newItem.extent = geoserverDataInfo.meta.extent;

@@ -40,7 +40,7 @@ export class UserDataService {
     }
 
 
-    //* 上传数据至数据容器：
+    //* 上传数据文件管理及至数据容器：（作废）
     uploadData(dataInfo: DataInfo): Observable<any> {
         var fd = new FormData();
         fd.append("file", dataInfo.file);
@@ -55,6 +55,9 @@ export class UserDataService {
             })
     }
 
+    uploadDataToDataResource(dataInfo: DataInfo): Observable<any> {
+        return this.http.post(`${this.dataResUrl}`, dataInfo);
+    }
 
     //* 查询数据集
     getDatas(method: FieldToGetData, content: string, filter?: {
@@ -96,6 +99,10 @@ export class UserDataService {
     //* 获取数据 meta
     getMeta(id: string): Observable<any> {
         return this.http.get(`${this.dataResUrl}/` + id + "/getMeta");
+    }
+
+    fastUpload(md5:string): Observable<any> {
+        return this.http.post(`${this.fileUrl}/fastUpload/`+md5,{md5:md5});
     }
 
     //* 将数据添加进图层并显示

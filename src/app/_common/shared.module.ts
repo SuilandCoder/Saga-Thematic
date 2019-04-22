@@ -1,3 +1,4 @@
+import { FileSizePipe } from './pipes/filesize.pipe';
 import { NgModule } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -9,8 +10,9 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 import { DataListComponent } from './shared/data-list/data-list.component';
 import { DataPickComponent } from './shared/data-pick/data-pick.component';
-import { MatButtonModule, MatButtonToggleModule, MatIconModule, MatMenuModule,MatInputModule,MatDialogModule, MatPaginatorModule } from '@angular/material';
+import { MatButtonModule, MatButtonToggleModule, MatIconModule, MatMenuModule,MatInputModule,MatDialogModule, MatPaginatorModule, MatProgressBarModule } from '@angular/material';
 import { NgxUploaderModule } from 'ngx-uploader';
+import { UploadListComponent } from './shared/upload-list/upload-list.component';
 // import { DataPickComponent } from './shared/data-pick/data-pick.component';
 
 
@@ -30,6 +32,7 @@ import { NgxUploaderModule } from 'ngx-uploader';
         MatDialogModule,
         NgxUploaderModule,
         MatPaginatorModule,
+        MatProgressBarModule,
         NgZorroAntdModule.forRoot()
     ],
     declarations: [
@@ -37,7 +40,9 @@ import { NgxUploaderModule } from 'ngx-uploader';
         DialogDragDirective,
         MapResizeDirective,
         DataListComponent,
-        DataPickComponent
+        DataPickComponent,
+        UploadListComponent,
+        FileSizePipe,
     ],
     exports: [
         CommonModule,
@@ -50,7 +55,8 @@ import { NgxUploaderModule } from 'ngx-uploader';
         MapResizeDirective,
         NgZorroAntdModule,
         DataListComponent,
-        DataPickComponent
+        DataPickComponent,
+        UploadListComponent,
     ],
     providers:[
         Overlay

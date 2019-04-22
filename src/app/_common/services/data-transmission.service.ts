@@ -8,6 +8,11 @@ export class DataTransmissionService {
         console.log("init data DataTransmissionService");
     }
 
+    //加载用户数据
+    private loadUserDataSubject = new Subject<any>();
+
+    //多文件上传窗口控制
+    private uploadListControlSubject = new Subject<any>();
 
     //获取当前可见底图的id->用于右下角版权信息切换
     private visibleMapSubject = new Subject<any>();
@@ -86,7 +91,13 @@ export class DataTransmissionService {
     //当重设投影范围时
     private ViewExtentSubject = new Subject<Array<number>>();
 
+    sendLoadUserDataSubject(){
+        this.loadUserDataSubject.next();
+    }
 
+    sendUploadListControlSubject(){
+        this.uploadListControlSubject.next();
+    }
 
     sendVisibleMapSubject(id:string){
         this.visibleMapSubject.next(id);
@@ -204,6 +215,13 @@ export class DataTransmissionService {
         this.ViewExtentSubject.next(extent);
     }
 
+    getLoadUserDataSubject():Observable<string>{
+        return this.loadUserDataSubject.asObservable();
+    }
+
+    getUploadListControlSubject():Observable<string>{
+        return this.uploadListControlSubject.asObservable();
+    }
 
     getVisibleMapSubject():Observable<string>{
         return this.visibleMapSubject.asObservable();
