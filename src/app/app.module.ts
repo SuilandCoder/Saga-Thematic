@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { SharedModule } from './_common/shared.module';
-import { RouterModule, Routes } from '@angular/router'
+import { RouterModule, Routes, RouteReuseStrategy } from '@angular/router'
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './_common/interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'saga-tools', loadChildren: './pages/application/saga-tools/main-page/main-page.module#MainPageModule' },
   { path: 'user', loadChildren: './pages/users/users.module#UsersModule' },
   { path: "", redirectTo: "saga-tools", pathMatch: 'full' }
-];
+]; 
 @NgModule({
   declarations: [
     AppComponent,

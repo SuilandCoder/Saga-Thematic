@@ -25,3 +25,9 @@ export enum DC_DATA_TYPE{
     OTHER ="OTHER",
     SDAT="SDAT"
 }
+
+export enum VISIBLE_STATUS{
+    NOT_VISIBLE=0,
+    ON_LOADING=1,
+    VISIBLE=2,
+}

@@ -13,7 +13,7 @@
           <mat-form-field>
             <input matInput placeholder="Email" formControlName='email' required>
             <!-- <mat-error *ngIf='"required"'>必填</mat-error> -->
-            <mat-error *ngIf='"email"'>邮件格式不对</mat-error>
+            <mat-error *ngIf='"email"'>The mailbox format is incorrect.</mat-error>
           </mat-form-field>
           <ng-container formGroupName='password'>
             <mat-form-field>
@@ -22,11 +22,12 @@
               <!-- <mat-error *ngIf='"required"'>必填</mat-error> -->
             </mat-form-field>
             <mat-form-field>
-              <input [type]='hideRepeat? "password": "text"' matInput placeholder="Password repeat" formControlName='repeat'required>
+              <input [type]='hideRepeat? "password": "text"'  matInput placeholder="Password repeat" formControlName='repeat'required>
               <mat-icon matSuffix (click)="hideRepeat = !hideRepeat">{{hideRepeat ? 'visibility_off' : 'visibility'}}</mat-icon>
               <!-- <mat-error *ngIf='"required"'>必填</mat-error> -->
-              <mat-error *ngIf='"passwordEqual"'>密码不匹配</mat-error>
+              <!-- <mat-error *ngIf='"passwordEqual"'>Passwords do not match</mat-error> -->
             </mat-form-field>
+            
           </ng-container>
           <div class='error-panel' [style.display]='errorInfo.show? "block": "none"'>
             {{errorInfo.message}}

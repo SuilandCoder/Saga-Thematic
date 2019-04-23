@@ -117,8 +117,8 @@
 }
 
 .left_img>img {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   display: inline-block;
 }
 
@@ -134,7 +134,7 @@
 
   >.item_name {
     flex: 0 0 70%;
-    font-size: 18px;
+    font-size: 16px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -149,6 +149,7 @@
 .item_middle {
   height: 20px;
   color: #9a9a9a;
+  font-size: 14px;
 }
 
 .item_bottom {
@@ -218,3 +219,13 @@
   mat-paginator{
     margin-right: 10px;
   }
+
+  .loading{
+    flex: 0 0 30%;
+    height: 35px;
+    text-align: center;
+    >img{
+        width:30px;
+        margin-top: -10px;
+    }
+}

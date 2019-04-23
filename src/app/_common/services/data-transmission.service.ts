@@ -8,6 +8,9 @@ export class DataTransmissionService {
         console.log("init data DataTransmissionService");
     }
 
+    //数据加载到图层
+    private addToLayerSubject = new Subject<any>();
+
     //加载用户数据
     private loadUserDataSubject = new Subject<any>();
 
@@ -90,6 +93,10 @@ export class DataTransmissionService {
     private OnlineLayerSubject = new Subject<string>();
     //当重设投影范围时
     private ViewExtentSubject = new Subject<Array<number>>();
+
+    sendAddToLayerSubject(dataInfo:DataInfo){
+        this.addToLayerSubject.next(dataInfo);
+    }
 
     sendLoadUserDataSubject(){
         this.loadUserDataSubject.next();
@@ -213,6 +220,12 @@ export class DataTransmissionService {
     }
     sendViewExtentSubject(extent:Array<number>){
         this.ViewExtentSubject.next(extent);
+    }
+
+
+
+    getAddToLayerSubject():Observable<DataInfo>{
+        return this.addToLayerSubject.asObservable();
     }
 
     getLoadUserDataSubject():Observable<string>{

@@ -1,14 +1,13 @@
-import { DataForRunModel } from './../../data_model/data-model';
+
 import { UserService } from './../../services/user.service';
 import { UserDataService } from './../../services/user-data.service';
-import { UtilService } from 'src/app/_common';
 import { DataTransmissionService } from './../../services/data-transmission.service';
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import * as _ from 'lodash';
-import * as JSZip from 'jszip';
 import { ToastrService } from 'ngx-toastr';
 import { DataInfo } from '../../data_model';
+import { UtilService } from '../../services';
 
 @Component({
   selector: 'app-upload-list',
@@ -20,6 +19,8 @@ export class UploadListComponent implements OnInit {
   show: boolean;
   @Output()
   showEmiter: EventEmitter<boolean> = new EventEmitter();
+
+  loading:boolean = false;
 
   files: UploadFile[];
   uploadInput: EventEmitter<UploadInput>;
@@ -53,19 +54,23 @@ export class UploadListComponent implements OnInit {
 
   onUploadOutput(output: UploadOutput, InputElement: HTMLInputElement): void {
     if (output.type === 'allAddedToQueue') {
+      // this.loading = false;
       if(InputElement.value){
         InputElement.value = ''; //清空文件列表，避免不能重复上传文件的情况
       } 
     } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
+      this.loading = true;
       //* 文件不可大于1G
       if (output.file.size > 1073741824) {
         this.toast.warning('File cannot be larger than 1G.', "Warning", { timeOut: 2000 });
+        this.loading = false;
         return;
       }
       let currentFile = output.file.nativeFile;
       this.utilService.getFileMd5(currentFile).subscribe({
         next: res => {
           if (res.error) {
+            this.loading = false;
             this.toast.warning(res.error, "Warning", { timeOut: 2000 });
           } else {
             console.log("md5:", res.data);
@@ -82,15 +87,18 @@ export class UploadListComponent implements OnInit {
                   if (dataInfo) {
                     output.file.sub = dataInfo;
                     this.files.push(output.file);
+                    this.loading = false;
                   }
                 } else {
                   //*不用再上传文件
                   output.file.progress.status = 2;
                   this.files.push(output.file);
+                  this.loading = false;
                 }
               },
               error: err => {
                 this.toast.warning('oops, something went wrong.', "Warning", { timeOut: 2000 });
+                this.loading = false;
                 InputElement.value = ''; //清空文件列表，避免不能重复上传文件的情况
               }
             });
@@ -98,6 +106,7 @@ export class UploadListComponent implements OnInit {
         },
         error: err => {
           this.toast.warning('oops, something went wrong.', "Warning", { timeOut: 2000 });
+          // this.loading = false;
         }
       });
     } else if (output.type === 'uploading' && typeof output.file !== 'undefined') {

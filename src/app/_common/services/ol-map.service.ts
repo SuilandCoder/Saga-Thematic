@@ -15,7 +15,7 @@ declare let ol: any;
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
-import { DC_DATA_TYPE } from '../enum';
+import { DC_DATA_TYPE, VISIBLE_STATUS } from '../enum';
 
 @Injectable()
 export class OlMapService {
@@ -378,6 +378,8 @@ export class OlMapService {
         }
         newLayer.id = geoserverLayerItem.dataId;
         newLayer.name = geoserverLayerItem.name;
+        geoserverDataInfo.visibleStatus = VISIBLE_STATUS.VISIBLE;
+        this.dataTransmissionService.sendAddToLayerSubject(geoserverDataInfo);
         this.MapObject.addLayer(newLayer);
         //保证地图加载不变形
         this.MapObject.updateSize();

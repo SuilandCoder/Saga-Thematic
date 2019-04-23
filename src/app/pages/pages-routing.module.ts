@@ -12,10 +12,10 @@ const routes: Routes = [{
   component: MainPageComponent,
   children: [
     { path: '', redirectTo: 'saga-tools', pathMatch: 'full',},
-    { path: 'saga-tools', component:MainPageComponent },
+    { path: 'saga-tools', component: MainPageComponent},
     { path: 'theme-info', component: ThemeInfoComponent },
     { path: 'models-info/:path', component: ModelsInfoComponent },
-    ],
+  ],
 }];
 
 @NgModule({

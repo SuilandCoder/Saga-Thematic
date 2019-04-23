@@ -1,4 +1,4 @@
-import { DataUploadStatus } from "../enum";
+import { DataUploadStatus, VISIBLE_STATUS } from "../enum";
 
 
 export class ToolRecord{
@@ -46,6 +46,7 @@ export class DataInfo {
     public toGeoserver: boolean;
     public layerName:string;
     public meta:any;
+    public visibleStatus:VISIBLE_STATUS=0;
     constructor() { 
         this.tags = new Array<string>();
     }

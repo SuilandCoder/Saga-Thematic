@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToolService } from 'src/app/_common/services/tool.service';
 import { DataTransmissionService } from 'src/app/_common';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
@@ -24,12 +25,35 @@ export class MainPageComponent implements OnInit {
   constructor(
     private toolService:ToolService,
     private dataTransmissionService:DataTransmissionService,
+    private router:Router
   ) { 
-
+    // this.router.events
+    // .filter((event)=>event instanceof NavigationEnd)
+    // .subscribe((event:NavigationEnd)=>{
+    //   if(event.url==="/saga-tools"){
+    //     this.LayersListHeight = window.innerHeight * 0.9;
+    //     window.addEventListener('resize', () => {
+    //       this.LayersListHeight = window.innerHeight * 0.9;
+    //     })
+    
+    //     this.toolService.getModelInfoMessage().subscribe(_=>{ 
+    //       this.right_tag = "des";
+    //       this.rightOpened = true;
+    //       this.rightDock = true;
+    //     })
+    
+    //     this.toolService.getRightSideMessage().subscribe(_=>{
+    //       this.rightOpened = !this.rightOpened;
+    //     })
+    
+    //     this.dataTransmissionService.getUploadListControlSubject().subscribe(_=>{
+    //       this.showUploadList = !this.showUploadList;
+    //     })
+    //   }
+    // })
   }
 
   ngOnInit() {
-
     this.LayersListHeight = window.innerHeight * 0.9;
     window.addEventListener('resize', () => {
       this.LayersListHeight = window.innerHeight * 0.9;

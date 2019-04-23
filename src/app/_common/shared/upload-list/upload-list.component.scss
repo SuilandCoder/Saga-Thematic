@@ -132,3 +132,11 @@ mat-progress-bar{
 .speed{
     margin-right: 5px;
 }
+
+.loading{
+    width:100%;
+    text-align: center;
+    >img{
+        width:100px;
+    }
+}

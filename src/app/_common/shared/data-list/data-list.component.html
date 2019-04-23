@@ -13,14 +13,22 @@
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div> -->
-  <div >
+  <div>
     <div class="list_item_room" *ngFor="let item of userData trackBy:trackByDataId">
       <div class="left_img">
-        <img  *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">
-        <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiLineString'||item.meta.geometry=='LineString')" src="assets/images/data/line-vector.png" alt="">
-        <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPoint'||item.meta.geometry=='Point')" src="assets/images/data/points-vector.png" alt="">
-        <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPolygon'||item.meta.geometry=='Polygon')" src="assets/images/data/polygon-vector.png" alt="">
-        <img *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='GeometryCollection'||item.meta.geometry=='Geometry')" src="assets/images/data/vector.png" alt="">
+        <img *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">
+        <img class="shp_img"
+          *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiLineString'||item.meta.geometry=='LineString')"
+          src="assets/images/data/line-vector.png" alt="">
+        <img class="shp_img"
+          *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPoint'||item.meta.geometry=='Point')"
+          src="assets/images/data/points-vector.png" alt="">
+        <img class="shp_img"
+          *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPolygon'||item.meta.geometry=='Polygon')"
+          src="assets/images/data/polygon-vector.png" alt="">
+        <img
+          *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='GeometryCollection'||item.meta.geometry=='Geometry')"
+          src="assets/images/data/vector.png" alt="">
         <img *ngIf="item.type=='SHAPEFILE'&& item.meta==null" src="assets/images/data/vector.png" alt="">
         <img *ngIf="item.type=='OTHER'" src="assets/images/data/other.png" alt="">
       </div>
@@ -36,8 +44,11 @@
           <div class="item_tags">
             <span *ngFor="let itemTags of item.tags">{{itemTags}}</span>
           </div>
-          <div class="btn_show" (click)="addToLayer(item)">
-            <img src="assets/images/data/eye.png" alt="">
+          <div class="btn_show" *ngIf="!item.visibleStatus || item.visibleStatus==0 ||item.visibleStatus==2" (click)="addToLayer(item)">
+            <img src="assets/images/data/eye.png" alt="" title="add to layer">
+          </div>
+          <div class="loading" *ngIf="item.visibleStatus==1">
+            <img src="assets/images/common/loading2.gif" alt="Loading icon" />
           </div>
         </div>
       </div>
@@ -52,11 +63,19 @@
 <ng-template #grid let-item='userDatas'>
   <div class="grid_item_container scrollbar">
     <div class="grid" *ngFor="let item of userDatas">
-      <img  *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">
-      <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiLineString'||item.meta.geometry=='LineString')" src="assets/images/data/line-vector.png" alt="">
-      <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPoint'||item.meta.geometry=='Point')" src="assets/images/data/points-vector.png" alt="">
-      <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPolygon'||item.meta.geometry=='Polygon')" src="assets/images/data/polygon-vector.png" alt="">
-      <img *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='GeometryCollection'||item.meta.geometry=='Geometry')" src="assets/images/data/vector.png" alt="">
+      <img *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">
+      <img class="shp_img"
+        *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiLineString'||item.meta.geometry=='LineString')"
+        src="assets/images/data/line-vector.png" alt="">
+      <img class="shp_img"
+        *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPoint'||item.meta.geometry=='Point')"
+        src="assets/images/data/points-vector.png" alt="">
+      <img class="shp_img"
+        *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPolygon'||item.meta.geometry=='Polygon')"
+        src="assets/images/data/polygon-vector.png" alt="">
+      <img
+        *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='GeometryCollection'||item.meta.geometry=='Geometry')"
+        src="assets/images/data/vector.png" alt="">
       <img *ngIf="item.type=='SHAPEFILE'&& item.meta==null" src="assets/images/data/vector.png" alt="">
       <img *ngIf="item.type=='OTHER'" src="assets/images/data/other.png" alt="">
       <span title="{{item.fileName}}">{{item.fileName}}</span>

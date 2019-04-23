@@ -1,4 +1,4 @@
-import { DC_DATA_TYPE } from './../../enum/enum';
+import { DC_DATA_TYPE, VISIBLE_STATUS } from './../../enum/enum';
 import { DataInfo } from 'src/app/_common/data_model/data-model';
 import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { UserDataService } from 'src/app/_common/services/user-data.service';
@@ -36,11 +36,18 @@ export class DataListComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
     })
-    this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+
+    if(this.userService.user){
+      this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+    }
 
     this.dataTransmissionService.getLoadUserDataSubject().subscribe(_=>{
       this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
     });
+
+    this.dataTransmissionService.getAddToLayerSubject().subscribe(dataInfo=>{
+      this.userData = this.updateData(dataInfo,this.userData);
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -92,6 +99,8 @@ export class DataListComponent implements OnInit {
 
   addToLayer(dataInfo: DataInfo) {
     console.log("添加至图层按钮被点击");
+    dataInfo.visibleStatus = VISIBLE_STATUS.ON_LOADING;
+    this.userData = this.updateData(dataInfo, this.userData)
     //*判断是否为shp或geotiff格式
     if (dataInfo.type === DC_DATA_TYPE.GEOTIFF || dataInfo.type === DC_DATA_TYPE.SHAPEFILE || dataInfo.type===DC_DATA_TYPE.SDAT) {
       //*判断有没有发布服务
@@ -110,6 +119,8 @@ export class DataListComponent implements OnInit {
           },
           error: e => {
             console.log(e);
+            this.toast.warning("Something wrong.", "Warning", { timeOut: 2000 });
+            dataInfo.visibleStatus = VISIBLE_STATUS.NOT_VISIBLE;
           }
         })
       } else {
@@ -118,6 +129,7 @@ export class DataListComponent implements OnInit {
       }
     } else {
       this.toast.warning("Does not support this type.", "Warning", { timeOut: 2000 });
+      dataInfo.visibleStatus = VISIBLE_STATUS.NOT_VISIBLE;
     }
   }
 
