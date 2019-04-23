@@ -35,7 +35,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   private AllLayers: Array<LayerItem>;
   private Popup: any;
 
-  private visibleMapId: string;
+  visibleMapId: string;
 
   private styles = [
     'Road',

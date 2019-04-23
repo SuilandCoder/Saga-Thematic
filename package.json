@@ -8,6 +8,7 @@
     "build": "ng build --prod --build-optimizer --base-href ./ --output-path=dist --delete-output-path",
     "build:prod": "node --max_old_space_size=5120 node_modules/@angular/cli/bin/ng build  --base-href ./ --output-path=build-prod --delete-output-path --prod --build-optimizer=false --watch --common-chunk --vendor-chunk",
     "build:prod:optimizer": "node --max_old_space_size=5120 node_modules/@angular/cli/bin/ng build --base-href ./ --output-path=build-prod-optimizer --delete-output-path --prod --build-optimizer --watch --common-chunk --vendor-chunk --stats-json",
+    "bundle-report": "webpack-bundle-analyzer dist/Saga-Thematic/stats.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -81,6 +82,7 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "^5.12.0",
-    "typescript": "^2.9.2"
+    "typescript": "^2.9.2",
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }

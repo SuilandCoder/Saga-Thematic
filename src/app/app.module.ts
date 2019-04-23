@@ -1,3 +1,5 @@
+import { ModelsInfoComponent } from './pages/models-info/models-info.component';
+import { ApplicationComponent } from './pages/application/application.component';
 import { MainPageComponent } from './pages/application/saga-tools/main-page/main-page.component';
 import { MatDialogModule } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
@@ -10,9 +12,9 @@ import { RouterModule, Routes, RouteReuseStrategy } from '@angular/router'
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './_common/interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PagesModule } from './pages/pages.module';
 import { Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { MainPageModule } from './pages/application/saga-tools/main-page/main-page.module';
+import { SimpleReuseStrategy } from './_common/strategy/simple-reuse-strategy';
 const routes: Routes = [
   // { path: '', loadChildren: './pages/pages.module#PagesModule' },
   { path: 'saga-tools', loadChildren: './pages/application/saga-tools/main-page/main-page.module#MainPageModule' },
@@ -22,6 +24,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    ApplicationComponent,
   ],
   imports: [
     SharedModule,
@@ -31,7 +34,6 @@ const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     MatDialogModule,
-    PagesModule,
     MainPageModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
@@ -39,6 +41,7 @@ const routes: Routes = [
   providers: [
     Overlay,
     httpInterceptorProviders,
+    { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy},
   ],
   exports: [
     OverlayModule

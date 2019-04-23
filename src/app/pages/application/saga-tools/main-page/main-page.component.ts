@@ -21,7 +21,7 @@ export class MainPageComponent implements OnInit {
   right_tag = "";
 
   rightDock = false;
-  private showUploadList:boolean = false;
+  showUploadList:boolean = false;
   constructor(
     private toolService:ToolService,
     private dataTransmissionService:DataTransmissionService,
