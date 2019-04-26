@@ -1,4 +1,4 @@
-import { NzTabChangeEvent } from 'ng-zorro-antd';
+
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { WindowEventService, DataTransmissionService, GlobeConfigService } from 'src/app/_common';
 
@@ -21,7 +21,7 @@ export class LeftTabComponent implements OnInit {
     private windowEventService: WindowEventService,
     private dataTransmissionService: DataTransmissionService,
     private globeConfigService: GlobeConfigService,
-    ) {
+  ) {
     console.log("leftTab");
   }
 
@@ -41,8 +41,14 @@ export class LeftTabComponent implements OnInit {
 
   }
 
-  onTabChanged(nzTabChangeEvent: NzTabChangeEvent) {
+  onTabChanged(nzTabChangeEvent) {
     this.ActiveTabItemIndex = nzTabChangeEvent.index;
+    this.dataTransmissionService.sendTabIndexSwitchedSubject(this.ActiveTabItemIndex);
+  }
+
+
+  onIndexChange(index: number) {
+    this.ActiveTabItemIndex = index;
     this.dataTransmissionService.sendTabIndexSwitchedSubject(this.ActiveTabItemIndex);
   }
 
@@ -56,7 +62,7 @@ export class LeftTabComponent implements OnInit {
     this.dataTransmissionService.sendOnlineLayerSubject(layer.id);
   }
 
-  addOnlineLayer_test(id:string){
+  addOnlineLayer_test(id: string) {
     this.dataTransmissionService.sendOnlineLayerSubject(id);
   }
 

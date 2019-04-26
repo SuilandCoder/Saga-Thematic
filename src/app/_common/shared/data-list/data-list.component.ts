@@ -7,6 +7,7 @@ import { UserService } from 'src/app/_common/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataTransmissionService, UtilService } from '../../services';
 import * as _ from 'lodash';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'share-data-list',
@@ -29,7 +30,33 @@ export class DataListComponent implements OnInit {
     private dataTransmissionService: DataTransmissionService,
     private cdr: ChangeDetectorRef,
     private utilService: UtilService,
-  ) { }
+    private router: Router,
+  ) {
+    this.router.events
+      .filter((event) => event instanceof NavigationEnd)
+      .subscribe((event: NavigationEnd) => {
+      // 这里需要判断一下当前路由，如果不加的话，每次路由结束的时候都会执行这里的方法，这里以search组件为例
+        if (event.url === '/saga-tools') {
+          /*在这写需要执行初始化的方法*/
+          this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
+          window.addEventListener('resize', () => {
+            this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
+          })
+      
+          if(this.userService.user){
+            this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+          }
+      
+          this.dataTransmissionService.getLoadUserDataSubject().subscribe(_=>{
+            this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+          });
+      
+          this.dataTransmissionService.getAddToLayerSubject().subscribe(dataInfo=>{
+            this.userData = this.updateData(dataInfo,this.userData);
+          })
+        }
+      });
+   }
 
   ngOnInit() {
     this.userDataContainerHeight = window.innerHeight * 0.9 - 44;

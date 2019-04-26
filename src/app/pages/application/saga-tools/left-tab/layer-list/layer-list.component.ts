@@ -520,22 +520,22 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           case "tif":
             this.popupContent.push(new DataItem("EXPORT", "Export Data"));
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
-            this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
+            // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
             break;
           case "sgrd":
             this.popupContent.push(new DataItem("EXPORT", "Export Data"));
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
-            this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
+            // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
             break;
           case "shp":
             this.popupContent.push(new DataItem("TABLE", "Open Attributes Table"));
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
             this.popupContent.push(new DataItem("EXPORT", "Export Data"));
-            this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
+            // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
             break;
           case "ONLINE":
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
-            this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
+            // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
             break;
           case "txt":
             this.popupContent.push(new DataItem("REMOVE", "Remove"));

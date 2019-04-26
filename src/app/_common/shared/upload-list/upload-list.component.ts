@@ -55,7 +55,7 @@ export class UploadListComponent implements OnInit {
   onUploadOutput(output: UploadOutput, InputElement: HTMLInputElement): void {
     if (output.type === 'allAddedToQueue') {
       // this.loading = false;
-      if(InputElement.value){
+      if(InputElement){
         InputElement.value = ''; //清空文件列表，避免不能重复上传文件的情况
       } 
     } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
@@ -136,6 +136,7 @@ export class UploadListComponent implements OnInit {
           if (res.error) {
             this.toast.warning(res.error, "Warning", { timeOut: 2000 });
           } else {
+            this.dataTransmissionService.sendLoadUserDataSubject();
             this.userDataService.getMeta(res.data.id).subscribe({
               next:res=>{
                 this.dataTransmissionService.sendLoadUserDataSubject();

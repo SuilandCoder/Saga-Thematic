@@ -13,7 +13,8 @@
 .right_tab{
   margin-bottom: 0px;
   margin-left: 30px;
-  margin-right: 30px;
+  margin-right: 10px;
+  padding-right:10px;
   background-color: #fffd;
   width: 350px;
 }
@@ -31,8 +32,8 @@ app-tool-setting {
 .tool_description {
   text-align: initial;
   margin-left: 20px;
-  // margin-right: 40px;
-  margin-bottom: 20px;
+  // margin-right: 20px;
+  margin-bottom: 10px;
   // max-height: 800px;
   overflow: auto;
 }

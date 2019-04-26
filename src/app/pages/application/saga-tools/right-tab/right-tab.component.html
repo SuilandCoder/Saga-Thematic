@@ -1,21 +1,33 @@
-<div class="scrollbar right_tab" [style.height]="LayersListHeight.toString()+'px'" *ngIf="toolInfo &&tag=='des' else data">
+<div class="scrollbar right_tab" [style.height]="LayersListHeight.toString()+'px'"
+  *ngIf="toolInfo &&tag=='des' else data">
   <button class="closeRight" (click)="rightSideToogle()">
     <i *ngIf="opened; else left" class="fa fa-chevron-right" aria-hidden="true"></i>
     <ng-template #left>
       <i class="fa fa-chevron-left" aria-hidden="true"></i>
     </ng-template>
   </button>
-  <nz-tabset class="col" (nzSelectChange)="onTabChanged($event)" [nzAnimated]="false" [nzTabPosition]="bottom">
+
+  <mat-tab-group (selectedIndexChange)="onTabChanged($event)">
+    <mat-tab label="Description">
+      <div class="scrollbar tool_description" [style.height]="toolDesHeight.toString()+'px'"
+        [innerHTML]="descriptionHtml"></div>
+    </mat-tab>
+    <mat-tab label="Settings">
+      <app-tool-setting [toolInfo]="this.toolInfo"></app-tool-setting>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- <nz-tabset class="col" (nzSelectChange)="onTabChanged($event)" [nzAnimated]="false" [nzTabPosition]="bottom">
     <nz-tab [nzTitle]="TabItems[0]" [nzForceRender]="true">
-      <!-- <iframe id="ifr_des" [src]="truest(descriptionPath)" style="width: 100%;transform: scale(0.9)"
-        frameborder="0"></iframe> -->
+      <iframe id="ifr_des" [src]="truest(descriptionPath)" style="width: 100%;transform: scale(0.9)"
+        frameborder="0"></iframe>
       <div class="scrollbar tool_description" [style.height]="toolDesHeight.toString()+'px'" [innerHTML]="descriptionHtml"></div>
     </nz-tab>
 
     <nz-tab [nzTitle]="TabItems[1]" class="tool_settings" [nzForceRender]="true">
       <app-tool-setting [toolInfo]="this.toolInfo"></app-tool-setting>
     </nz-tab>
-  </nz-tabset>
+  </nz-tabset> -->
 </div>
 
 <ng-template #data>
@@ -33,8 +45,8 @@
         <i class="fa fa-plus upload-tag" aria-hidden="true"></i>
         <span>File Upload</span>
       </label>
-    </div> 
-    
-    <share-data-list [newData] = "newData"></share-data-list>
+    </div>
+
+    <share-data-list [newData]="newData"></share-data-list>
   </div>
 </ng-template>

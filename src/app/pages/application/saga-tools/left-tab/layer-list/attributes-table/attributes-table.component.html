@@ -1,26 +1,15 @@
-<app-modal [visible]="isVisible" [title]="title" [modalBodyWidth]="700" [modalContent]="modalContent" [modalFooter]="modalFooter"
-  (onCancelClick)="onCancelClick($event)">
+<div class="attr_container">
+  <h3>Attributes Table</h3>
+  <div class="scrollbar table_container">
+      <table mat-table [dataSource]="fieldValues" class="mat-elevation-z8">
+          <ng-container *ngFor="let column of fieldArray" [matColumnDef]="column">
+            <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+            <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="fieldArray"></tr>
+          <tr mat-row *matRowDef="let row; columns: fieldArray;"></tr>
+        </table>
+  </div>
 
-  <ng-template #modalContent>
-    <nz-table #nzTable [nzData]="fieldValues" [nzPageSize]="8" [nzSize]="'small'" [nzScroll]="{ x:scrollX+'px',y: '240px' }">
-      <thead>
-        <tr>
-          <th [width]="itemWidth" *ngFor="let field of fieldArray;let i = index" [nzLeft]="i===0?'0px':null">
-            {{field}}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let fieldValue of nzTable.data">
-          <td [width]="itemWidth"  *ngFor="let Field of fieldArray;let i = index" [nzLeft]="i===0?'0px':null">
-            {{fieldValue[Field]}}
-        </tr>
-      </tbody>
-    </nz-table>
-  </ng-template>
-  <ng-template #modalFooter>
-    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleOk($event)">
-      OK
-    </button>
-  </ng-template>
-</app-modal>
+  <button class="btn btn-success" (click)="onCancelClick($event)">close</button>
+</div>

@@ -15,14 +15,14 @@
       <img src="assets/images/map/bottomLayer.png" alt="">
     </a>
     <mat-menu #menu="matMenu">
-      <div class="map_layer_item osm" >
+      <div class="map_layer_item osm">
         <span class="map_type">osm:</span>
         <a href="javascript:;" (click)="addOnlineLayer_test('osm')">
           <img class="thumbnail_map" src="assets/images/map/osm.png" alt="">
         </a>
       </div>
 
-      <div class="map_layer_item tdt" >
+      <div class="map_layer_item tdt">
         <span class="map_type">天地图:</span>
         <a href="javascript:;" (click)="addOnlineLayer_test('TDT')">
           <img class="thumbnail_map" src="assets/images/map/tdt1.png" alt="">
@@ -32,7 +32,7 @@
         </a>
       </div>
 
-      <div class="map_layer_item bing" >
+      <div class="map_layer_item bing">
         <span class="map_type">Bing Map:</span>
         <a href="javascript:;" (click)="addOnlineLayer_test('Road')">
           <img class="thumbnail_map" src="assets/images/map/road.png" alt="">
@@ -43,7 +43,25 @@
       </div>
     </mat-menu>
   </div>
-  <nz-tabset (nzSelectChange)="onTabChanged($event)">
+
+  <mat-tab-group (selectedIndexChange)="onIndexChange($event)">
+    <mat-tab label="Tool">
+        <span>
+            <app-tool-list></app-tool-list>
+          </span>
+    </mat-tab>
+    <mat-tab label="Layer">
+        <span>
+            <app-layer-list></app-layer-list>
+          </span>
+    </mat-tab>
+    <mat-tab label="Output">
+        <span>
+            <app-data-list></app-data-list>
+          </span>
+    </mat-tab>
+  </mat-tab-group>
+  <!-- <nz-tabset (nzSelectChange)="onTabChanged($event)">
     <nz-tab [nzTitle]="TabItems[0]">
       <span>
         <app-tool-list></app-tool-list>
@@ -61,5 +79,5 @@
         <app-data-list></app-data-list>
       </span>
     </nz-tab>
-  </nz-tabset>
+  </nz-tabset> -->
 </div>

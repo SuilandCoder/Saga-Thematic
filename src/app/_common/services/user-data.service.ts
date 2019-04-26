@@ -7,7 +7,6 @@ import 'rxjs/add/operator/mergeMap';
 import { FieldToGetData, DC_DATA_TYPE } from '../enum';
 import { ToastrService } from 'ngx-toastr';
 import { DataTransmissionService } from './data-transmission.service';
-import { properties } from 'ng-zorro-antd';
 
 @Injectable({
     providedIn: 'root'

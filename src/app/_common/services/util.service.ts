@@ -257,11 +257,11 @@ export class UtilService {
         if (!sagaType) {
             type = DC_DATA_TYPE.OTHER;
         } else if (sagaType.includes("Shapes list")) {
-            type = DC_DATA_TYPE.OTHER;
+            type = DC_DATA_TYPE.SHAPEFILE;
         } else if (sagaType.includes("Shapes")) {
             type = DC_DATA_TYPE.SHAPEFILE;
         } else if (sagaType.includes("Grid list")) {
-            type = DC_DATA_TYPE.OTHER;
+            type = DC_DATA_TYPE.SDAT;
         } else if (sagaType.includes("Grid")) {
             type = DC_DATA_TYPE.SDAT;
         } else {

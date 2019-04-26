@@ -48,9 +48,9 @@ export class ToolSettingComponent implements OnInit {
 
   ngOnInit() {
     
-    this.toolSettingHeight = window.innerHeight*0.9-65;
+    this.toolSettingHeight = window.innerHeight*0.9-55;
     window.addEventListener('resize', () => {
-      this.toolSettingHeight = window.innerHeight * 0.9-65;
+      this.toolSettingHeight = window.innerHeight * 0.9-55;
     })
 
     if (this.toolInfo["parameters"][0]) {
@@ -74,8 +74,10 @@ export class ToolSettingComponent implements OnInit {
     this.userDataService.getDataUploadResultSubject().subscribe(uploadDataInfo => {
       console.log("uploadDataInfo", uploadDataInfo);
       let toolIndex = findIndex(this.inputParams, ["identifier", uploadDataInfo.eventName]);
-      this.inputParams[toolIndex].dataStatus = DataUploadStatus.READY;
-
+      if(this.inputParams[toolIndex]){
+        this.inputParams[toolIndex].dataStatus = DataUploadStatus.READY;
+      }
+     
       //* 先清除之前准备的数据。
       let currentEventIndex = findIndex(this.dataListForTool, ["eventName", uploadDataInfo.eventName]);
       if (currentEventIndex >= 0) {
@@ -162,6 +164,7 @@ export class ToolSettingComponent implements OnInit {
           this.httpService.waitForResult(msr_id,userId).then(data => {
             console.log(data);
           });
+          this.toastr.info("Tool is running.", "Tips");
       }).catch(reason => {
         this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
         this.toastr.error("Run Model Failed.", "error");

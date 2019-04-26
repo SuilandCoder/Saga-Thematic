@@ -3,7 +3,6 @@ import { NgModule } from "@angular/core";
 import { TreeModule } from "ng2-tree";
 import { SharedModule } from "src/app/_common";
 import { NgxUploaderModule } from 'ngx-uploader';
-import { NgZorroAntdModule } from "ng-zorro-antd";
 import { ToolBarComponent } from "./tool-bar.component";
 import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 import { AddLayerComponent } from './add-layer/add-layer.component';
@@ -30,7 +29,6 @@ import {
         MatMenuModule,
         MatIconModule,
         MatRippleModule,
-        NgZorroAntdModule.forRoot(),
     ],
     declarations: [
         ToolBarComponent,

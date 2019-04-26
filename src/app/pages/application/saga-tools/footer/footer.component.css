@@ -8,10 +8,20 @@
     /* padding: 4px 15px; */
 }
 
-div{
-    
+
+
+.Coordinates{
+    width: 200px;
+    display: inline-block;
+    float: right;
 }
 
+.State{
+    display: inline-block;
+}
+.State img{
+    width:30px;
+}
 
 div[nz-col] {
     text-align: left; 
@@ -24,14 +34,6 @@ div[nz-col].State {
     overflow: hidden; 
 }
 
-
-div[nz-col].Coordinates {
-    white-space: nowrap;
-    border-radius: 0px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    float: right;
-}
 .crs-icon{
     display: inline-block;
     white-space: nowrap;

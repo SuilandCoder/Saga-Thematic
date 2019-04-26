@@ -36,9 +36,9 @@ export class ToolListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.toolListHeight = window.innerHeight * 0.9-65;
+    this.toolListHeight = window.innerHeight * 0.9-55;
     window.addEventListener('resize', () => {
-      this.toolListHeight = window.innerHeight * 0.9-65;
+      this.toolListHeight = window.innerHeight * 0.9-55;
     })
 
 

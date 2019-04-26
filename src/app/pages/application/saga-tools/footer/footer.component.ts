@@ -14,7 +14,7 @@ export class FooterComponent implements OnInit {
   Coordinates: Point;
   Unit: string;
   ShowSwitchProjectionFlag: boolean;
-  private StateInfo: string;
+  StateInfo: string;
   StateShowFlag: boolean;
   constructor(private dataTransmissionService: DataTransmissionService,
     private olMapService: OlMapService) {

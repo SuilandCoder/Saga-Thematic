@@ -5,7 +5,6 @@ import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 import { ToolService } from 'src/app/_common/services/tool.service';
 import { ToastrService } from 'ngx-toastr';
-import { NzTabChangeEvent } from 'ng-zorro-antd';
 import { ToolParam, DataTransmissionService, CustomFile, UtilService } from 'src/app/_common';
 import { Subscription } from 'rxjs/Subscription';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -56,9 +55,9 @@ export class RightTabComponent implements OnInit {
       this.LayersListHeight = window.innerHeight * 0.9;
     })
 
-    this.toolDesHeight = window.innerHeight * 0.9 - 65;
+    this.toolDesHeight = window.innerHeight * 0.9 - 55;
     window.addEventListener('resize', () => {
-      this.toolDesHeight = window.innerHeight * 0.9 - 65;
+      this.toolDesHeight = window.innerHeight * 0.9 - 55;
     })
 
     this.TabItems = ['Description', 'Settings'];
@@ -84,7 +83,7 @@ export class RightTabComponent implements OnInit {
     this.dataTransmissionService.sendUploadListControlSubject();
   }
 
-  onTabChanged(nzTabChangeEvent: NzTabChangeEvent) { }
+  onTabChanged(nzTabChangeEvent) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);

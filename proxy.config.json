@@ -6,16 +6,16 @@
     "target": "http://localhost:9999"
   },
   "/dataResource": {
-    "target": "http://172.21.213.194:8081"
+    "target": "http://172.21.212.64:8081"
   },
   "/file": {
-    "target": "http://172.21.213.194:8081"
+    "target": "http://172.21.212.64:8081"
   },
   "/geoserver": {
-    "target": "http://172.21.213.194:8080"
+    "target": "http://172.21.212.64:8080"
   },
   "/custom_geoserver":{
-    "target":"http://172.21.213.194:8081"
+    "target":"http://172.21.212.64:8081"
   },
   "/geodata": {
     "target": "http://172.21.212.75:8060"

@@ -1,7 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import proj4 from 'proj4';
-import 'ol3-ext/dist/ol3-ext';
-import 'setimmediate';
 import {
   LayerItem,
   Point,
@@ -90,10 +88,10 @@ export class OlMapComponent implements OnInit, AfterViewInit {
 
     window.addEventListener('resize', () => {
       this.MapHeight = window.innerHeight * 0.9;
-      setImmediate(() => {
+      // setImmediate(() => {
         //防止放在map实例化之后，不起效果
         this.MapObject.updateSize();
-      })
+      // })
     })
 
     this.initMap();
