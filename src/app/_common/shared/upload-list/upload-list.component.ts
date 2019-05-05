@@ -16,7 +16,7 @@ import { UtilService } from '../../services';
 })
 export class UploadListComponent implements OnInit {
   @Input()
-  show: boolean;
+  show: boolean;//todo  ngif 换成 visibility
   @Output()
   showEmiter: EventEmitter<boolean> = new EventEmitter();
 
@@ -129,6 +129,10 @@ export class UploadListComponent implements OnInit {
       console.log(output.file.name + ' rejected');
     } else if (output.type === 'done') {
       console.log("上传结束:", output.file.response);
+      if(output.file.response.data==null){
+        this.toast.error("oops, something went wrong.", "error", { timeOut: 2000 });
+        return;
+      }
       output.file.sub.sourceStoreId = output.file.response.data;
       //* 将文件上传至dataResource
       this.userDataService.uploadDataToDataResource(output.file.sub).subscribe({

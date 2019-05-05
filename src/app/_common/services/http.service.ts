@@ -16,7 +16,7 @@ import { UserDataService } from "./user-data.service";
 export class HttpService {
     Ip: string; //default ip of model container.
     SagaIp: string;
-
+    preModelRecord:string;
     baseUrl: string;
     constructor(private http: HttpClient,
         private dataTransmissionService: DataTransmissionService,
@@ -236,6 +236,11 @@ export class HttpService {
                         if (JsonObject['data']['msr_span'] !== 0) {
                             // this.dataTransmissionService.sendModelRunRecord(res);
                             if (userId) {
+                                //*防止重复添加 
+                                if(msr_id===this.preModelRecord){
+                                    console.log("记录已更新");
+                                    return;
+                                }
                                 console.log("模型运行成功，更新模型运行记录");
                                 this.userService.addToolRecord(userId, msr_id, MODEL_RUN_STATUS.SUCCESS).subscribe({
                                     next: res => {
@@ -290,6 +295,7 @@ export class HttpService {
                                         console.log(e);
                                     }
                                 });
+                                this.preModelRecord = msr_id;
                             }
                             clearInterval(timer);
                         }

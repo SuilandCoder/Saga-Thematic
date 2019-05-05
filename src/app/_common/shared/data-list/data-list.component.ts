@@ -1,3 +1,4 @@
+import { LayerItem } from './../../data_model/data-model';
 import { DC_DATA_TYPE, VISIBLE_STATUS } from './../../enum/enum';
 import { DataInfo } from 'src/app/_common/data_model/data-model';
 import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
@@ -23,6 +24,7 @@ export class DataListComponent implements OnInit {
   pageSize: number = 12;
   dataLength: number;
   userDataContainerHeight: number;
+  allLayers: Array<LayerItem>;
   constructor(
     private userDataService: UserDataService,
     private userService: UserService,
@@ -54,6 +56,10 @@ export class DataListComponent implements OnInit {
           this.dataTransmissionService.getAddToLayerSubject().subscribe(dataInfo=>{
             this.userData = this.updateData(dataInfo,this.userData);
           })
+
+          this.dataTransmissionService.getLayerListSubject().subscribe(allLayers => {
+            this.allLayers = allLayers;
+          })
         }
       });
    }
@@ -74,6 +80,10 @@ export class DataListComponent implements OnInit {
 
     this.dataTransmissionService.getAddToLayerSubject().subscribe(dataInfo=>{
       this.userData = this.updateData(dataInfo,this.userData);
+    })
+
+    this.dataTransmissionService.getLayerListSubject().subscribe(allLayers => {
+      this.allLayers = allLayers;
     })
   }
 
@@ -126,6 +136,16 @@ export class DataListComponent implements OnInit {
 
   addToLayer(dataInfo: DataInfo) {
     console.log("添加至图层按钮被点击");
+    //* 判断是否已经位于图层中
+    if(this.allLayers){
+      let onLayerList:boolean =  this.allLayers.some(item=>{
+        return item.dataId===dataInfo.id;
+      })
+      if(onLayerList){
+        this.toast.warning("Already shown on the map.", "Warning", { timeOut: 2000 });
+        return;
+      }
+    } 
     dataInfo.visibleStatus = VISIBLE_STATUS.ON_LOADING;
     this.userData = this.updateData(dataInfo, this.userData)
     //*判断是否为shp或geotiff格式

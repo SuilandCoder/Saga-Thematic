@@ -1,5 +1,5 @@
 <div class="scrollbar data_list_container" [style.height]="dataListHeight.toString()+'px'">
-  <div class="list_item_room" *ngFor="let item of userDatas">
+  <div class="list_item_room" *ngFor="let item of userDatas trackBy:trackByDataId">
     <div class="left_img">
       <img  *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">
       <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiLineString'||item.meta.geometry=='LineString')" src="assets/images/data/line-vector.png" alt="">

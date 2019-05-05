@@ -339,10 +339,15 @@ export class OlMapService {
             proj = geoserverDataInfo.meta.proj;
             console.log("投影信息：", proj);
             extent = geoserverDataInfo.meta.extent;
-            let lower = proj4(proj).inverse([extent[0], extent[1]]);
-            let upper = proj4(proj).inverse([extent[2], extent[3]]);
-            extent = _.concat(lower, upper);
-            console.log("extent信息：", extent);
+            try{
+                let lower = proj4(proj).inverse([extent[0], extent[1]]);
+                let upper = proj4(proj).inverse([extent[2], extent[3]]);
+                extent = _.concat(lower, upper);
+                console.log("extent信息：", extent);
+            }catch(error){ 
+                return "error";
+            }
+           
         }
 
         let layerName = geoserverLayerName.substring(0, geoserverLayerName.lastIndexOf('.'));

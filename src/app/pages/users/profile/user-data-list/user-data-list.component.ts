@@ -4,6 +4,7 @@ import { DataInfo, UtilService } from 'src/app/_common';
 import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { UserService } from 'src/app/_common/services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'user-data-list',
@@ -22,7 +23,15 @@ export class UserDataListComponent implements OnInit {
     private userService: UserService,
     private toast: ToastrService,
     private utilService: UtilService,
-  ) { }
+    private router: Router
+  ) { 
+    this.router.events
+      .filter((event) => event instanceof NavigationEnd)
+      .subscribe((event: NavigationEnd) => {
+      // 这里需要判断一下当前路由，如果不加的话，每次路由结束的时候都会执行这里的方法，这里以search组件为例
+       console.log("event url:"+event.url);
+      });
+  }
 
   ngOnInit() {
     this.dataListHeight = window.innerHeight*0.9-80;
@@ -31,37 +40,11 @@ export class UserDataListComponent implements OnInit {
     })
 
     if (this.userService.isLogined) {
-      this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
-        next: res => {
-          if (res.error) {
-            this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-          } else {
-            if (res.data.content) {
-              this.userDatas = res.data.content;
-              this.dataLength = res.data.totalElements;
-              this.userDatas = this.userDatas.map(data => {
-                if (data.type == DC_DATA_TYPE.SHAPEFILE) {
-                  data.meta = this.utilService.getShpMetaObj(data.meta);
-                } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
-                  data.meta = this.utilService.getTiffMetaObj(data.meta);
-                }
-                return data;
-              })
-              // this.userDatas.sort(this.compare);
-              console.log(this.userDatas);
-            }
-          }
-        },
-        error: e => {
-          console.log(e);
-        }
-      });
+      this.getData();
     }
   }
 
-  onPageChange(pageEvent) {
-    this.pageIndex = pageEvent.pageIndex;
-    this.pageSize = pageEvent.pageSize;
+  getData(){
     this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
       next: res => {
         if (res.error) {
@@ -87,6 +70,16 @@ export class UserDataListComponent implements OnInit {
         console.log(e);
       }
     });
+  }
+
+  trackByDataId(index:number,data:DataInfo){
+    return data.id;
+  }
+
+  onPageChange(pageEvent) {
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
+    this.getData();
   }
 
   compare(v1, v2) {

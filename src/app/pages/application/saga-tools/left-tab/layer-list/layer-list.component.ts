@@ -209,13 +209,18 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         if (newItem.type == "shp" && geoserverDataInfo.meta.fields) {
           newItem.fields = geoserverDataInfo.meta.fields;
         }
-      }
-      this.LayerItems.splice(0, 0, newItem);
-      newItem.visible = !newItem.visible;
+      } 
 
-      this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo);
-      newItem.isOnMap = true;
-      newItem.layerShowing = false;
+      let res = this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo);
+      if(res!=='error'){
+        this.LayerItems.splice(0, 0, newItem);
+        newItem.visible = !newItem.visible;
+        newItem.isOnMap = true;
+        newItem.layerShowing = false;
+      }else{
+        this.toastr.error("Failed to Load Data.");
+      }
+      
     });
     // this.dataTransmissionService.sendOnlineLayerSubject("TDT");
     this.dataTransmissionService.sendOnlineLayerSubject("osm");
