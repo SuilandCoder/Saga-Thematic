@@ -15,8 +15,15 @@ import { UtilService } from '../../services';
   styleUrls: ['./upload-list.component.scss']
 })
 export class UploadListComponent implements OnInit {
+  visibleCss:string;
   @Input()
-  show: boolean;//todo  ngif 换成 visibility
+  set visibleInfo(show:any){
+    this.visibleCss= show?"visible":"hidden";
+  }
+
+  get visibleInfo(){
+    return this.visibleCss;
+  }
   @Output()
   showEmiter: EventEmitter<boolean> = new EventEmitter();
 
@@ -61,11 +68,11 @@ export class UploadListComponent implements OnInit {
     } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
       this.loading = true;
       //* 文件不可大于1G
-      if (output.file.size > 1073741824) {
-        this.toast.warning('File cannot be larger than 1G.', "Warning", { timeOut: 2000 });
-        this.loading = false;
-        return;
-      }
+      // if (output.file.size > 1073741824) {
+      //   this.toast.warning('File cannot be larger than 1G.', "Warning", { timeOut: 2000 });
+      //   this.loading = false;
+      //   return;
+      // }
       let currentFile = output.file.nativeFile;
       this.utilService.getFileMd5(currentFile).subscribe({
         next: res => {
