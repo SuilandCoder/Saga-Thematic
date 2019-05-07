@@ -1,25 +1,37 @@
-<div class="scrollbar mb_0 ml_30 mr_25 bg_color max_w" [style.height]="LayersListHeight.toString()+'px'" *ngIf="toolInfo &&tag=='des' else data">
+<div class="scrollbar right_tab" [style.height]="LayersListHeight.toString()+'px'"
+  *ngIf="toolInfo &&tag=='des' else data">
   <button class="closeRight" (click)="rightSideToogle()">
     <i *ngIf="opened; else left" class="fa fa-chevron-right" aria-hidden="true"></i>
     <ng-template #left>
       <i class="fa fa-chevron-left" aria-hidden="true"></i>
     </ng-template>
   </button>
-  <nz-tabset class="col scrollbar" (nzSelectChange)="onTabChanged($event)">
-    <nz-tab [nzTitle]="TabItems[0]">
-      <!-- <iframe id="ifr_des" [src]="truest(descriptionPath)" style="width: 100%;transform: scale(0.9)"
-        frameborder="0"></iframe> -->
-      <div id="tool_description" [innerHTML]="descriptionHtml"></div>
+
+  <mat-tab-group (selectedIndexChange)="onTabChanged($event)">
+    <mat-tab label="Description">
+      <div class="scrollbar tool_description" [style.height]="toolDesHeight.toString()+'px'"
+        [innerHTML]="descriptionHtml"></div>
+    </mat-tab>
+    <mat-tab label="Settings">
+      <app-tool-setting [toolInfo]="this.toolInfo"></app-tool-setting>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- <nz-tabset class="col" (nzSelectChange)="onTabChanged($event)" [nzAnimated]="false" [nzTabPosition]="bottom">
+    <nz-tab [nzTitle]="TabItems[0]" [nzForceRender]="true">
+      <iframe id="ifr_des" [src]="truest(descriptionPath)" style="width: 100%;transform: scale(0.9)"
+        frameborder="0"></iframe>
+      <div class="scrollbar tool_description" [style.height]="toolDesHeight.toString()+'px'" [innerHTML]="descriptionHtml"></div>
     </nz-tab>
 
-    <nz-tab [nzTitle]="TabItems[1]" id="tool_settings">
+    <nz-tab [nzTitle]="TabItems[1]" class="tool_settings" [nzForceRender]="true">
       <app-tool-setting [toolInfo]="this.toolInfo"></app-tool-setting>
     </nz-tab>
-  </nz-tabset>
+  </nz-tabset> -->
 </div>
 
 <ng-template #data>
-  <div class="scrollbar mb_0 ml_30 mr_25 bg_color w_400 max_w" [style.height]="LayersListHeight.toString()+'px'">
+  <div class="scrollbar mb_0 ml_30 mr_25 bg_color w_350 max_w" [style.height]="LayersListHeight.toString()+'px'">
     <button class="closeRight" (click)="rightSideToogle()">
       <i *ngIf="opened; else left" class="fa fa-chevron-right" aria-hidden="true"></i>
       <ng-template #left>
@@ -28,13 +40,13 @@
     </button>
 
     <div class="user_data_title">
-      <label class="upload-button">
-        <input type="file" ngFileSelect #fileInput (uploadOutput)="onUploadOutput($event,fileInput)" (beforeUpload)='beforeFileUpload($event)'>
-        <i class="fa fa-plus upload-tag" aria-hidden="true" title="add layer"></i>
+      <label class="upload-button" (click)="openMyDialog()">
+        <!-- <input type="file" ngFileSelect #fileInput (uploadOutput)="onUploadOutput($event,fileInput)" (beforeUpload)='beforeFileUpload($event)'> -->
+        <i class="fa fa-plus upload-tag" aria-hidden="true"></i>
         <span>File Upload</span>
       </label>
-    </div> 
+    </div>
 
-    <share-data-list [newData] = "newData"></share-data-list>
+    <share-data-list [newData]="newData"></share-data-list>
   </div>
 </ng-template>

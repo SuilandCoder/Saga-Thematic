@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 import { forkJoin } from "rxjs/observable/forkJoin";
 import { LayerItem, DataInfo, DataUploadInfo } from '../../data_model';
 import { FieldToGetData } from '../../enum';
-import { UtilService } from '../../services';
+import { UtilService, DataTransmissionService } from '../../services';
 
 enum DataSources {
   LOCAL = 1,
@@ -20,7 +20,6 @@ enum DataSources {
 }
 
 export interface LayerData {
-  layerItems: Array<LayerItem>;
   type: string;
   eventName: string;
   toolName: string;
@@ -34,7 +33,7 @@ export interface LayerData {
 })
 export class DataPickComponent {
   dataPicked: Array<DataInfo> = [];
-  layerList: Array<DataInfo> = [];
+  // layerList: Array<DataInfo> = [];
   dataResources: Array<DataInfo> = null;
   dataSources: DataSources;
   toolName: string;
@@ -58,11 +57,12 @@ export class DataPickComponent {
     private toast: ToastrService,
     private cdr: ChangeDetectorRef,
     private utilService: UtilService,
+    private dataTransmissionService:DataTransmissionService,
     @Inject(MAT_DIALOG_DATA) public data: LayerData
   ) { }
 
   ngOnInit(): void {
-    let layerItems = this.data.layerItems;
+    // let layerItems = this.data.layerItems;
     let type = this.data.type;
     this.eventName = this.data.eventName;
     this.toolName = this.data.toolName;
@@ -78,47 +78,68 @@ export class DataPickComponent {
     } else {
       this.dataType = DC_DATA_TYPE.OTHER;
     }
-    layerItems.forEach(item => {
-      let dataItem = new DataInfo();
-      dataItem.author = this.userService.user.userId;
-      dataItem.file = item.file;
-      dataItem.fileName = item.name;
-      dataItem.tags.push(this.toolName);
-      dataItem.mdlId = this.data.mdlId;
-      if (item.type == "txt") {
-        dataItem.suffix = item.type;
-      } else {
-        dataItem.suffix = "zip";
-      }
-      if (type.includes("Grid") && (item.type == "tif" || item.type == "sdat")) {
-        dataItem.type = DC_DATA_TYPE.GEOTIFF;
-        this.layerList.push(dataItem);
-      } else if (type.includes("Shapes") && item.type == "shp") {
-        dataItem.type = DC_DATA_TYPE.SHAPEFILE;
-        this.layerList.push(dataItem);
-      }
-    })
+    // layerItems.forEach(item => {
+    //   let dataItem = new DataInfo();
+    //   dataItem.author = this.userService.user.userId;
+    //   dataItem.file = item.file;
+    //   dataItem.fileName = item.name;
+    //   dataItem.tags.push(this.toolName);
+    //   dataItem.mdlId = this.data.mdlId;
+    //   if (item.type == "txt") {
+    //     dataItem.suffix = item.type;
+    //   } else {
+    //     dataItem.suffix = "zip";
+    //   }
+    //   if (type.includes("Grid") && (item.type == "tif" || item.type == "sdat")) {
+    //     dataItem.type = DC_DATA_TYPE.GEOTIFF;
+    //     this.layerList.push(dataItem);
+    //   } else if (type.includes("Shapes") && item.type == "shp") {
+    //     dataItem.type = DC_DATA_TYPE.SHAPEFILE;
+    //     this.layerList.push(dataItem);
+    //   }
+    // })
     this.fromUser();
+  }
+
+  getSrc(item: DataInfo) {
+    let img_path = "";
+    if (item.type == DC_DATA_TYPE.SHAPEFILE || item.type == DC_DATA_TYPE.SHAPEFILE_LIST) {
+      if (item.meta) {
+        if (item.meta[0].geometry == 'MultiPoint' || item.meta[0].geometry == 'Point') {
+          img_path = "assets/images/data/points-vector.png";
+        } else if (item.meta[0].geometry == 'MultiLineString' || item.meta[0].geometry == 'LineString') {
+          img_path = "assets/images/data/line-vector.png";
+        } else if (item.meta[0].geometry == 'MultiPolygon' || item.meta[0].geometry == 'Polygon') {
+          img_path = "assets/images/data/polygon-vector.png";
+        } else if (item.meta[0].geometry == 'GeometryCollection' || item.meta[0].geometry == 'Geometry') {
+          img_path = "assets/images/data/vector.png";
+        } else {
+          img_path = "assets/images/data/vector.png";
+        }
+      } else {
+        img_path = "assets/images/data/vector.png";
+      }
+    } else if (item.type == DC_DATA_TYPE.GEOTIFF || item.type == DC_DATA_TYPE.GEOTIFF_LIST || (item.type == DC_DATA_TYPE.SDAT || item.type == DC_DATA_TYPE.SDAT_LIST)) {
+      img_path = "assets/images/data/tiff.png";
+    } else if (item.type == DC_DATA_TYPE.OTHER) {
+      img_path = "assets/images/data/other.png";
+    }
+    return img_path;
+  }
+  setClasses(item: DataInfo) {
+    if (item.type == DC_DATA_TYPE.SHAPEFILE || item.type == DC_DATA_TYPE.SHAPEFILE_LIST) {
+      return {"shp_img":true};
+    }
   }
 
   fromLocal() {
     this.dataSources = DataSources.LOCAL;
-  }
-  fromLayers() {
-    this.dataSources = DataSources.LAYER_LIST;
-    this.dataResources = this.layerList;
-    this.dataResources.sort(this.compare);
+    this.dialogRef.close("on loading");
+    this.dataTransmissionService.sendUploadListControlSubject();
   }
 
-
-  fromUser() {
-    this.dataSources = DataSources.USER_STORAGE;
-    //! 判断是否登陆
-    if (!this.userService.isLogined) {
-      this.toast.warning("please login.", "Warning", { timeOut: 3000 });
-      return;
-    }
-    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
+  getDatas(method:FieldToGetData,content:string){
+    this.userDataService.getDatas(method, content, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
       next: res => {
         if (res.error) {
           this.toast.warning(res.error, "Warning", { timeOut: 2000 });
@@ -128,9 +149,9 @@ export class DataPickComponent {
           if (res.data.content) {
             this.dataResources = res.data.content;
             this.dataResources = this.dataResources.map(data => {
-              if (data.type == DC_DATA_TYPE.SHAPEFILE) {
+              if (data.type == DC_DATA_TYPE.SHAPEFILE || data.type==DC_DATA_TYPE.SHAPEFILE_LIST) {
                 data.meta = this.utilService.getShpMetaObj(data.meta);
-              } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
+              } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT || data.type==DC_DATA_TYPE.GEOTIFF_LIST || data.type==DC_DATA_TYPE.SDAT_LIST) {
                 data.meta = this.utilService.getTiffMetaObj(data.meta);
               }
               return data;
@@ -148,136 +169,49 @@ export class DataPickComponent {
     });
   }
 
+
+  fromUser() {
+    this.dataSources = DataSources.USER_STORAGE;
+    //! 判断是否登陆
+    if (!this.userService.isLogined) {
+      this.toast.warning("please login.", "Warning", { timeOut: 3000 });
+      return;
+    }
+    this.getDatas(FieldToGetData.BY_AUTHOR,this.userService.user.userId);
+  }
+
   fromDataContainer() {
     this.dataSources = DataSources.DATA_CONTAINER;
-    this.userDataService.getDatas(FieldToGetData.BY_MDL_ID, this.data.mdlId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
-      next: res => {
-        if (res.error) {
-          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-        } else {
-          if (res.data) {
-            this.dataLength = res.data.totalElements;
-            if (res.data.content) {
-              this.dataResources = res.data.content;
-              this.dataResources = this.dataResources.map(data => {
-                if (data.type == DC_DATA_TYPE.SHAPEFILE) {
-                  data.meta = this.utilService.getShpMetaObj(data.meta);
-                } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
-                  data.meta = this.utilService.getTiffMetaObj(data.meta);
-                }
-                return data;
-              })
-              this.cdr.markForCheck();
-              this.cdr.detectChanges();
-            }
+    this.getDatas(FieldToGetData.BY_MDL_ID, this.data.mdlId);
+  }
 
-            // this.dataResources.sort(this.compare);
-          }
-          console.log(res.data);
-        }
-      },
-      error: e => {
-        console.log(e);
-      }
-    });
+  search() {
+    console.log("search");
+    this.getDatas(FieldToGetData.BY_FILE_NAME, this.searchContent);
   }
 
   onPageChange(pageEvent) {
     this.pageIndex = pageEvent.pageIndex;
     this.pageSize = pageEvent.pageSize;
-    this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
-      next: res => {
-        if (res.error) {
-          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-        } else {
-          if (res.data) {
-            this.dataLength = res.data.totalElements;
-            if (res.data.content) {
-              this.dataResources = res.data.content;
-              this.dataResources = this.dataResources.map(data => {
-                if (data.type == DC_DATA_TYPE.SHAPEFILE) {
-                  data.meta = this.utilService.getShpMetaObj(data.meta);
-                } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
-                  data.meta = this.utilService.getTiffMetaObj(data.meta);
-                }
-                return data;
-              })
-              this.cdr.markForCheck();
-              this.cdr.detectChanges();
-            }
-          }
-          console.log(res.data);
-        }
-      },
-      error: e => {
-        console.log(e);
-      }
-    });
-  }
-
-  onUploadOutput(ev: any, InputElement: HTMLInputElement) {
-    console.log(ev);
-    if (ev.file && ev.type === "addedToQueue") {
-      let currentFile = ev.file.nativeFile;
-      //* 判断传入的是否为压缩文件
-      let fileName = currentFile.name;
-      let type = "";
-      let suffix = "";
-      let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase();
-      let fileNameNoExt = fileName.substr(0, fileName.lastIndexOf("."));
-      if (zipExt == "txt") {
-        type = "OTHER";
-        // this.dataTransmissionService.sendCustomFileSubject(new CustomFile(currentFile,Type));
-      } else {
-        suffix = "zip";
-        JSZip.loadAsync(currentFile).then(data => {
-          data.forEach((relativePath, file) => {
-            let currentFileName: string = relativePath;
-            let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
-            switch (extName) {
-              case "shp":
-                type = DC_DATA_TYPE.SHAPEFILE;
-                break;
-              case "tif":
-                type = DC_DATA_TYPE.GEOTIFF;
-                break;
-              case "sdat":
-                type = DC_DATA_TYPE.SDAT;
-                break;
-              default:
-                break;
-            }
-            if (type !== "") {
-              return false;
-            }
-          });
-          if (type == this.dataType || (type == DC_DATA_TYPE.SDAT && this.dataType == DC_DATA_TYPE.GEOTIFF)) {
-            //* 将压缩文件上传至数据容器
-            let dataInfo = new DataInfo();
-            dataInfo.author = this.userService.user.userId;
-            dataInfo.fileName = fileNameNoExt;
-            dataInfo.suffix = suffix;
-            dataInfo.type = type;
-            dataInfo.tags.push(this.toolName);
-            dataInfo.mdlId = this.data.mdlId;
-            dataInfo.file = currentFile;
-            this.dataPicked.push(dataInfo);
-            InputElement.value = ''; //清空文件列表，避免不能重复上传文件的情况
-          } else {
-            this.toast.warning("Please select " + `${this.dataType}` + " data.", "Warning", { timeOut: 2000 });
-          }
-        }, error => {
-          //not zip file 
-          console.log(error);
-          this.toast.warning("This type of file is not supported.", "Warning", { timeOut: 2000 });
-        });
-      }
+    if(this.dataSources== DataSources.USER_STORAGE){
+      this.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId);
+    }else if(this.dataSources==DataSources.DATA_CONTAINER){
+      this.getDatas(FieldToGetData.BY_FILE_NAME, this.searchContent);
     }
   }
 
+
   pickData(item: DataInfo) {
     //* 判断所选类型是否正确
-    if (item.type !== this.dataType) {
+    if((item.type==DC_DATA_TYPE.SHAPEFILE || item.type==DC_DATA_TYPE.SHAPEFILE_LIST)&&this.dataType!=DC_DATA_TYPE.SHAPEFILE){
+      this.toast.warning("Please select " + `${this.dataType}` + " data.", "Warning", { timeOut: 2000 });
+      return;
+    }
+    if((item.type==DC_DATA_TYPE.GEOTIFF || item.type==DC_DATA_TYPE.GEOTIFF_LIST || item.type==DC_DATA_TYPE.SDAT || item.type==DC_DATA_TYPE.SDAT_LIST)&&this.dataType!=DC_DATA_TYPE.GEOTIFF){
+      this.toast.warning("Please select " + `${this.dataType}` + " data.", "Warning", { timeOut: 2000 });
+      return;
+    }
+    if(item.type == DC_DATA_TYPE.OTHER && this.dataType != DC_DATA_TYPE.OTHER){
       this.toast.warning("Please select " + `${this.dataType}` + " data.", "Warning", { timeOut: 2000 });
       return;
     }
@@ -299,32 +233,6 @@ export class DataPickComponent {
     this.dataPicked.splice(discardIndex, 1);
   }
 
-  search() {
-    console.log("search");
-    this.userDataService.getDatas(FieldToGetData.BY_FILE_NAME, this.searchContent).subscribe({
-      next: res => {
-        if (res.error) {
-          this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-        } else {
-          this.dataResources = res.data.map(data => {
-            if (data.type == DC_DATA_TYPE.SHAPEFILE) {
-              data.meta = this.utilService.getShpMetaObj(data.meta);
-            } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
-              data.meta = this.utilService.getTiffMetaObj(data.meta);
-            }
-            return data;
-          })
-          this.cdr.markForCheck();
-          this.cdr.detectChanges();
-          this.dataResources.sort(this.compare);
-          console.log(this.dataResources);
-        }
-      },
-      error: e => {
-        console.log(e);
-      }
-    });
-  }
 
   upload() {
     //todo 关闭窗口，在 tool_setting 页面显示进度条

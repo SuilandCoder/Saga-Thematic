@@ -1,7 +1,7 @@
 .toolsbar {
     /* margin:0px -15px; */
     padding: 6px 0px 6px 0px;
-    background: #6eace6;
+    background: #000010;
     line-height: 2;
     display: flex;
     flex-wrap: wrap;
@@ -10,7 +10,7 @@
 
 .toolsbar .tools-group {
     display: inline-block;
-    margin-left: 20px;
+    margin-left: 40px;
     border-left: 4px #F7F8F1 double;
     padding: 2px 2px 2px 2px;
     line-height: 2;
@@ -41,8 +41,19 @@
     color: #5F7387!important;
 }
 
+.top_logo{
+    display: inline-block;
+    margin-left: 40px;
+    padding: 2px 2px 2px 2px;
+    line-height: 2;
+    >img{
+        height: 35px;
+    }
+}
+
 .user-menu{
     position: absolute;
     right: 20px;
     top:2px;
+    line-height: 2;
 }

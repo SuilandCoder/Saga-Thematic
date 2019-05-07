@@ -42,7 +42,7 @@ export class GlobeConfigService {
         'AerialWithLabels',
         'OrdnanceSurvey',
         'TDT',
-        'TDT_ima'
+        'TDT_img'
     ];
 
     constructor() {
@@ -118,7 +118,7 @@ export class GlobeConfigService {
                         })
                     ]
                 })
-            } else if (this.styles[i] === "TDT_ima") {
+            } else if (this.styles[i] === "TDT_img") {
                 this.onlineLayers.push({
                     name: '天地图影像',
                     id: this.styles[i],

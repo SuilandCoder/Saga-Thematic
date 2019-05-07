@@ -63,6 +63,10 @@ app-footer {
 
 app-ol-map {
   width: 100%;
+  position: absolute;
+  left: 0px;
 }
 
-
+ng-sidebar{
+  overflow: hidden;
+}

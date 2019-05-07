@@ -12,7 +12,7 @@
     margin-left: auto;
     display: flex;
     background-color: #fff;
-    overflow: overlay;
+    overflow: hidden;
 }
 
 .profile_left{
@@ -83,7 +83,7 @@
 
         
         &.email{
-          background: url("/assets/icon/mailbox.svg");
+          background: url(/assets/icon/mailbox.svg);
         }
     }
     

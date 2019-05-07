@@ -1,8 +1,12 @@
 import { Injectable } from "@angular/core";
+import * as SparkMd5 from "spark-md5";
 import proj4 from 'proj4'
-import { VectorStyle, WktProjection, ImageLayer, ShpMeta, TiffMeta } from "../data_model";
+import { VectorStyle, WktProjection, ImageLayer, ShpMeta, TiffMeta, DataInfo } from "../data_model";
 import * as _ from 'lodash';
 import { DC_DATA_TYPE } from "../enum";
+import { Observable } from "rxjs";
+import * as JSZip from 'jszip';
+import { isJsObject } from "@angular/core/src/change_detection/change_detection_util";
 
 @Injectable()
 export class UtilService {
@@ -190,81 +194,198 @@ export class UtilService {
         }
     }
 
+
+    isJsonString(str) {
+        try {
+            if (typeof JSON.parse(str) == "object") {
+                return true;
+            }
+        } catch (e) {
+        }
+        return false;
+    }
+
     //* 解析shapefile文件的 meta 字符串
     getShpMetaObj(meta: any) {
         if (meta == null || meta == undefined) {
             return meta;
         }
-        meta = JSON.parse(meta);
-        let shpMeta = new ShpMeta();
-        shpMeta.count = meta.featureCount;
-        shpMeta.name = meta.name;
-        shpMeta.proj = meta.proj;
-        shpMeta.geometry = meta.geometry;
-        shpMeta.fields = meta.fields.map(item => {
-            return { "field": item.Field, "type": item.Type };
-        })
-        shpMeta.extent = [];
-        let lower = meta.lowerCorner;
-        let upper = meta.upperCorner;
-        if(lower==null && upper==null){
-            shpMeta.extent =[73,18,126,53]
-        }else if(lower==null){
-            shpMeta.extent = _.concat(upper,upper);
-        }else if(upper==null){
-            shpMeta.extent = _.concat(lower,lower);
-        }else{
-            shpMeta.extent = _.concat(lower,upper);
-        }
-        console.log(JSON.stringify(shpMeta));
-        return shpMeta;
+        if(this.isJsonString(meta)){
+            meta = JSON.parse(meta);
+            let shpMetaList = new Array<ShpMeta>();
+            meta.forEach(element => {
+                let shpMeta = new ShpMeta();
+                shpMeta.count = element.featureCount;
+                shpMeta.name = element.name;
+                shpMeta.proj = element.proj;
+                shpMeta.geometry = element.geometry;
+                shpMeta.fields = element.fields.map(item => {
+                    return { "field": item.Field, "type": item.Type };
+                })
+                shpMeta.extent = [];
+                let lower = element.lowerCorner;
+                let upper = element.upperCorner;
+                if (lower == null && upper == null) {
+                    shpMeta.extent = [73, 18, 126, 53]
+                } else if (lower == null) {
+                    shpMeta.extent = _.concat(upper, upper);
+                } else if (upper == null) {
+                    shpMeta.extent = _.concat(lower, lower);
+                } else {
+                    shpMeta.extent = _.concat(lower, upper);
+                }
+                shpMetaList.push(shpMeta);
+            });
+            console.log(JSON.stringify(shpMetaList));
+            return shpMetaList;
+        } 
+        return meta;
     }
 
 
-    getTiffMetaObj(meta:any){
+    getTiffMetaObj(meta: any) {
         if (meta == null || meta == undefined) {
             return meta;
         }
         meta = JSON.parse(meta);
-        let tiffMeta = new TiffMeta();
-        tiffMeta.proj = meta.proj;
-        tiffMeta.bandCount = meta.bandCount;
-        tiffMeta.high = meta.high;
-        tiffMeta.low = meta.low;
-        tiffMeta.name = meta.name;
-        tiffMeta.pixelScales = meta.pixelScales;
-        tiffMeta.extent = [];
-        let lower = meta.lowerCorner;
-        let upper = meta.upperCorner;
-        if(lower==null && upper==null){
-            tiffMeta.extent =[73,18,126,53]
-        }else if(lower==null){
-            tiffMeta.extent = _.concat(upper,upper);
-        }else if(upper==null){
-            tiffMeta.extent = _.concat(lower,lower);
-        }else{
-            tiffMeta.extent = _.concat(lower,upper);
-        }
-        console.log(JSON.stringify(tiffMeta));
-        return tiffMeta;
+        let tifMetaList = new Array<TiffMeta>();
+        meta.forEach(element => {
+            let tiffMeta = new TiffMeta();
+            tiffMeta.proj = element.proj;
+            tiffMeta.bandCount = element.bandCount;
+            tiffMeta.high = element.high;
+            tiffMeta.low = element.low;
+            tiffMeta.name = element.name;
+            tiffMeta.pixelScales = element.pixelScales;
+            tiffMeta.extent = [];
+            let lower = element.lowerCorner;
+            let upper = element.upperCorner;
+            if (lower == null && upper == null) {
+                tiffMeta.extent = [73, 18, 126, 53]
+            } else if (lower == null) {
+                tiffMeta.extent = _.concat(upper, upper);
+            } else if (upper == null) {
+                tiffMeta.extent = _.concat(lower, lower);
+            } else {
+                tiffMeta.extent = _.concat(lower, upper);
+            }
+            tifMetaList.push(tiffMeta);
+        });
+        return tifMetaList;
     }
 
-    parseDataType(sagaType:string){
-        let type:string = "";
-        if(!sagaType){
+    parseDataType(sagaType: string) {
+        let type: string = "";
+        if (!sagaType) {
             type = DC_DATA_TYPE.OTHER;
-        }else if(sagaType.includes("Shapes list")){
-            type=DC_DATA_TYPE.OTHER;
-        }else if(sagaType.includes("Shapes")){
-            type=DC_DATA_TYPE.SHAPEFILE;
-        }else if(sagaType.includes("Grid list")){
-            type=DC_DATA_TYPE.OTHER;
-        }else if(sagaType.includes("Grid")){
-            type=DC_DATA_TYPE.SDAT;
-        }else{
+        } else if (sagaType.includes("Shapes list")) {
+            type = DC_DATA_TYPE.SHAPEFILE_LIST;
+        } else if (sagaType.includes("Shapes")) {
+            type = DC_DATA_TYPE.SHAPEFILE;
+        } else if (sagaType.includes("Grid list")) {
+            type = DC_DATA_TYPE.SDAT_LIST;
+        } else if (sagaType.includes("Grid")) {
+            type = DC_DATA_TYPE.SDAT;
+        } else {
             type = DC_DATA_TYPE.OTHER;
         }
         return type;
+    }
+
+    getFileMd5(file: File, chunkSize: number = 5242880): Observable<any> {
+        let blobSlice = File.prototype.slice,                     // Read in chunks of 2MB
+            chunks = Math.ceil(file.size / chunkSize),
+            currentChunk = 0,
+            spark = new SparkMd5.ArrayBuffer(),
+            fileReader = new FileReader();
+
+        return Observable.create(observer => {
+            fileReader.onload = function (e: any) {
+                console.log('read chunk nr', currentChunk + 1, 'of', chunks);
+                spark.append(e.target.result);                   // Append array buffer
+                currentChunk++;
+
+                if (currentChunk < chunks) {
+                    loadNext();
+                } else {
+                    console.log('finished loading');
+
+                    let md5 = spark.end();
+                    console.info('computed hash', md5);  // Compute hash
+                    observer.next({
+                        data: md5
+                    })
+                    observer.complete();
+                }
+            }
+            fileReader.onerror = function () {
+                console.warn('oops, something went wrong.');
+                observer.next({
+                    error: 'oops, something went wrong.'
+                })
+                observer.complete();
+            };
+
+            function loadNext() {
+                var start = currentChunk * chunkSize,
+                    end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+
+                fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+            }
+            loadNext();
+        })
+    }
+
+    getZipFileDataInfo(file: File, fileName: string, userName: string = "") {
+        let dataInfo = new DataInfo();
+        let type = "";
+        let suffix = "";
+        let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase();
+        let fileNameNoExt = fileName.substr(0, fileName.lastIndexOf("."));
+        dataInfo.author = userName;
+        dataInfo.fileName = fileNameNoExt;
+        if (zipExt == "txt") {
+            suffix = "txt";
+            type = "OTHER";
+            dataInfo.suffix = suffix;
+            dataInfo.type = type;
+            dataInfo.file = file;
+        } else {
+            suffix = "zip";
+            JSZip.loadAsync(file).then(data => {
+                data.forEach((relativePath, file) => {
+                    let currentFileName: string = relativePath;
+                    let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
+                    switch (extName) {
+                        case "shp":
+                            type = DC_DATA_TYPE.SHAPEFILE;
+                            break;
+                        case "tif":
+                            type = DC_DATA_TYPE.GEOTIFF;
+                            break;
+                        case "sdat":
+                            type = DC_DATA_TYPE.SDAT;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (type !== "") {
+                        return;
+                    }
+                });
+                if (type != "") {
+                    //* 将压缩文件上传至数据容器 
+                    dataInfo.suffix = suffix;
+                    dataInfo.type = type;
+                    dataInfo.file = file;
+                } else {
+                    dataInfo = null;
+                }
+            }, error => {
+                dataInfo = null;
+            });
+        }
+        return dataInfo;
     }
 
 }

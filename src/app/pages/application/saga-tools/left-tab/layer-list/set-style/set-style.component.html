@@ -7,8 +7,8 @@
         <b>Color Band</b>
       </div>
       <div class="col col-md-5">
-        <input readonly (click)="onChooseBandClick($event)" [style.background-image]="CurrentColorBand?CurrentColorBand.ImageUrl:''"
-        />
+        <input readonly (click)="onChooseBandClick($event)"
+          [style.background-image]="CurrentColorBand?CurrentColorBand.ImageUrl:''" />
         <app-color-band (onColorBandChanged)="onBandChanged($event)" [class.show]="showColorBand"></app-color-band>
       </div>
     </div>
@@ -22,8 +22,8 @@
         <b>Fill</b>
       </div>
       <div class="col col-md-5">
-        <input readonly type="text" [(colorPicker)]="VectorStyle.FillColor" [style.background]="VectorStyle.FillColor" [cpPosition]="'right'"
-        />
+        <input readonly type="text" [(colorPicker)]="VectorStyle.FillColor" [style.background]="VectorStyle.FillColor"
+          [cpPosition]="'right'" />
       </div>
     </div>
 
@@ -32,8 +32,8 @@
         <b>Out Line</b>
       </div>
       <div class="col col-md-5">
-        <input readonly type="text" [(colorPicker)]="VectorStyle.StrokeColor" [style.background]="VectorStyle.StrokeColor" [cpPosition]="'right'"
-        />
+        <input readonly type="text" [(colorPicker)]="VectorStyle.StrokeColor"
+          [style.background]="VectorStyle.StrokeColor" [cpPosition]="'right'" />
       </div>
     </div>
 
@@ -51,8 +51,8 @@
         <b>Point Fill</b>
       </div>
       <div class="col col-md-5">
-        <input readonly type="text" [(colorPicker)]="VectorStyle.ImageFillColor" [style.background]="VectorStyle.ImageFillColor"
-          [cpPosition]="'right'" />
+        <input readonly type="text" [(colorPicker)]="VectorStyle.ImageFillColor"
+          [style.background]="VectorStyle.ImageFillColor" [cpPosition]="'right'" />
       </div>
     </div>
 
@@ -61,8 +61,8 @@
         <b>Point Line</b>
       </div>
       <div class="col col-md-5">
-        <input readonly type="text" [(colorPicker)]="VectorStyle.ImageStrokeColor" [style.background]="VectorStyle.ImageStrokeColor"
-          [cpPosition]="'right'" />
+        <input readonly type="text" [(colorPicker)]="VectorStyle.ImageStrokeColor"
+          [style.background]="VectorStyle.ImageStrokeColor" [cpPosition]="'right'" />
       </div>
     </div>
 
@@ -93,12 +93,15 @@
       <div class="col col-md-5">
         <!-- <input [(ngModel)]="layerSetting.Opacity" /> -->
         <!-- <el-slider [min]="0" [max]="100" (click)="onClickSlider($event)" [(model)]="layerSetting.Opacity">  </el-slider>-->
-        <nz-row>
+        <!-- <nz-row>
           <nz-col nzSpan="24">
-            <nz-slider [nzMin]="0" [nzTipFormatter]="formatValue" [nzMax]="100" [(ngModel)]="layerSetting.Opacity"></nz-slider>
+            <nz-slider [nzMin]="0" [nzTipFormatter]="formatValue" [nzMax]="100" [(ngModel)]="layerSetting.Opacity">
+            </nz-slider>
           </nz-col>
-        </nz-row>
-
+        </nz-row> -->
+        <mat-slider [invert]="false" [max]="100" [min]="0" [step]="1" [thumbLabel]="false"
+          [(ngModel)]="layerSetting.Opacity">
+        </mat-slider>
 
       </div>
     </div>

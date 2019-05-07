@@ -8,8 +8,9 @@
   }
   
   .sign-in-container {
+    background-image: url(/assets/images/background.png);
     background: #eaeef6;
-    background-image: url("/assets/images/background.png");
+
     background-position: center;
     background-repeat: no-repeat;
     width: 100%;
@@ -125,4 +126,8 @@
     }
 }
 
+
+.ng-invalid{
+    border: none;
+}
   

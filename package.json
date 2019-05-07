@@ -8,6 +8,7 @@
     "build": "ng build --prod --build-optimizer --base-href ./ --output-path=dist --delete-output-path",
     "build:prod": "node --max_old_space_size=5120 node_modules/@angular/cli/bin/ng build  --base-href ./ --output-path=build-prod --delete-output-path --prod --build-optimizer=false --watch --common-chunk --vendor-chunk",
     "build:prod:optimizer": "node --max_old_space_size=5120 node_modules/@angular/cli/bin/ng build --base-href ./ --output-path=build-prod-optimizer --delete-output-path --prod --build-optimizer --watch --common-chunk --vendor-chunk --stats-json",
+    "bundle-report": "webpack-bundle-analyzer dist/Saga-Thematic/stats.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -41,7 +42,6 @@
     "jszip": "^3.1.5",
     "lodash": "^4.17.11",
     "ng-sidebar": "^8.0.0",
-    "ng-zorro-antd": "^7.0.0-rc.3",
     "ng2-tree": "^2.0.0-rc.11",
     "ngx-bootstrap": "^3.1.2",
     "ngx-color-picker": "^7.2.0",
@@ -49,7 +49,6 @@
     "ngx-uploader": "^7.0.0",
     "node-sass": "^4.10.0",
     "ol": "^5.3.0",
-    "ol3-ext": "^1.0.1",
     "openlayers": "^4.6.4",
     "proj4": "^2.5.0",
     "rxjs": "^6.3.3",
@@ -57,6 +56,8 @@
     "sass-loader": "^7.1.0",
     "setimmediate": "^1.0.5",
     "sortablejs": "^1.8.0-rc1",
+    "spark-md5": "^3.0.0",
+    "web-animations-js": "^2.3.1",
     "xml2js": "^0.4.19",
     "zone.js": "~0.8.26"
   },
@@ -80,6 +81,7 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "^5.12.0",
-    "typescript": "^2.9.2"
+    "typescript": "^2.9.2",
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }

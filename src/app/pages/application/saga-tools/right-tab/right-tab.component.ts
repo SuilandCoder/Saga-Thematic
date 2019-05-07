@@ -5,7 +5,6 @@ import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 import { ToolService } from 'src/app/_common/services/tool.service';
 import { ToastrService } from 'ngx-toastr';
-import { NzTabChangeEvent } from 'ng-zorro-antd';
 import { ToolParam, DataTransmissionService, CustomFile, UtilService } from 'src/app/_common';
 import { Subscription } from 'rxjs/Subscription';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -21,6 +20,7 @@ import * as _ from 'lodash';
 export class RightTabComponent implements OnInit {
   subscription: Subscription;
   LayersListHeight: number;
+  toolDesHeight: number;
   toolInfo;
   private inputParams: Array<ToolParam>;
   private outputParams: Array<ToolParam>;
@@ -54,6 +54,12 @@ export class RightTabComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.LayersListHeight = window.innerHeight * 0.9;
     })
+
+    this.toolDesHeight = window.innerHeight * 0.9 - 55;
+    window.addEventListener('resize', () => {
+      this.toolDesHeight = window.innerHeight * 0.9 - 55;
+    })
+
     this.TabItems = ['Description', 'Settings'];
     this.subscription = this.toolService.getModelInfoMessage().subscribe(({ path, id }) => {
       this.path = path;
@@ -73,7 +79,11 @@ export class RightTabComponent implements OnInit {
     }
   }
 
-  onTabChanged(nzTabChangeEvent: NzTabChangeEvent) { }
+  openMyDialog() {
+    this.dataTransmissionService.sendUploadListControlSubject();
+  }
+
+  onTabChanged(nzTabChangeEvent) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
@@ -190,9 +200,9 @@ export class RightTabComponent implements OnInit {
                         console.log("metaRes:", metaRes);
                         //* 判断是否是 shp 文件
                         let meta = metaRes.data;
-                        if (this.newData.type === DC_DATA_TYPE.SHAPEFILE) {
+                        if (this.newData.type === DC_DATA_TYPE.SHAPEFILE || this.newData.type ==DC_DATA_TYPE.SHAPEFILE_LIST) {
                           this.newData.meta = this.utilService.getShpMetaObj(meta);
-                        } else if (this.newData.type == DC_DATA_TYPE.GEOTIFF || this.newData.type==DC_DATA_TYPE.SDAT) {
+                        } else if (this.newData.type == DC_DATA_TYPE.GEOTIFF || this.newData.type == DC_DATA_TYPE.SDAT ||  this.newData.type==DC_DATA_TYPE.GEOTIFF_LIST ||  this.newData.type==DC_DATA_TYPE.SDAT_LIST) {
                           this.newData.meta = this.utilService.getTiffMetaObj(meta);
                         }
                       }

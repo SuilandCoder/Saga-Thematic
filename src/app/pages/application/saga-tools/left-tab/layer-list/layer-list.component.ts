@@ -1,3 +1,4 @@
+import { DC_DATA_TYPE } from './../../../../../_common/enum/enum';
 import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -144,6 +145,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
 
     //获取在线图层
     this.dataTransmissionService.getOnlineLayerSubject().subscribe(onlineLayerId => {
+      this.dataTransmissionService.sendVisibleMapSubject(onlineLayerId);
       let findOnlineLayer: any = this.globeConfigService.onlineLayers.find(value => {
         return value["id"] === onlineLayerId;
       })
@@ -176,43 +178,55 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       //* 新建 LayerItem对象，将 geoserverDataInfo 中的 id 暂时作为 dataId，用于唯一性识别方便图层添加及删除；
 
       //*获取文件类型
-      let type = geoserverDataInfo.type === "GEOTIFF" ? "tif" : "shp";
+      // let type = geoserverDataInfo.type === "GEOTIFF" ? "tif" : "shp";
 
-      let newItem = new LayerItem(geoserverDataInfo.fileName, null, type, geoserverDataInfo.id);
-      if (this.olMapService.isDataOnLayer(geoserverDataInfo.id)) {
-        return;
-      }
-      if ((newItem.type == "shp" || newItem.type == "tif") && geoserverDataInfo.meta && geoserverDataInfo.meta.proj) {
-        newItem.proj = geoserverDataInfo.meta.proj;
-        if (geoserverDataInfo.meta.extent) {
-          newItem.extent = geoserverDataInfo.meta.extent;
+      let type: string;
+      if (geoserverDataInfo.type === DC_DATA_TYPE.GEOTIFF || geoserverDataInfo.type == DC_DATA_TYPE.GEOTIFF_LIST) {
+        type = "tif";
+        if (geoserverDataInfo.meta) {
+          geoserverDataInfo.meta = this.utilService.getTiffMetaObj(geoserverDataInfo.meta);
         }
-        if (newItem.type == "shp" && geoserverDataInfo.meta.fields) {
-          newItem.fields = geoserverDataInfo.meta.fields;
+      } else if (geoserverDataInfo.type === DC_DATA_TYPE.SDAT || geoserverDataInfo.type === DC_DATA_TYPE.SDAT_LIST) {
+        type = "sdat";
+        if (geoserverDataInfo.meta) {
+          geoserverDataInfo.meta = this.utilService.getTiffMetaObj(geoserverDataInfo.meta);
+        }
+      } else if (geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE || geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE_LIST) {
+        type = "shp";
+        if (geoserverDataInfo.meta) {
+          geoserverDataInfo.meta = this.utilService.getShpMetaObj(geoserverDataInfo.meta);
         }
       }
-      this.LayerItems.splice(0, 0, newItem);
-      newItem.visible = !newItem.visible;
-      // this.olMapService.getWFSGeojsonData(geoserverDataInfo.layerName).subscribe({
-      //   next: res=>{
-      //      if (res.error) {
-      //       this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-      //     } else {
-      //       console.log(res);
-      //       let geoJsonLayer = {'geojson':JSON.stringify(res),'proj':""};
-      //       this.olMapService.addVectorLayer(new GeoJsonLayer(newItem.dataId, geoJsonLayer));
-      //     }
-      //   },
-      //   error: e=>{
-      //     console.error(e);
-      //   }
-      // })
 
-      this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo);
-      newItem.isOnMap = true;
-      newItem.layerShowing = false;
+      let layerNameList = geoserverDataInfo.layerName;
+      let metaList = geoserverDataInfo.meta;
+      layerNameList.forEach((item, index) => {
+        let newItem = new LayerItem(metaList[index]["name"], null, type, geoserverDataInfo.id + "_" + index);
+        if (this.olMapService.isDataOnLayer(geoserverDataInfo.id + "_" + index)) {
+          return;
+        }
+        if ((newItem.type == "shp" || newItem.type == "tif" || newItem.type == "sdat") && metaList[index] && metaList[index].proj) {
+          newItem.proj = metaList[index].proj;
+          if (metaList[index].extent) {
+            newItem.extent = metaList[index].extent;
+          }
+          if (newItem.type == "shp" && metaList[index].fields) {
+            newItem.fields = metaList[index].fields;
+          }
+        }
+        let res = this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo,index);
+        if (res !== 'error') {
+          this.LayerItems.splice(0, 0, newItem);
+          newItem.visible = !newItem.visible;
+          newItem.isOnMap = true;
+          newItem.layerShowing = false;
+        } else {
+          this.toastr.error("Failed to Load Data.");
+        }
+      })
     });
-    this.dataTransmissionService.sendOnlineLayerSubject("TDT");
+    // this.dataTransmissionService.sendOnlineLayerSubject("TDT");
+    this.dataTransmissionService.sendOnlineLayerSubject("osm");
   }
 
   ngAfterViewInit() {
@@ -246,8 +260,8 @@ export class LayerListComponent implements OnInit, AfterViewInit {
     }
     //! 已经在地图上
     if (currentItem.isOnMap) {
-      this.dataTransmissionService.sendVisibleByIdSubject(currentItem.dataId);
       currentItem.visible = !layerItem.visible;
+      this.dataTransmissionService.sendVisibleByIdSubject(currentItem.dataId);
       this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
       return;
     }
@@ -303,7 +317,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           currentItem.layerShowing = false;
           console.log(reason);
           this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
-          this.toastr.error("Failed to Load Data.");
+          // this.toastr.error("Failed to Load Data.");
         }).catch(error => {
           remove(this.LayerItems, item => {
             return isEqual(item, currentItem);
@@ -514,22 +528,22 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           case "tif":
             this.popupContent.push(new DataItem("EXPORT", "Export Data"));
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
-            this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
+            // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
             break;
           case "sgrd":
             this.popupContent.push(new DataItem("EXPORT", "Export Data"));
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
-            this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
+            // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
             break;
           case "shp":
             this.popupContent.push(new DataItem("TABLE", "Open Attributes Table"));
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
             this.popupContent.push(new DataItem("EXPORT", "Export Data"));
-            this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
+            // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
             break;
           case "ONLINE":
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
-            this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
+            // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
             break;
           case "txt":
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
@@ -558,8 +572,8 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         case "REMOVE":
           //删除选中的item
           if (this.SelectedLayerItem) {
-            this.dataTransmissionService.sendDeleteLayerSubject(this.SelectedLayerItemId);
             this.LayerItems.splice(this.LayerItems.indexOf(this.SelectedLayerItem), 1);
+            this.dataTransmissionService.sendDeleteLayerSubject(this.SelectedLayerItemId);
             this.SelectedLayerItemId = null;
           }
           break;

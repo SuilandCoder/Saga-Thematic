@@ -1,5 +1,5 @@
-<div class="record_room">
-  <div class="record_item" *ngFor="let item of toolRecords">
+<div class="scrollbar record_room" [style.height]="toolRecordHeight.toString()+'px'">
+  <div class="record_item" *ngFor="let item of toolRecords trackBy:trackByDataId">
     <div class="top">
       <span class="tool_name">{{item.toolName}}</span>
       <span class="excute_time">{{item.excuteTime | date:'yyyy-MM-dd HH:mm:ss'}} </span>

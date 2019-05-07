@@ -7,7 +7,6 @@ import 'rxjs/add/operator/mergeMap';
 import { FieldToGetData, DC_DATA_TYPE } from '../enum';
 import { ToastrService } from 'ngx-toastr';
 import { DataTransmissionService } from './data-transmission.service';
-import { properties } from 'ng-zorro-antd';
 
 @Injectable({
     providedIn: 'root'
@@ -39,8 +38,21 @@ export class UserDataService {
         return this.dataUploadResultSubject.asObservable();
     }
 
+    fileFastUpload(sourceStoreId:string,author:string,md5:string,tags?:Array<string>,):Observable<any>{
+        var fd = new FormData();
+        fd.append("sourceStoreId",sourceStoreId);
+        fd.append("author",author);
+        fd.append("md5",md5);
+        if(tags){
+            tags.forEach(item=>{
+                fd.append("tags",item);
+            })
+        }
+        return this.http.post(`${this.dataResUrl}/fastUpload_saga`,fd);
+    }
 
-    //* 上传数据至数据容器：
+
+    //* 上传数据文件管理及至数据容器：（作废）
     uploadData(dataInfo: DataInfo): Observable<any> {
         var fd = new FormData();
         fd.append("file", dataInfo.file);
@@ -55,6 +67,9 @@ export class UserDataService {
             })
     }
 
+    uploadDataToDataResource(dataInfo: DataInfo): Observable<any> {
+        return this.http.post(`${this.dataResUrl}`, dataInfo);
+    }
 
     //* 查询数据集
     getDatas(method: FieldToGetData, content: string, filter?: {
@@ -96,6 +111,10 @@ export class UserDataService {
     //* 获取数据 meta
     getMeta(id: string): Observable<any> {
         return this.http.get(`${this.dataResUrl}/` + id + "/getMeta");
+    }
+
+    fastUpload(md5:string): Observable<any> {
+        return this.http.post(`${this.fileUrl}/fastUpload/`+md5,{md5:md5});
     }
 
     //* 将数据添加进图层并显示

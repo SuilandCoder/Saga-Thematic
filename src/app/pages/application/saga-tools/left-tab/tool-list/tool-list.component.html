@@ -1,4 +1,4 @@
-<div [style.display]="CurrentIndex===1?'block':'none'" class="tools-tree">
+<div [style.display]="CurrentIndex===1?'block':'none'" class="tools-tree scrollbar" [style.height]="toolListHeight.toString()+'px'">
   <tree [tree]="tree" [settings]="settings" (nodeSelected)="onNodeSelected($event)" #ToolsTree></tree>
 </div>
 

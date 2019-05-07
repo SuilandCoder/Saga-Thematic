@@ -10,8 +10,10 @@ export class OnlineMapToolComponent implements OnInit {
 
   onlineLayers: Array<any>;
 
-  constructor(private globeConfigService: GlobeConfigService,
-    private dataTransmissionService: DataTransmissionService) {
+  constructor(
+    private globeConfigService: GlobeConfigService,
+    private dataTransmissionService: DataTransmissionService
+  ) {
     this.onlineLayers = this.globeConfigService.onlineLayers;
   }
 

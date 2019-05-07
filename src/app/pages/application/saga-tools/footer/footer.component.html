@@ -21,37 +21,16 @@
   </span>
 </div> -->
 <div class="app-footer">
-  <div nz-row [nzGutter]="8">
-    <div nz-col class="State" [nzSpan]="8">
-      <nz-spin *ngIf="StateShowFlag" [nzSize]="'small'"></nz-spin>
-      <span *ngIf="StateShowFlag" class="state-text" [title]="StateInfo">{{StateInfo}}</span>
+  <div >
+    <div class="State">
+      <img *ngIf="StateShowFlag"  src="assets/images/common/loading2.gif" alt="">
+      <span class="state-text" [title]="StateInfo">{{StateInfo}}</span>
     </div>
 
-    <div nz-col class="Coordinates" [nzSpan]="6">
+    <div class="Coordinates" >
       <span>
         <i class="fa fa-map-marker" aria-hidden="true" title="Coordinates"></i>
         {{Coordinates?(Coordinates.x|number:'1.1-5'):''}}{{Coordinates?'，':''}}{{Coordinates?(Coordinates.y|number:'1.1-5'):''}}
-      </span>
-    </div>
-
-    <div nz-col [nzSpan]="4">
-      <span [title]="Unit">
-        <strong>Unit: </strong>{{Unit}}
-      </span>
-    </div>
-
-    <div nz-col [nzSpan]="4">
-
-        <!-- all projection -->
-        <!-- <app-projection-list [class.show]="ShowSwitchProjectionFlag"></app-projection-list> -->
-        <span class="crs-icon"><i class="fa fa-globe" aria-hidden="true"></i></span>
-        <span title="CRS Name" class="crs-text noselect" (click)="switchProjection()"> {{CrsName}}</span>
-
-    </div>
-
-    <div nz-col [nzSpan]="2">
-      <span title="download map">
-        <i class="fa fa-cloud-download" (click)="downloadMap()" aria-hidden="true"></i>
       </span>
     </div>
   </div>

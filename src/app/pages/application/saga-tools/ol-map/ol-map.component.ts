@@ -1,7 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import proj4 from 'proj4';
-import 'ol3-ext/dist/ol3-ext';
-import 'setimmediate';
 import {
   LayerItem,
   Point,
@@ -12,7 +10,6 @@ import {
   WindowEventService,
   DataTransmissionService
 } from 'src/app/_common';
-
 declare var ol: any;
 
 @Component({
@@ -36,6 +33,8 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   private AllLayers: Array<LayerItem>;
   private Popup: any;
 
+  visibleMapId: string;
+
   private styles = [
     'Road',
     'RoadOnDemand',
@@ -47,6 +46,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   // private LayerOne = new ol.layer.Tile({
   //   source: new ol.source.OSM()
   // });
+
 
   private BingLayer = new ol.layer.Tile({
     preload: Infinity,
@@ -63,38 +63,8 @@ export class OlMapComponent implements OnInit, AfterViewInit {
     global: false
   });
 
-
-
   //raster test
   private format = 'image/png';
-  // private untiled = new ol.layer.Image({
-  //   source: new ol.source.ImageWMS({
-  //     ratio: 1,
-  //     url: 'http://172.21.212.119:8080/geoserver/ogms_ws/wms',
-  //     params: {
-  //       'FORMAT': this.format,
-  //       'VERSION': '1.1.1',
-  //       STYLES: '',
-  //       LAYERS: 'ogms_ws:geotiff_chazhi',
-  //     },
-  //     crossOrigin: "anonymous"
-  //   })
-  // });
-
-  // private tiled = new ol.layer.Tile({
-  //   visible: true,
-  //   source: new ol.source.TileWMS({
-  //     url: 'http://172.21.212.119:8080/geoserver/ogms_ws/wms',
-  //     params: {
-  //       'FORMAT': this.format,
-  //       'VERSION': '1.1.1',
-  //       tiled: true,
-  //       STYLES: '',
-  //       LAYERS: 'ogms_ws:geotiff_chazhi',
-  //       BGCOLOR: '0xffffff'
-  //     }, crossOrigin: "anonymous"
-  //   })
-  // });
 
 
   constructor(
@@ -106,6 +76,9 @@ export class OlMapComponent implements OnInit, AfterViewInit {
     this.AllOnMapLayer = new Array<any>();
     this.SelectFlag = false;
     this.identifyInfo = new IdentifyInfo(null, null);
+    this.dataTransmissionService.getVisibleMapSubject().subscribe(id => {
+      this.visibleMapId = id;
+    });
   }
 
   ngOnInit() {
@@ -114,11 +87,11 @@ export class OlMapComponent implements OnInit, AfterViewInit {
     this.MapHeight = window.innerHeight * 0.9;
 
     window.addEventListener('resize', () => {
-      this.MapHeight = window.innerHeight* 0.9;
-      setImmediate(()=>{
+      this.MapHeight = window.innerHeight * 0.9;
+      // setImmediate(() => {
         //防止放在map实例化之后，不起效果
         this.MapObject.updateSize();
-      })
+      // })
     })
 
     this.initMap();
@@ -130,11 +103,13 @@ export class OlMapComponent implements OnInit, AfterViewInit {
     this.dataTransmissionService.getDeleteLayerSubject().subscribe(layerId => {
       this.olMapService.removeLayer(layerId);
       this.SelectedLayerId = null;
+      this.getVisiblemapId();
     })
 
     //订阅是否显示或者隐藏图层
     this.dataTransmissionService.getVisibleByIdSubject().subscribe(next => {
       this.olMapService.showOrHideLayer(next, this.select, this.DragBox, this.SelectFlag);
+      this.getVisiblemapId();
     }, error => {
       console.log(error);
     })
@@ -183,7 +158,8 @@ export class OlMapComponent implements OnInit, AfterViewInit {
     //更新图层的ZIndex
     this.dataTransmissionService.getLayerListOnSortSubject().subscribe(() => {
       this.AllOnMapLayer.forEach(LayerOnMap => {
-        if(this.AllLayers){
+        console.log("layerOnMap:", LayerOnMap);
+        if (this.AllLayers) {
           let findIndex = this.AllLayers.findIndex(value => {
             return value.dataId === LayerOnMap.id;
           })
@@ -191,13 +167,14 @@ export class OlMapComponent implements OnInit, AfterViewInit {
             //倒序，位于列表最上方，则显示也在最上方
             LayerOnMap.setZIndex(this.AllLayers.length - findIndex - 1);
           }
-        } 
+        }
       })
+      this.getVisiblemapId();
     })
 
 
     //mouse move
-    document.getElementsByClassName('ol-viewport')[0].addEventListener('pointermove', (ev:any) => {
+    document.getElementsByClassName('ol-viewport')[0].addEventListener('pointermove', (ev: any) => {
       let TempPosition = this.MapObject.getCoordinateFromPixel([ev.layerX, ev.layerY])
       if (TempPosition) {
         this.MouseMovePosition.x = TempPosition[0];
@@ -219,22 +196,11 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   }
 
   initMap() {
-    //this.untiled.getSource().setImageLoadFunction(this.imageLoadFunction);
-    //this.tiled.getSource().setTileLoadFunction(this.imageLoadFunction);
-    //this.Layers.push(this.BingLayer);
-    //this.Layers.push(this.LayerOne);
-    //this.Layers.push(this.untiled);
-    //this.Layers.push(this.tiled);
-    //请求图像范围
-    // this.olMapService.getImageWMSExtent().then(next => {
-    //   this.MapObject.getView().fit(next);
-    // }, error => {
-    //   console.log(error);
-    // });
-
     this.MapObject = new ol.Map({
-      target: 'mapview',
+
       layers: this.Layers,
+      // controls: defaultControls({attribution: false}).extend([this.attribution]),
+      target: 'mapview',
       view: new ol.View({
         center: [120, 30],
         projection: 'EPSG:4326',
@@ -459,6 +425,21 @@ export class OlMapComponent implements OnInit, AfterViewInit {
 
     }
   }
+
+  getVisiblemapId() {
+    let tmpMapId = "";
+    if (this.AllLayers) {
+      for (let layer of this.AllLayers) {
+        if ((layer.dataId == "osm" || layer.dataId == "TDT" || layer.dataId == "TDT_img" || layer.dataId == "AerialWithLabels" || layer.dataId == "Road") && layer.visible === true) {
+          tmpMapId = layer.dataId;
+          break;
+        }
+      }
+      this.visibleMapId = tmpMapId;
+    }
+  }
+
+
 }
 class IdentifyInfo {
   FieldArray: Array<string>;

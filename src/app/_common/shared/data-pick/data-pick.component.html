@@ -4,8 +4,8 @@
     <button class="btn_add_data" mat-stroked-button [matMenuTriggerFor]="menu">add data</button>
     <mat-menu #menu="matMenu">
       <label mat-menu-item class="upload-button" (click)="fromLocal()">
-        <input type="file" ngFileSelect accept="application/zip" #fileInput
-          (uploadOutput)="onUploadOutput($event,fileInput)" />
+        <!-- <input type="file" ngFileSelect accept="application/zip" #fileInput
+          (uploadOutput)="onUploadOutput($event,fileInput)" /> -->
         <span style="margin-bottom:25px">From Local Data</span>
       </label>
       <!-- <button mat-menu-item (click)="fromLayers()">From Layer List</button> -->
@@ -34,13 +34,7 @@
             (nzChange)="change($event)"></nz-transfer> -->
       <div class="user_datas_container">
         <div class="item" *ngFor="let item of dataResources" title="{{item.fileName}}" (click)="pickData(item)">
-          <img  *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">
-          <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiLineString'||item.meta.geometry=='LineString')" src="assets/images/data/line-vector.png" alt="">
-          <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPoint'||item.meta.geometry=='Point')" src="assets/images/data/points-vector.png" alt="">
-          <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPolygon'||item.meta.geometry=='Polygon')" src="assets/images/data/polygon-vector.png" alt="">
-          <img *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='GeometryCollection'||item.meta.geometry=='Geometry')" src="assets/images/data/vector.png" alt="">
-          <img *ngIf="item.type=='SHAPEFILE'&& item.meta==null" src="assets/images/data/vector.png" alt="">
-          <img *ngIf="item.type=='OTHER'" src="assets/images/data/other.png" alt="">
+          <img [ngClass]="setClasses(item)" [src]="getSrc(item)" alt="">
           <span class="dataName">{{item.fileName}}</span>
           <div class="cover">
             <a>
@@ -58,13 +52,7 @@
 
     <div class="picked" scrollbar>
       <div class="item" *ngFor="let item of dataPicked" title="{{item.fileName}}" (click)="discard(item)">
-        <img  *ngIf="item.type=='GEOTIFF'||item.type=='SDAT'" src="assets/images/data/tiff.png" alt="">
-        <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiLineString'||item.meta.geometry=='LineString')" src="assets/images/data/line-vector.png" alt="">
-        <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPoint'||item.meta.geometry=='Point')" src="assets/images/data/points-vector.png" alt="">
-        <img class="shp_img" *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='MultiPolygon'||item.meta.geometry=='Polygon')" src="assets/images/data/polygon-vector.png" alt="">
-        <img *ngIf="item.type=='SHAPEFILE'&& item.meta!=null && (item.meta.geometry=='GeometryCollection'||item.meta.geometry=='Geometry')" src="assets/images/data/vector.png" alt="">
-        <img *ngIf="item.type=='SHAPEFILE'&& item.meta==null" src="assets/images/data/vector.png" alt="">
-        <img *ngIf="item.type=='OTHER'" src="assets/images/data/other.png" alt="">
+        <img [ngClass]="setClasses(item)" [src]="getSrc(item)" alt="">
         <span class="dataName">{{item.fileName}}</span>
         <div class="cover">
           <a>

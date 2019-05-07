@@ -1,8 +1,9 @@
+import { UploadListComponent } from './../../../../_common/shared/upload-list/upload-list.component';
+import { MainPageModule } from './../main-page/main-page.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button'; 
-import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { RightTabComponent } from './right-tab.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,15 +17,17 @@ import { MatIconModule, MatMenuModule } from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import { SharedModule } from 'src/app/_common';
 import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.component';
+import { RightBarComponent } from '../right-bar/right-bar.component';
+import {MatTabsModule} from '@angular/material/tabs';
 @NgModule({
   imports: [
     SharedModule,
     CdkTreeModule,
     ReactiveFormsModule,
-    NgZorroAntdModule,
     NgxUploaderModule,
     MatDialogModule, 
     FormsModule,
+    MatTabsModule
   ],
   declarations: [
     RightTabComponent,
@@ -36,6 +39,7 @@ import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.co
   entryComponents:[
     ListInputDialog,
     DataPickComponent,
+    UploadListComponent,
   ],
   exports:[
     RightTabComponent

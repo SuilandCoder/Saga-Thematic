@@ -6,19 +6,20 @@
       </div>
       <div class="form-horizontal">
         <form class='login-form' [formGroup]='signInFG'>
+          
           <mat-form-field>
-            <input matInput placeholder='Username' formControlName='userId'>
+            <input matInput placeholder='Username' formControlName='userId'required>
             <mat-error *ngIf=''>必填</mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input [type]='hide? "password": "text"' matInput placeholder="Password" formControlName='password'>
+            <input [type]='hide? "password": "text"' matInput placeholder="Password" formControlName='password' required>
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
             <mat-hint><a routerLink='../password-reset'>Forgot password?</a></mat-hint>
             <mat-error *ngIf=''>必填</mat-error>
           </mat-form-field>
-          <div class='remember-account'>
+          <!-- <div class='remember-account'>
             <mat-checkbox color='primary' formControlName='rememberAccount'>Remember the account</mat-checkbox>
-          </div>
+          </div> -->
           <button mat-flat-button color="primary" [disabled]='!signInFG.valid' (click)='onSubmit()'>{{isPending?
             'Signing in ...': 'Sign in'}}</button>
         </form>
