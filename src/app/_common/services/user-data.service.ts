@@ -38,6 +38,19 @@ export class UserDataService {
         return this.dataUploadResultSubject.asObservable();
     }
 
+    fileFastUpload(sourceStoreId:string,author:string,md5:string,tags?:Array<string>,):Observable<any>{
+        var fd = new FormData();
+        fd.append("sourceStoreId",sourceStoreId);
+        fd.append("author",author);
+        fd.append("md5",md5);
+        if(tags){
+            tags.forEach(item=>{
+                fd.append("tags",item);
+            })
+        }
+        return this.http.post(`${this.dataResUrl}/fastUpload_saga`,fd);
+    }
+
 
     //* 上传数据文件管理及至数据容器：（作废）
     uploadData(dataInfo: DataInfo): Observable<any> {

@@ -200,9 +200,9 @@ export class RightTabComponent implements OnInit {
                         console.log("metaRes:", metaRes);
                         //* 判断是否是 shp 文件
                         let meta = metaRes.data;
-                        if (this.newData.type === DC_DATA_TYPE.SHAPEFILE) {
+                        if (this.newData.type === DC_DATA_TYPE.SHAPEFILE || this.newData.type ==DC_DATA_TYPE.SHAPEFILE_LIST) {
                           this.newData.meta = this.utilService.getShpMetaObj(meta);
-                        } else if (this.newData.type == DC_DATA_TYPE.GEOTIFF || this.newData.type == DC_DATA_TYPE.SDAT) {
+                        } else if (this.newData.type == DC_DATA_TYPE.GEOTIFF || this.newData.type == DC_DATA_TYPE.SDAT ||  this.newData.type==DC_DATA_TYPE.GEOTIFF_LIST ||  this.newData.type==DC_DATA_TYPE.SDAT_LIST) {
                           this.newData.meta = this.utilService.getTiffMetaObj(meta);
                         }
                       }

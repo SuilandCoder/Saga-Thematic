@@ -37,24 +37,24 @@ export class DataListComponent implements OnInit {
     this.router.events
       .filter((event) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
-      // 这里需要判断一下当前路由，如果不加的话，每次路由结束的时候都会执行这里的方法，这里以search组件为例
+        // 这里需要判断一下当前路由，如果不加的话，每次路由结束的时候都会执行这里的方法，这里以search组件为例
         if (event.url === '/saga-tools') {
           /*在这写需要执行初始化的方法*/
           this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
           window.addEventListener('resize', () => {
             this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
           })
-      
-          if(this.userService.user){
-            this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+
+          if (this.userService.user) {
+            this.loadUserData(this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
           }
-      
-          this.dataTransmissionService.getLoadUserDataSubject().subscribe(_=>{
-            this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+
+          this.dataTransmissionService.getLoadUserDataSubject().subscribe(_ => {
+            this.loadUserData(this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
           });
-      
-          this.dataTransmissionService.getAddToLayerSubject().subscribe(dataInfo=>{
-            this.userData = this.updateData(dataInfo,this.userData);
+
+          this.dataTransmissionService.getAddToLayerSubject().subscribe(dataInfo => {
+            this.userData = this.updateData(dataInfo, this.userData);
           })
 
           this.dataTransmissionService.getLayerListSubject().subscribe(allLayers => {
@@ -62,7 +62,8 @@ export class DataListComponent implements OnInit {
           })
         }
       });
-   }
+  }
+
 
   ngOnInit() {
     this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
@@ -70,16 +71,16 @@ export class DataListComponent implements OnInit {
       this.userDataContainerHeight = window.innerHeight * 0.9 - 44;
     })
 
-    if(this.userService.user){
-      this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+    if (this.userService.user) {
+      this.loadUserData(this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
     }
 
-    this.dataTransmissionService.getLoadUserDataSubject().subscribe(_=>{
-      this.loadUserData(this.userService.user.userId,{ asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
+    this.dataTransmissionService.getLoadUserDataSubject().subscribe(_ => {
+      this.loadUserData(this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
     });
 
-    this.dataTransmissionService.getAddToLayerSubject().subscribe(dataInfo=>{
-      this.userData = this.updateData(dataInfo,this.userData);
+    this.dataTransmissionService.getAddToLayerSubject().subscribe(dataInfo => {
+      this.userData = this.updateData(dataInfo, this.userData);
     })
 
     this.dataTransmissionService.getLayerListSubject().subscribe(allLayers => {
@@ -100,7 +101,39 @@ export class DataListComponent implements OnInit {
     }
   }
 
-  loadUserData(userName:string,filter:any){
+
+  getSrc(item: DataInfo) {
+    let img_path = "";
+    if (item.type == DC_DATA_TYPE.SHAPEFILE || item.type == DC_DATA_TYPE.SHAPEFILE_LIST) {
+      if (item.meta) {
+        if (item.meta[0].geometry == 'MultiPoint' || item.meta[0].geometry == 'Point') {
+          img_path = "assets/images/data/points-vector.png";
+        } else if (item.meta[0].geometry == 'MultiLineString' || item.meta[0].geometry == 'LineString') {
+          img_path = "assets/images/data/line-vector.png";
+        } else if (item.meta[0].geometry == 'MultiPolygon' || item.meta[0].geometry == 'Polygon') {
+          img_path = "assets/images/data/polygon-vector.png";
+        } else if (item.meta[0].geometry == 'GeometryCollection' || item.meta[0].geometry == 'Geometry') {
+          img_path = "assets/images/data/vector.png";
+        } else {
+          img_path = "assets/images/data/vector.png";
+        }
+      } else {
+        img_path = "assets/images/data/vector.png";
+      }
+    } else if (item.type == DC_DATA_TYPE.GEOTIFF || item.type == DC_DATA_TYPE.GEOTIFF_LIST || (item.type == DC_DATA_TYPE.SDAT || item.type == DC_DATA_TYPE.SDAT_LIST)) {
+      img_path = "assets/images/data/tiff.png";
+    } else if (item.type == DC_DATA_TYPE.OTHER) {
+      img_path = "assets/images/data/other.png";
+    }
+    return img_path;
+  }
+  setClasses(item: DataInfo) {
+    if (item.type == DC_DATA_TYPE.SHAPEFILE || item.type == DC_DATA_TYPE.SHAPEFILE_LIST) {
+      return {"shp_img":true};
+    }
+  }
+
+  loadUserData(userName: string, filter: any) {
     this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, userName, filter).subscribe({
       next: res => {
         if (res.error) {
@@ -110,9 +143,9 @@ export class DataListComponent implements OnInit {
             this.userData = res.data.content;
             this.dataLength = res.data.totalElements;
             this.userData = this.userData.map(data => {
-              if (data.type == DC_DATA_TYPE.SHAPEFILE) {
+              if (data.type == DC_DATA_TYPE.SHAPEFILE || data.type == DC_DATA_TYPE.SHAPEFILE_LIST) {
                 data.meta = this.utilService.getShpMetaObj(data.meta);
-              } else if (data.type == DC_DATA_TYPE.GEOTIFF|| data.type==DC_DATA_TYPE.SDAT) {
+              } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT || data.type == DC_DATA_TYPE.GEOTIFF_LIST || data.type == DC_DATA_TYPE.SDAT_LIST) {
                 data.meta = this.utilService.getTiffMetaObj(data.meta);
               }
               return data;
@@ -129,27 +162,24 @@ export class DataListComponent implements OnInit {
   }
 
 
-  // addToLayer(dataInfo: DataInfo) {
-  //   this.userDataervice.addToLayer(dataInfo);
-  // }
-
-
   addToLayer(dataInfo: DataInfo) {
     console.log("添加至图层按钮被点击");
     //* 判断是否已经位于图层中
-    if(this.allLayers){
-      let onLayerList:boolean =  this.allLayers.some(item=>{
-        return item.dataId===dataInfo.id;
+    if (this.allLayers) {
+      let onLayerList: boolean = this.allLayers.some(item => {
+        return item.dataId === dataInfo.id || item.dataId.includes(dataInfo.id);
       })
-      if(onLayerList){
+      if (onLayerList) {
         this.toast.warning("Already shown on the map.", "Warning", { timeOut: 2000 });
         return;
       }
-    } 
+    }
     dataInfo.visibleStatus = VISIBLE_STATUS.ON_LOADING;
     this.userData = this.updateData(dataInfo, this.userData)
     //*判断是否为shp或geotiff格式
-    if (dataInfo.type === DC_DATA_TYPE.GEOTIFF || dataInfo.type === DC_DATA_TYPE.SHAPEFILE || dataInfo.type===DC_DATA_TYPE.SDAT) {
+    if (dataInfo.type === DC_DATA_TYPE.GEOTIFF || dataInfo.type === DC_DATA_TYPE.SHAPEFILE ||
+       dataInfo.type === DC_DATA_TYPE.SDAT || dataInfo.type === DC_DATA_TYPE.GEOTIFF_LIST ||
+       dataInfo.type === DC_DATA_TYPE.SHAPEFILE_LIST||dataInfo.type === DC_DATA_TYPE.SDAT_LIST) {
       //*判断有没有发布服务
       if (!dataInfo.toGeoserver) {
         this.userDataService.dataToGeoServer(dataInfo.id).subscribe({
@@ -186,7 +216,7 @@ export class DataListComponent implements OnInit {
     this.loadUserData(this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] });
   }
 
-  trackByDataId(index:number,data:DataInfo){
+  trackByDataId(index: number, data: DataInfo) {
     return data.id;
   }
 

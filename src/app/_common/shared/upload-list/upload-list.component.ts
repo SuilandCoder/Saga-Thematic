@@ -50,7 +50,8 @@ export class UploadListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fileUploadUrl = `${this.api.backend_file}/upload/store_dataResource_files`;
+    // this.fileUploadUrl = `${this.api.backend_file}/upload/store_dataResource_files`;
+    this.fileUploadUrl = `${this.api.backend_data_resource}/uploadFile_saga`;
   }
 
   openMyDialog() {
@@ -85,28 +86,40 @@ export class UploadListComponent implements OnInit {
             //*获取到 MD5 值，先发送到后台验证
             this.userDataService.fastUpload(md5).subscribe({
               next: res => {
+                let userName: string = this.userService.user.userId;
+                  // this.loading = false;
                 if (res.error) {
                   //*上传文件
                   output.file.form.append("md5", md5);
-                  //*获取文件信息
-                  let userName: string = this.userService.user.userId;
-                  let dataInfo: DataInfo = this.utilService.getZipFileDataInfo(currentFile, output.file.name, userName);
-                  if (dataInfo) {
-                    output.file.sub = dataInfo;
-                    this.files.push(output.file);
-                    this.loading = false;
-                  }
-                } else {
-                  //*不用再上传文件
-                  output.file.progress.status = 2;
+                  output.file.form.append("author",userName);
                   this.files.push(output.file);
                   this.loading = false;
+                } else {
+                  this.userDataService.fileFastUpload(res.data,userName,md5).subscribe({
+                    next:res=>{
+                      if (res.error) {
+                        this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+                        this.loading = false;
+                      } else {
+                        output.file.progress.status = 2;
+                        this.files.push(output.file);
+                        this.loading = false;
+                        this.dataTransmissionService.sendLoadUserDataSubject();
+                      }
+                    },
+                    error:err=>{
+                      this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+                      this.loading = false;
+                    }
+                  });
                 }
               },
               error: err => {
                 this.toast.warning('oops, something went wrong.', "Warning", { timeOut: 2000 });
                 this.loading = false;
-                InputElement.value = ''; //清空文件列表，避免不能重复上传文件的情况
+                if(InputElement){
+                  InputElement.value = ''; //清空文件列表，避免不能重复上传文件的情况
+                } 
               }
             });
           }
@@ -137,28 +150,11 @@ export class UploadListComponent implements OnInit {
     } else if (output.type === 'done') {
       console.log("上传结束:", output.file.response);
       if(output.file.response.data==null){
+        output.file.progress.status = 0;
         this.toast.error("oops, something went wrong.", "error", { timeOut: 2000 });
         return;
       }
-      output.file.sub.sourceStoreId = output.file.response.data;
-      //* 将文件上传至dataResource
-      this.userDataService.uploadDataToDataResource(output.file.sub).subscribe({
-        next: res => {
-          if (res.error) {
-            this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-          } else {
-            this.dataTransmissionService.sendLoadUserDataSubject();
-            this.userDataService.getMeta(res.data.id).subscribe({
-              next:res=>{
-                this.dataTransmissionService.sendLoadUserDataSubject();
-              }
-            });
-          }
-        },
-        error: err => {
-          this.toast.warning("oops, something went wrong.", "Warning", { timeOut: 2000 });
-        }
-      });
+      this.dataTransmissionService.sendLoadUserDataSubject();
     }
   }
 

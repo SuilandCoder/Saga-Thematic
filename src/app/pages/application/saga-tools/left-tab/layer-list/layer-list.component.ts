@@ -1,3 +1,4 @@
+import { DC_DATA_TYPE } from './../../../../../_common/enum/enum';
 import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -180,47 +181,49 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       // let type = geoserverDataInfo.type === "GEOTIFF" ? "tif" : "shp";
 
       let type: string;
-      if (geoserverDataInfo.type === "GEOTIFF") {
+      if (geoserverDataInfo.type === DC_DATA_TYPE.GEOTIFF || geoserverDataInfo.type == DC_DATA_TYPE.GEOTIFF_LIST) {
         type = "tif";
-        if (!geoserverDataInfo.meta.proj) {
+        if (geoserverDataInfo.meta) {
           geoserverDataInfo.meta = this.utilService.getTiffMetaObj(geoserverDataInfo.meta);
         }
-      } else if (geoserverDataInfo.type === "SDAT") {
+      } else if (geoserverDataInfo.type === DC_DATA_TYPE.SDAT || geoserverDataInfo.type === DC_DATA_TYPE.SDAT_LIST) {
         type = "sdat";
-        if (!geoserverDataInfo.meta.proj) {
+        if (geoserverDataInfo.meta) {
           geoserverDataInfo.meta = this.utilService.getTiffMetaObj(geoserverDataInfo.meta);
         }
-      } else if (geoserverDataInfo.type === "SHAPEFILE") {
+      } else if (geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE || geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE_LIST) {
         type = "shp";
-        if (!geoserverDataInfo.meta.proj) {
+        if (geoserverDataInfo.meta) {
           geoserverDataInfo.meta = this.utilService.getShpMetaObj(geoserverDataInfo.meta);
         }
       }
 
-      let newItem = new LayerItem(geoserverDataInfo.fileName, null, type, geoserverDataInfo.id);
-      if (this.olMapService.isDataOnLayer(geoserverDataInfo.id)) {
-        return;
-      }
-      if ((newItem.type == "shp" || newItem.type == "tif" || newItem.type == "sdat") && geoserverDataInfo.meta && geoserverDataInfo.meta.proj) {
-        newItem.proj = geoserverDataInfo.meta.proj;
-        if (geoserverDataInfo.meta.extent) {
-          newItem.extent = geoserverDataInfo.meta.extent;
+      let layerNameList = geoserverDataInfo.layerName;
+      let metaList = geoserverDataInfo.meta;
+      layerNameList.forEach((item, index) => {
+        let newItem = new LayerItem(metaList[index]["name"], null, type, geoserverDataInfo.id + "_" + index);
+        if (this.olMapService.isDataOnLayer(geoserverDataInfo.id + "_" + index)) {
+          return;
         }
-        if (newItem.type == "shp" && geoserverDataInfo.meta.fields) {
-          newItem.fields = geoserverDataInfo.meta.fields;
+        if ((newItem.type == "shp" || newItem.type == "tif" || newItem.type == "sdat") && metaList[index] && metaList[index].proj) {
+          newItem.proj = metaList[index].proj;
+          if (metaList[index].extent) {
+            newItem.extent = metaList[index].extent;
+          }
+          if (newItem.type == "shp" && metaList[index].fields) {
+            newItem.fields = metaList[index].fields;
+          }
         }
-      } 
-
-      let res = this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo);
-      if(res!=='error'){
-        this.LayerItems.splice(0, 0, newItem);
-        newItem.visible = !newItem.visible;
-        newItem.isOnMap = true;
-        newItem.layerShowing = false;
-      }else{
-        this.toastr.error("Failed to Load Data.");
-      }
-      
+        let res = this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo,index);
+        if (res !== 'error') {
+          this.LayerItems.splice(0, 0, newItem);
+          newItem.visible = !newItem.visible;
+          newItem.isOnMap = true;
+          newItem.layerShowing = false;
+        } else {
+          this.toastr.error("Failed to Load Data.");
+        }
+      })
     });
     // this.dataTransmissionService.sendOnlineLayerSubject("TDT");
     this.dataTransmissionService.sendOnlineLayerSubject("osm");
@@ -314,7 +317,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           currentItem.layerShowing = false;
           console.log(reason);
           this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
-          this.toastr.error("Failed to Load Data.");
+          // this.toastr.error("Failed to Load Data.");
         }).catch(error => {
           remove(this.LayerItems, item => {
             return isEqual(item, currentItem);

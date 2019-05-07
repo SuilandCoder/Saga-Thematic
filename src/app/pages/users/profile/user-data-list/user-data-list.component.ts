@@ -44,6 +44,37 @@ export class UserDataListComponent implements OnInit {
     }
   }
 
+  getSrc(item: DataInfo) {
+    let img_path = "";
+    if (item.type == DC_DATA_TYPE.SHAPEFILE || item.type == DC_DATA_TYPE.SHAPEFILE_LIST) {
+      if (item.meta) {
+        if (item.meta[0].geometry == 'MultiPoint' || item.meta[0].geometry == 'Point') {
+          img_path = "assets/images/data/points-vector.png";
+        } else if (item.meta[0].geometry == 'MultiLineString' || item.meta[0].geometry == 'LineString') {
+          img_path = "assets/images/data/line-vector.png";
+        } else if (item.meta[0].geometry == 'MultiPolygon' || item.meta[0].geometry == 'Polygon') {
+          img_path = "assets/images/data/polygon-vector.png";
+        } else if (item.meta[0].geometry == 'GeometryCollection' || item.meta[0].geometry == 'Geometry') {
+          img_path = "assets/images/data/vector.png";
+        } else {
+          img_path = "assets/images/data/vector.png";
+        }
+      } else {
+        img_path = "assets/images/data/vector.png";
+      }
+    } else if (item.type == DC_DATA_TYPE.GEOTIFF || item.type == DC_DATA_TYPE.GEOTIFF_LIST || (item.type == DC_DATA_TYPE.SDAT || item.type == DC_DATA_TYPE.SDAT_LIST)) {
+      img_path = "assets/images/data/tiff.png";
+    } else if (item.type == DC_DATA_TYPE.OTHER) {
+      img_path = "assets/images/data/other.png";
+    }
+    return img_path;
+  }
+  setClasses(item: DataInfo) {
+    if (item.type == DC_DATA_TYPE.SHAPEFILE || item.type == DC_DATA_TYPE.SHAPEFILE_LIST) {
+      return {"shp_img":true};
+    }
+  }
+
   getData(){
     this.userDataService.getDatas(FieldToGetData.BY_AUTHOR, this.userService.user.userId, { asc: false, pageIndex: this.pageIndex, pageSize: this.pageSize, properties: ["createDate"] }).subscribe({
       next: res => {
@@ -54,9 +85,9 @@ export class UserDataListComponent implements OnInit {
             this.userDatas = res.data.content;
             this.dataLength = res.data.totalElements;
             this.userDatas = this.userDatas.map(data => {
-              if (data.type == DC_DATA_TYPE.SHAPEFILE) {
+              if (data.type == DC_DATA_TYPE.SHAPEFILE || data.type == DC_DATA_TYPE.SHAPEFILE_LIST) {
                 data.meta = this.utilService.getShpMetaObj(data.meta);
-              } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT) {
+              } else if (data.type == DC_DATA_TYPE.GEOTIFF || data.type == DC_DATA_TYPE.SDAT || data.type==DC_DATA_TYPE.GEOTIFF_LIST || data.type==DC_DATA_TYPE.SDAT_LIST) {
                 data.meta = this.utilService.getTiffMetaObj(data.meta);
               }
               return data;

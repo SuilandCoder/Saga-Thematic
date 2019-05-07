@@ -268,9 +268,9 @@ export class HttpService {
                                                                 this.userDataService.addToLayer(dataInfo);
                                                             } else {
                                                                 dataInfo = res.data;
-                                                                if (dataInfo.type == DC_DATA_TYPE.SHAPEFILE) {
+                                                                if (dataInfo.type == DC_DATA_TYPE.SHAPEFILE || dataInfo.type==DC_DATA_TYPE.SHAPEFILE_LIST) {
                                                                     dataInfo.meta = this.utilService.getShpMetaObj(dataInfo.meta);
-                                                                } else if (dataInfo.type == DC_DATA_TYPE.GEOTIFF || dataInfo.type == DC_DATA_TYPE.SDAT) {
+                                                                } else if (dataInfo.type == DC_DATA_TYPE.GEOTIFF || dataInfo.type == DC_DATA_TYPE.SDAT || dataInfo.type==DC_DATA_TYPE.GEOTIFF_LIST || dataInfo.type==DC_DATA_TYPE.SDAT_LIST) {
                                                                     dataInfo.meta = this.utilService.getTiffMetaObj(dataInfo.meta);
                                                                 }
                                                                 this.userDataService.addToLayer(dataInfo);

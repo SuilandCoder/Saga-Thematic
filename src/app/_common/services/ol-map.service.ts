@@ -327,23 +327,25 @@ export class OlMapService {
     }
 
     //* 将geoserver中的地图服务添加进图层
-    addGeoserverLayer(geoserverLayerItem: LayerItem, geoserverDataInfo: DataInfo) {
+    addGeoserverLayer(geoserverLayerItem: LayerItem, geoserverDataInfo: DataInfo,index:number) {
         if (this.isDataOnLayer(geoserverLayerItem.dataId)) {
             console.log("要素已经位于图层中");
             return;
         }
-        let geoserverLayerName = geoserverDataInfo.layerName;
+        let geoserverLayerName = geoserverDataInfo.layerName[index];
         let proj = "";
         let extent: Array<number>;
-        if ((geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE || geoserverDataInfo.type === DC_DATA_TYPE.GEOTIFF || geoserverDataInfo.type === DC_DATA_TYPE.SDAT) && geoserverDataInfo.meta) {
-            proj = geoserverDataInfo.meta.proj;
-            console.log("投影信息：", proj);
-            extent = geoserverDataInfo.meta.extent;
+        if ((geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE || geoserverDataInfo.type === DC_DATA_TYPE.GEOTIFF 
+            || geoserverDataInfo.type === DC_DATA_TYPE.SDAT || geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE_LIST
+            || geoserverDataInfo.type === DC_DATA_TYPE.GEOTIFF_LIST || geoserverDataInfo.type === DC_DATA_TYPE.SDAT_LIST) && geoserverDataInfo.meta[index]) {
+            proj = geoserverDataInfo.meta[index].proj;
+            // console.log("投影信息：", proj);
+            extent = geoserverDataInfo.meta[index].extent;
             try{
                 let lower = proj4(proj).inverse([extent[0], extent[1]]);
                 let upper = proj4(proj).inverse([extent[2], extent[3]]);
                 extent = _.concat(lower, upper);
-                console.log("extent信息：", extent);
+                // console.log("extent信息：", extent);
             }catch(error){ 
                 return "error";
             }
@@ -363,7 +365,7 @@ export class OlMapService {
             })
         });
         let extent_test: Array<number> = newLayer.getExtent();
-        console.log("从图层读取extent:", extent_test);
+        // console.log("从图层读取extent:", extent_test);
 
         //* 已知 proj 和 extent, 设置图层的proj和 extent
         let newProjectionCode;

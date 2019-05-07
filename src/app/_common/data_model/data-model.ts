@@ -44,7 +44,7 @@ export class DataInfo {
     public file: File;
     public createDate: string;
     public toGeoserver: boolean;
-    public layerName:string;
+    public layerName:Array<string>;
     public meta:any;
     public visibleStatus:VISIBLE_STATUS=0;
     constructor() { 

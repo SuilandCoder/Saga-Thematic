@@ -7,7 +7,7 @@
       <app-left-tab (leftOpenState)="openStateHandler($event)"></app-left-tab>
     </ng-sidebar>
 
-    <ng-sidebar #drawerEnd [(opened)]="rightOpened"  mode="over" position="end" style="z-index:1000">
+    <ng-sidebar #drawerEnd [(opened)]="rightOpened"  mode="over"  position="end" style="z-index:1000">
       <app-right-tab [opened]="rightOpened" [tag] = "right_tag"></app-right-tab>
     </ng-sidebar>
 

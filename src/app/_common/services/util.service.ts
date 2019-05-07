@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { DC_DATA_TYPE } from "../enum";
 import { Observable } from "rxjs";
 import * as JSZip from 'jszip';
+import { isJsObject } from "@angular/core/src/change_detection/change_detection_util";
 
 @Injectable()
 export class UtilService {
@@ -193,34 +194,52 @@ export class UtilService {
         }
     }
 
+
+    isJsonString(str) {
+        try {
+            if (typeof JSON.parse(str) == "object") {
+                return true;
+            }
+        } catch (e) {
+        }
+        return false;
+    }
+
     //* 解析shapefile文件的 meta 字符串
     getShpMetaObj(meta: any) {
         if (meta == null || meta == undefined) {
             return meta;
         }
-        meta = JSON.parse(meta);
-        let shpMeta = new ShpMeta();
-        shpMeta.count = meta.featureCount;
-        shpMeta.name = meta.name;
-        shpMeta.proj = meta.proj;
-        shpMeta.geometry = meta.geometry;
-        shpMeta.fields = meta.fields.map(item => {
-            return { "field": item.Field, "type": item.Type };
-        })
-        shpMeta.extent = [];
-        let lower = meta.lowerCorner;
-        let upper = meta.upperCorner;
-        if (lower == null && upper == null) {
-            shpMeta.extent = [73, 18, 126, 53]
-        } else if (lower == null) {
-            shpMeta.extent = _.concat(upper, upper);
-        } else if (upper == null) {
-            shpMeta.extent = _.concat(lower, lower);
-        } else {
-            shpMeta.extent = _.concat(lower, upper);
-        }
-        console.log(JSON.stringify(shpMeta));
-        return shpMeta;
+        if(this.isJsonString(meta)){
+            meta = JSON.parse(meta);
+            let shpMetaList = new Array<ShpMeta>();
+            meta.forEach(element => {
+                let shpMeta = new ShpMeta();
+                shpMeta.count = element.featureCount;
+                shpMeta.name = element.name;
+                shpMeta.proj = element.proj;
+                shpMeta.geometry = element.geometry;
+                shpMeta.fields = element.fields.map(item => {
+                    return { "field": item.Field, "type": item.Type };
+                })
+                shpMeta.extent = [];
+                let lower = element.lowerCorner;
+                let upper = element.upperCorner;
+                if (lower == null && upper == null) {
+                    shpMeta.extent = [73, 18, 126, 53]
+                } else if (lower == null) {
+                    shpMeta.extent = _.concat(upper, upper);
+                } else if (upper == null) {
+                    shpMeta.extent = _.concat(lower, lower);
+                } else {
+                    shpMeta.extent = _.concat(lower, upper);
+                }
+                shpMetaList.push(shpMeta);
+            });
+            console.log(JSON.stringify(shpMetaList));
+            return shpMetaList;
+        } 
+        return meta;
     }
 
 
@@ -229,27 +248,30 @@ export class UtilService {
             return meta;
         }
         meta = JSON.parse(meta);
-        let tiffMeta = new TiffMeta();
-        tiffMeta.proj = meta.proj;
-        tiffMeta.bandCount = meta.bandCount;
-        tiffMeta.high = meta.high;
-        tiffMeta.low = meta.low;
-        tiffMeta.name = meta.name;
-        tiffMeta.pixelScales = meta.pixelScales;
-        tiffMeta.extent = [];
-        let lower = meta.lowerCorner;
-        let upper = meta.upperCorner;
-        if (lower == null && upper == null) {
-            tiffMeta.extent = [73, 18, 126, 53]
-        } else if (lower == null) {
-            tiffMeta.extent = _.concat(upper, upper);
-        } else if (upper == null) {
-            tiffMeta.extent = _.concat(lower, lower);
-        } else {
-            tiffMeta.extent = _.concat(lower, upper);
-        }
-        console.log(JSON.stringify(tiffMeta));
-        return tiffMeta;
+        let tifMetaList = new Array<TiffMeta>();
+        meta.forEach(element => {
+            let tiffMeta = new TiffMeta();
+            tiffMeta.proj = element.proj;
+            tiffMeta.bandCount = element.bandCount;
+            tiffMeta.high = element.high;
+            tiffMeta.low = element.low;
+            tiffMeta.name = element.name;
+            tiffMeta.pixelScales = element.pixelScales;
+            tiffMeta.extent = [];
+            let lower = element.lowerCorner;
+            let upper = element.upperCorner;
+            if (lower == null && upper == null) {
+                tiffMeta.extent = [73, 18, 126, 53]
+            } else if (lower == null) {
+                tiffMeta.extent = _.concat(upper, upper);
+            } else if (upper == null) {
+                tiffMeta.extent = _.concat(lower, lower);
+            } else {
+                tiffMeta.extent = _.concat(lower, upper);
+            }
+            tifMetaList.push(tiffMeta);
+        });
+        return tifMetaList;
     }
 
     parseDataType(sagaType: string) {
@@ -257,11 +279,11 @@ export class UtilService {
         if (!sagaType) {
             type = DC_DATA_TYPE.OTHER;
         } else if (sagaType.includes("Shapes list")) {
-            type = DC_DATA_TYPE.SHAPEFILE;
+            type = DC_DATA_TYPE.SHAPEFILE_LIST;
         } else if (sagaType.includes("Shapes")) {
             type = DC_DATA_TYPE.SHAPEFILE;
         } else if (sagaType.includes("Grid list")) {
-            type = DC_DATA_TYPE.SDAT;
+            type = DC_DATA_TYPE.SDAT_LIST;
         } else if (sagaType.includes("Grid")) {
             type = DC_DATA_TYPE.SDAT;
         } else {
@@ -355,7 +377,7 @@ export class UtilService {
                     //* 将压缩文件上传至数据容器 
                     dataInfo.suffix = suffix;
                     dataInfo.type = type;
-                    dataInfo.file = file; 
+                    dataInfo.file = file;
                 } else {
                     dataInfo = null;
                 }
