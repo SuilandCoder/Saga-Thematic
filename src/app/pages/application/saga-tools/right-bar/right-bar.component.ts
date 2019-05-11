@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core'; 
-import { ToolService } from 'src/app/_common';
+import { ToolService, DataTransmissionService } from 'src/app/_common';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/_common/services/user.service';
 import { UsersModule } from 'src/app/pages/users/users.module';
@@ -22,6 +22,7 @@ export class RightBarComponent implements OnInit {
     private toolService:ToolService,
     private toast: ToastrService,
     private userService:UserService,
+    private dataTransmissionService: DataTransmissionService,
   ) {}
 
   ngOnInit() {
@@ -36,8 +37,9 @@ export class RightBarComponent implements OnInit {
       this.toast.warning("please choose a tool from the left tools tree.", "Warning", { timeOut: 3000 });
       return;
     }
-    this.tab = "des";
-    this.rightTabToggle.emit(this.tab);
+    this.dataTransmissionService.sendToolDialogControlSubject();
+    // this.tab = "des";
+    // this.rightTabToggle.emit(this.tab);
   }
 
   data_toggle(){

@@ -1,16 +1,17 @@
-import { UserService } from 'src/app/_common/services/user.service';
+import { HttpService } from './../../services/http.service';
 import { stringify } from '@angular/core/src/util';
 import { findIndex, includes } from 'lodash';
-import { UserDataService } from 'src/app/_common/services/user-data.service';
 import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
-import { ToolParam, HttpService, DataTransmissionService, LoadingInfo, LayerItem } from 'src/app/_common';
 import * as $ from "jquery";
-import { ToolService } from 'src/app/_common/services/tool.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { DataUploadStatus, MODEL_RUN_STATUS } from 'src/app/_common/enum';
-import { DataPickComponent } from 'src/app/_common/shared/data-pick/data-pick.component';
+import { ToolParam, LayerItem, LoadingInfo } from '../../data_model';
+import { ToolService, DataTransmissionService } from '../../services';
+import { UserDataService } from '../../services/user-data.service';
+import { UserService } from '../../services/user.service';
+import { DataPickComponent } from '../data-pick/data-pick.component';
 @Component({
   selector: 'app-tool-setting',
   templateUrl: './tool-setting.component.html',
@@ -48,21 +49,24 @@ export class ToolSettingComponent implements OnInit {
 
   ngOnInit() {
     
-    this.toolSettingHeight = window.innerHeight*0.9-55;
+    this.toolSettingHeight = window.innerHeight * 0.8-220;
     window.addEventListener('resize', () => {
-      this.toolSettingHeight = window.innerHeight * 0.9-55;
+      this.toolSettingHeight = window.innerHeight * 0.8-220;
     })
 
-    if (this.toolInfo["parameters"][0]) {
-      this.inputParams = this.toolInfo["parameters"][0]["inputs"];
+    if(this.toolInfo){
+      if (this.toolInfo["parameters"][0]) {
+        this.inputParams = this.toolInfo["parameters"][0]["inputs"];
+      }
+      if (this.toolInfo["parameters"][1]) {
+        this.outputParams = this.toolInfo["parameters"][1]["outputs"];
+      }
+      if (this.toolInfo["parameters"][2]) {
+        var options = this.toolInfo["parameters"][2]["optionals"];
+        this.setOptParams(options);
+      }
     }
-    if (this.toolInfo["parameters"][1]) {
-      this.outputParams = this.toolInfo["parameters"][1]["outputs"];
-    }
-    if (this.toolInfo["parameters"][2]) {
-      var options = this.toolInfo["parameters"][2]["optionals"];
-      this.setOptParams(options);
-    }
+
 
     this.layerListSubscription = this.dataTransmissionService.getLayerListSubject().subscribe(layersArray => {
       this.layerItems = layersArray;
@@ -92,8 +96,6 @@ export class ToolSettingComponent implements OnInit {
       width: '500px',
       data: { "layerItems": this.layerItems, "type": input.type, "eventName": input.identifier, "toolName": this.toolInfo["tool_name"], "mdlId": this.toolInfo["mdlId"] },
     })
-
-
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

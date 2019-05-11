@@ -9,9 +9,11 @@ import { WindowMouseMoveDirective, DialogDragDirective, MapResizeDirective } fro
 import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 import { DataListComponent } from './shared/data-list/data-list.component';
 import { DataPickComponent } from './shared/data-pick/data-pick.component';
-import { MatButtonModule, MatButtonToggleModule, MatIconModule, MatMenuModule,MatInputModule,MatDialogModule, MatPaginatorModule, MatProgressBarModule } from '@angular/material';
+import { MatButtonModule, MatButtonToggleModule, MatIconModule, MatMenuModule,MatInputModule,MatDialogModule, MatPaginatorModule, MatProgressBarModule, MatTabsModule } from '@angular/material';
 import { NgxUploaderModule } from 'ngx-uploader';
 import { UploadListComponent } from './shared/upload-list/upload-list.component';
+import { ToolDialogComponent } from './shared/tool-dialog/tool-dialog.component';
+import { ToolSettingComponent } from './shared/tool-setting/tool-setting.component';
 // import { SimpleReuseStrategy } from './strategy/simple-reuse-strategy';
 // import { DataPickComponent } from './shared/data-pick/data-pick.component';
 
@@ -33,6 +35,7 @@ import { UploadListComponent } from './shared/upload-list/upload-list.component'
         NgxUploaderModule,
         MatPaginatorModule,
         MatProgressBarModule,
+        MatTabsModule
     ],
     declarations: [
         WindowMouseMoveDirective,
@@ -42,6 +45,8 @@ import { UploadListComponent } from './shared/upload-list/upload-list.component'
         DataPickComponent,
         UploadListComponent,
         FileSizePipe,
+        ToolDialogComponent,
+        ToolSettingComponent
     ],
     exports: [
         CommonModule,
@@ -55,6 +60,7 @@ import { UploadListComponent } from './shared/upload-list/upload-list.component'
         DataListComponent,
         DataPickComponent,
         UploadListComponent,
+        ToolDialogComponent
     ],
     providers:[
         Overlay,

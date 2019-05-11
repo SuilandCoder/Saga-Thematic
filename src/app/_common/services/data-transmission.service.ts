@@ -14,6 +14,9 @@ export class DataTransmissionService {
     //加载用户数据
     private loadUserDataSubject = new Subject<any>();
 
+    //工具窗口控制
+    private toolDialogControlSubject = new Subject<any>();
+
     //多文件上传窗口控制
     private uploadListControlSubject = new Subject<any>();
 
@@ -100,6 +103,10 @@ export class DataTransmissionService {
 
     sendLoadUserDataSubject(){
         this.loadUserDataSubject.next();
+    }
+
+    sendToolDialogControlSubject(open?:boolean){
+        this.toolDialogControlSubject.next(open);
     }
 
     sendUploadListControlSubject(){
@@ -230,6 +237,10 @@ export class DataTransmissionService {
 
     getLoadUserDataSubject():Observable<string>{
         return this.loadUserDataSubject.asObservable();
+    }
+
+    getToolDialogControlSubject():Observable<boolean>{
+        return this.toolDialogControlSubject.asObservable();
     }
 
     getUploadListControlSubject():Observable<string>{

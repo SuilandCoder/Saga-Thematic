@@ -61,19 +61,19 @@ export class RightTabComponent implements OnInit {
     })
 
     this.TabItems = ['Description', 'Settings'];
-    this.subscription = this.toolService.getModelInfoMessage().subscribe(({ path, id }) => {
-      this.path = path;
-      this.id = id;
-      this.getDescpPathByJsonPath(path, id);
-      console.log("path:" + path + "  id:" + id);
-      this.toolService.getToolById(this.path, this.id).then(data => {
-        console.log(data);
-        this.toolInfo = data;
-      }).catch(err => {
-        console.log(err);
-        this.toastr.error(err);
-      });
-    })
+    // this.subscription = this.toolService.getModelInfoMessage().subscribe(({ path, id }) => {
+    //   this.path = path;
+    //   this.id = id;
+    //   this.getDescpPathByJsonPath(path, id);
+    //   console.log("path:" + path + "  id:" + id);
+    //   this.toolService.getToolById(this.path, this.id).then(data => {
+    //     console.log(data);
+    //     this.toolInfo = data;
+    //   }).catch(err => {
+    //     console.log(err);
+    //     this.toastr.error(err);
+    //   });
+    // })
     if (this.userDataService.userDatas != null) {
       this.userDatas = this.userDataService.userDatas;
     }
@@ -135,102 +135,5 @@ export class RightTabComponent implements OnInit {
   truest(url) {
     console.log(123);
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-
-
-  onUploadOutput(ev: any, InputElement: HTMLInputElement) {
-
-    if (ev.file && ev.type === "addedToQueue") {
-      let currentFile = ev.file.nativeFile;
-      //* 判断传入的是否为压缩文件
-      let fileName = currentFile.name;
-      let type = "";
-      let suffix = "";
-      let zipExt = fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase();
-      let fileNameNoExt = fileName.substr(0, fileName.lastIndexOf("."));
-      if (zipExt == "txt") {
-        type = "OTHER";
-        suffix = "txt";
-        // this.dataTransmissionService.sendCustomFileSubject(new CustomFile(currentFile,Type));
-      } else {
-        JSZip.loadAsync(currentFile).then(data => {
-          suffix = "zip";
-          data.forEach((relativePath, file) => {
-            let currentFileName: string = relativePath;
-            let extName = currentFileName.substr(currentFileName.lastIndexOf('.') + 1).toLowerCase();
-            switch (extName) {
-              case "shp":
-                type = DC_DATA_TYPE.SHAPEFILE;
-                break;
-              case "tif":
-                type = DC_DATA_TYPE.GEOTIFF;
-                break;
-              case "sdat":
-                type = DC_DATA_TYPE.SDAT;
-                break;
-              default:
-                break;
-            }
-            if (type !== "") {
-              return false;
-            }
-          });
-
-          if (type !== "") {
-            //* 将压缩文件上传至数据容器
-            let dataInfo = new DataInfo();
-            dataInfo.author = this.userService.user.userId;
-            dataInfo.fileName = fileNameNoExt;
-            dataInfo.suffix = suffix;
-            dataInfo.type = type;
-            dataInfo.file = currentFile;
-            this.userDataService.uploadData(dataInfo).subscribe({
-              next: res => {
-                if (res.error) {
-                  this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-                } else {
-                  this.userDatas.push(res.data);
-                  this.newData = res.data;
-                  console.log("列表数据更新了");
-                  this.userDataService.getMeta(res.data.id).subscribe({
-                    next: metaRes => {
-                      if (res.error) {
-                        this.toast.warning(res.error, "Warning", { timeOut: 2000 });
-                      } else {
-                        console.log("metaRes:", metaRes);
-                        //* 判断是否是 shp 文件
-                        let meta = metaRes.data;
-                        if (this.newData.type === DC_DATA_TYPE.SHAPEFILE || this.newData.type ==DC_DATA_TYPE.SHAPEFILE_LIST) {
-                          this.newData.meta = this.utilService.getShpMetaObj(meta);
-                        } else if (this.newData.type == DC_DATA_TYPE.GEOTIFF || this.newData.type == DC_DATA_TYPE.SDAT ||  this.newData.type==DC_DATA_TYPE.GEOTIFF_LIST ||  this.newData.type==DC_DATA_TYPE.SDAT_LIST) {
-                          this.newData.meta = this.utilService.getTiffMetaObj(meta);
-                        }
-                      }
-                    },
-                    error: e => {
-                      console.log(e);
-                    }
-                  });
-                }
-              },
-              error: e => {
-                console.log(e);
-              }
-            });
-            InputElement.value = ''; //清空文件列表，避免不能重复上传文件的情况
-          } else {
-            this.toast.warning("This type of file is not supported.", "Warning", { timeOut: 2000 });
-          }
-        }, error => {
-          //not zip file 
-          console.log(error);
-          this.toast.warning("This type of file is not supported.", "Warning", { timeOut: 2000 });
-        });
-      }
-    }
-  }
-
-  beforeFileUpload(e) {
-    console.log('before: ' + e);
   }
 }

@@ -1,0 +1,19 @@
+<div class="my_dialog_test"  [ngStyle]="{'display': displayInfo}" [style.height]="dialogHeight.toString()+'px'">
+    <div class="header">
+        <h3>Upload File</h3>
+    </div>
+
+    <mat-tab-group (selectedIndexChange)="onTabChanged($event)">
+        <mat-tab label="Description">
+          <div class="scrollbar tool_description" [innerHTML]="descriptionHtml" [style.height]="tool_des_height.toString()+'px'"></div>
+        </mat-tab>
+        <mat-tab label="Settings">
+          <app-tool-setting [toolInfo]="this.toolInfo"></app-tool-setting>
+        </mat-tab>
+      </mat-tab-group>
+      <div class="right_btn btn-group">
+          <button type="button" class="btn btn-default" aria-label="Left Align" (click)="openMyDialog()">
+              <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+          </button>
+      </div>
+</div>
