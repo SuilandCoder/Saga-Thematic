@@ -247,31 +247,34 @@ export class UtilService {
         if (meta == null || meta == undefined) {
             return meta;
         }
-        meta = JSON.parse(meta);
-        let tifMetaList = new Array<TiffMeta>();
-        meta.forEach(element => {
-            let tiffMeta = new TiffMeta();
-            tiffMeta.proj = element.proj;
-            tiffMeta.bandCount = element.bandCount;
-            tiffMeta.high = element.high;
-            tiffMeta.low = element.low;
-            tiffMeta.name = element.name;
-            tiffMeta.pixelScales = element.pixelScales;
-            tiffMeta.extent = [];
-            let lower = element.lowerCorner;
-            let upper = element.upperCorner;
-            if (lower == null && upper == null) {
-                tiffMeta.extent = [73, 18, 126, 53]
-            } else if (lower == null) {
-                tiffMeta.extent = _.concat(upper, upper);
-            } else if (upper == null) {
-                tiffMeta.extent = _.concat(lower, lower);
-            } else {
-                tiffMeta.extent = _.concat(lower, upper);
-            }
-            tifMetaList.push(tiffMeta);
-        });
-        return tifMetaList;
+        if(this.isJsonString(meta)){
+            meta = JSON.parse(meta);
+            let tifMetaList = new Array<TiffMeta>();
+            meta.forEach(element => {
+                let tiffMeta = new TiffMeta();
+                tiffMeta.proj = element.proj;
+                tiffMeta.bandCount = element.bandCount;
+                tiffMeta.high = element.high;
+                tiffMeta.low = element.low;
+                tiffMeta.name = element.name;
+                tiffMeta.pixelScales = element.pixelScales;
+                tiffMeta.extent = [];
+                let lower = element.lowerCorner;
+                let upper = element.upperCorner;
+                if (lower == null && upper == null) {
+                    tiffMeta.extent = [73, 18, 126, 53]
+                } else if (lower == null) {
+                    tiffMeta.extent = _.concat(upper, upper);
+                } else if (upper == null) {
+                    tiffMeta.extent = _.concat(lower, lower);
+                } else {
+                    tiffMeta.extent = _.concat(lower, upper);
+                }
+                tifMetaList.push(tiffMeta);
+            });
+            return tifMetaList;
+        }
+        return meta;
     }
 
     parseDataType(sagaType: string) {

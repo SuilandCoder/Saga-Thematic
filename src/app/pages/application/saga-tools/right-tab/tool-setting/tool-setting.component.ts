@@ -211,7 +211,7 @@ export class ToolSettingComponent implements OnInit {
   //* 通过数据容器的方式运行模型
   setInputDataUseDC() {
     let isInputAlready = this.inputParams.every(item => {
-      return findIndex(this.dataListForTool, ["eventName", item.identifier]) >= 0;
+      return findIndex(this.dataListForTool, ["eventName", item.identifier]) >= 0 || item.optional=="true";
     })
 
     if (isInputAlready) {
@@ -285,7 +285,9 @@ export class ToolSettingComponent implements OnInit {
         } else {
           number = $(this).children().eq(2).find("input").val();
         }
-        row[this_tmp.optionsParams[index].identifier] = number;
+        if(number!=""){
+          row[this_tmp.optionsParams[index].identifier] = number;
+        } 
         // json.push(row);
 
         index++;

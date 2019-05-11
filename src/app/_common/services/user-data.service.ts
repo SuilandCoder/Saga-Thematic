@@ -121,7 +121,9 @@ export class UserDataService {
     addToLayer(dataInfo: DataInfo) {
         console.log("添加至图层按钮被点击");
         //*判断是否为shp或geotiff格式
-        if (dataInfo.type === DC_DATA_TYPE.GEOTIFF || dataInfo.type === DC_DATA_TYPE.SHAPEFILE || dataInfo.type === DC_DATA_TYPE.SDAT) {
+        if (dataInfo.type === DC_DATA_TYPE.GEOTIFF || dataInfo.type === DC_DATA_TYPE.SHAPEFILE ||
+            dataInfo.type === DC_DATA_TYPE.SDAT || dataInfo.type === DC_DATA_TYPE.GEOTIFF_LIST ||
+            dataInfo.type === DC_DATA_TYPE.SHAPEFILE_LIST||dataInfo.type === DC_DATA_TYPE.SDAT_LIST) {
             //*判断有没有发布服务
             if (!dataInfo.toGeoserver) {
                 this.dataToGeoServer(dataInfo.id).subscribe({

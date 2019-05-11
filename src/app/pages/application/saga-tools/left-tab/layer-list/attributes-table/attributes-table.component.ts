@@ -69,7 +69,8 @@ export class AttributesTableComponent implements OnInit {
       this.fieldArray = this.CurrentLayerItem.fields.map((item:any)=>{
         return item.field;
       });
-      this.userDataService.getShpDBF(this.CurrentLayerItem.dataId).subscribe({
+      let id = this.CurrentLayerItem.dataId.substring(0,this.CurrentLayerItem.dataId.lastIndexOf("_"));
+      this.userDataService.getShpDBF(id).subscribe({
         next: res=>{
           if(res.error){
             console.error(res.error);

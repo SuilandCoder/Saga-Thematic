@@ -43,10 +43,11 @@ export class ToolListComponent implements OnInit {
 
 
     this.initTree();
-    this.CurrentSelected = null;
+    this.CurrentSelected = this.ToolsTree;
     this.tree.loadChildren = (callback => {
       this.toolsTreeService.getToolsTree_leftTab(this.treeJSONPath).then(childrenArray => {
         callback(childrenArray);
+        // this.onNodeSelected(this.ToolsTree);
       })
     })
   }
@@ -56,7 +57,7 @@ export class ToolListComponent implements OnInit {
       value: "Saga Tools",
       id: 'NULL',
       settings: {
-        isCollapsedOnInit: true
+        isCollapsedOnInit: false
       },
       children: [],
     }

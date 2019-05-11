@@ -18,4 +18,10 @@ div>>>.datatable-body{
     width: 500px;
     height: 350px;
     overflow: auto;
+    display: flex;
+    justify-content: center;
+}
+
+table{
+    min-width: 400px;
 }
