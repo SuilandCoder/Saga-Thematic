@@ -46,8 +46,13 @@
     margin-left: 40px;
     padding: 2px 2px 2px 2px;
     line-height: 2;
-    >img{
+    >.online_saga_logo{
         height: 35px;
+    }
+    .saga_info{
+        height: 20px;
+        margin-left: 20px;
+        cursor: pointer;
     }
 }
 
@@ -57,3 +62,4 @@
     top:2px;
     line-height: 2;
 }
+

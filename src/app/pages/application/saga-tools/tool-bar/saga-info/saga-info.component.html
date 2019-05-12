@@ -1,0 +1,85 @@
+<div class="my_dialog_test" [ngStyle]="{'display': displayInfo}" [style.height]="dialogHeight.toString()+'px'">
+
+  <div class="right_btn btn-group">
+    <button type="button" class="btn btn-default" aria-label="Left Align" (click)="closeMyDialog($event)">
+      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+    </button>
+  </div>
+
+
+  <div class="container-fluid"  id="BasicInfoPanel">
+    <div class="title text-center">
+      <h3>
+        <span>SAGA GIS Info</span>
+      </h3>
+    </div>
+    <div class="scrollbar info_detail" [style.height]="infoHeight.toString()+'px'">
+      <p>SAGA stands for System for Automated Geoscientific Analyses. SAGA GIS has been developed by a small group of
+        developers primarily based in Germany. Most past and current SAGA developments come from the team around J.
+        Böhner and O. Conrad, both are now working at the Institute of Geography, Section for Physical Geography,
+        Klimacampus and University of Hamburg, Germany.
+      </p>
+      <p>
+        The System for Automated Geoscientific Analyses (SAGA) is an open source geographic information
+        system (GIS), mainly licensed under the GNU General Public License. Since its first release in
+        2004, SAGA has rapidly developed from a specialized tool for digital terrain analysis to a
+        comprehensive and globally established GIS platform for scientific analysis and modeling. SAGA
+        is coded in C++ in an object oriented design and runs under several operating systems including
+        Windows and Linux. Key functional features of the modular software architecture comprise an
+        application programming interface for the development and implementation of new geoscientific
+        methods, a user friendly graphical user interface with many visualization options, a command
+        line interpreter, and interfaces to interpreted languages like R and Python. The current version
+        2.1.4 offers more than 600 tools, which are implemented in dynamically loadable libraries or
+        shared objects and represent the broad scopes of SAGA in numerous fields of geoscientific
+        endeavor and beyond. In this paper, we inform about the system's architecture, functionality,
+        and its current state of development and implementation. Furthermore, we highlight the wide
+        spectrum of scientific applications of SAGA in a review of published studies, with special
+        emphasis on the core application areas digital terrain analysis, geomorphology, soil science,
+        climatology and meteorology, as well as remote sensing<sup>[1]</sup>.<br /></p>
+
+      <p></p>
+      <p></p>
+      <h3>Features<sup>[2]</sup></h3>
+      <div class="row">
+        <ul class="col-lg-5">
+          <li>Object oriented system design (C++)</li>
+          <li>Modular structure allows framework independent function development</li>
+          <li>SAGA API with immense support for geodata handling</li>
+          <li>GUI for intuitive data management, analysis and visualization</li>
+          <li>Runs on Linux as well as on Windows operating systems</li>
+          <li>Portable software running without installation even from memory sticks (MSW)
+          </li>
+          <li>Free and Open Source Software (FOSS)</li>
+          <li>Scripting via command line, Python, Java, R</li>
+          <li>Far more than 450 freely available functions for geodata analysis</li>
+        </ul>
+        <ul class="col-lg-5">
+          <li>Georeferencing and cartographic projections</li>
+          <li>Grid interpolation of scattered point data, triangulation, IDW, splines, ...
+          </li>
+          <li>Vector tools: clipping, buffer zones, raster to vector conversion, ...</li>
+          <li>Image analysis: filters, supervised classification, PCA, FFT, OBIA, ...</li>
+          <li>Geostatistics: GWR, variograms, ordinary & universal Kriging, ...</li>
+          <li>Terrain analysis: morphometry, hydrology, illumination, classification, ...</li>
+          <li>and many more ...</li>
+        </ul>
+      </div>
+
+      <h4><b>Acknowledgment</b></h4>
+      <p> We would like to thank SAGA development team around J. Böhner and O. Conrad for their contributions to the
+        code and the documentation.</p>
+
+      <span><b>Reference</b></span>
+      <p style="font-size: 12px">[1] Conrad, O., Bechtel, B., Bock, M., Dietrich, H., Fischer, E., Gerlitz, L., Wehberg,
+        J., Wichmann, V., and Boehner, J. (2015): System for Automated Geoscientific Analyses (SAGA) v. 2.1.4. Geosci.
+        Model Dev., 8, 1991-2007, doi:10.5194/gmd-8-1991-2015. <a
+          href="http://www.geosci-model-dev.net/8/1991/2015/gmd-8-1991-2015.html">http://www.geosci-model-dev.net/8/1991/2015/gmd-8-1991-2015.html</a>
+      </p>
+      <p style="font-size: 12px">[2] SAGA GIS. <a
+          href="https://sourceforge.net/projects/saga-gis/">https://sourceforge.net/projects/saga-gis/</a></p>
+
+
+
+    </div>
+  </div>
+</div>

@@ -17,6 +17,7 @@ import {
     MatIconModule,
     MatRippleModule,
 } from '@angular/material';
+import { SagaInfoComponent } from './saga-info/saga-info.component';
 
 @NgModule({
     imports: [
@@ -37,7 +38,8 @@ import {
         FullExtentComponent,
         IdentifyComponent,
         OnlineMapToolComponent,
-        UserMenuComponent
+        UserMenuComponent,
+        SagaInfoComponent
     ], exports: [
         ToolBarComponent
     ],

@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { MainPageModule } from './pages/application/saga-tools/main-page/main-page.module';
 import { SimpleReuseStrategy } from './_common/strategy/simple-reuse-strategy';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 const routes: Routes = [
   // { path: '', loadChildren: './pages/pages.module#PagesModule' },
   { path: 'saga-tools', loadChildren: './pages/application/saga-tools/main-page/main-page.module#MainPageModule' },
@@ -35,6 +36,7 @@ const routes: Routes = [
     HttpClientModule,
     MatDialogModule,
     MainPageModule,
+    LoadingBarHttpClientModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
   ],

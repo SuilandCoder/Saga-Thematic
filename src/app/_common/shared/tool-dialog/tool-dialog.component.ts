@@ -62,7 +62,7 @@ export class ToolDialogComponent implements OnInit {
       this.getDescpPathByJsonPath(path, id);
       console.log("path:" + path + "  id:" + id);
       this.toolService.getToolById(this.path, this.id).then(data => {
-        console.log(data);
+        console.log("toolInfo:",data);
         this.toolInfo = data;
         this.dataTransmissionService.sendToolDialogControlSubject(true);
       }).catch(err => {

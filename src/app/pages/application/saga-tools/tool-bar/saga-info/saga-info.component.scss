@@ -1,5 +1,5 @@
 .my_dialog_test {
-    width: 600px;
+    width: 700px;
     // height: 650px;
     position: fixed;
     top: 8%;
@@ -8,15 +8,7 @@
     background: #fff;
     color: rgba(0, 0, 0, .87);
     padding: 20px;
-}
-
-.tool_description {
-    text-align: initial;
-    margin-left: 20px;
-    // margin-right: 20px;
-    padding-bottom: 10px;
-    max-height: 500px;
-    overflow: auto;
+    z-index: 1000;
 }
 
 
@@ -26,6 +18,24 @@
     top: 5px;
 }
 
-.header{
-    text-align: center;
+li{
+    white-space: normal;
+}
+
+.info_detail{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.info_detail p {
+    font-size: 16px;
+    text-indent: 2em;
+}
+
+.info_detail ul {
+    list-style: circle;
+}
+
+.row{
+    margin: 0;
 }

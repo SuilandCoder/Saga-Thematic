@@ -1,10 +1,9 @@
-
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  template: '<router-outlet></router-outlet>',
+  templateUrl: './app.component.html',
 
 })
 export class AppComponent {
@@ -23,5 +22,9 @@ export class AppComponent {
       .subscribe((event) => {
         console.error("app: do something");
       });
+  }
+
+  setColor(){
+    return "#ff0000";
   }
 }
