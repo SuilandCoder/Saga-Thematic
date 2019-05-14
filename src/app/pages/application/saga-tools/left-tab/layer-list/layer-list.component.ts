@@ -204,11 +204,12 @@ export class LayerListComponent implements OnInit, AfterViewInit {
 
       let layerNameList = geoserverDataInfo.layerName;
       let metaList = geoserverDataInfo.meta;
+      // console.log("geoserverDataInfo:",geoserverDataInfo);
       layerNameList.forEach((item, index) => {
         if (this.olMapService.isDataOnLayer(geoserverDataInfo.id + "_" + index)) {
           return;
         }
-        let layerName = item.substring(0, item.lastIndexOf('_'));
+        let layerName = layerNameList.length===1?geoserverDataInfo.fileName:geoserverDataInfo.fileName+"_"+index;
         let newItem = new LayerItem(layerName, null, type, geoserverDataInfo.id + "_" + index);
         if(metaList){
           if ((newItem.type == "shp" || newItem.type == "tif" || newItem.type == "sdat") && metaList[index] && metaList[index].proj) {
@@ -224,6 +225,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
         
         let res = this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo,index);
         if (res !== 'error') {
+          console.log("LayerItems: ",this.LayerItems)
           this.LayerItems.splice(0, 0, newItem);
           newItem.visible = !newItem.visible;
           newItem.isOnMap = true;

@@ -92,6 +92,10 @@ export class ToolSettingComponent implements OnInit {
   }
 
   showDialog(input: ToolParam): void {
+    if(!this.userService.isLogined){
+      this.toastr.warning("please login.", "Warning", { timeOut: 3000 });
+      return;
+    }
     const dialogRef = this.dialog.open(DataPickComponent, {
       width: '500px',
       data: { "layerItems": this.layerItems, "type": input.type, "eventName": input.identifier, "toolName": this.toolInfo["tool_name"], "mdlId": this.toolInfo["mdlId"] },

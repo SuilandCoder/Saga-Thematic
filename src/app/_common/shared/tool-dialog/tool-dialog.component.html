@@ -1,6 +1,6 @@
 <div class="my_dialog_test"  [ngStyle]="{'display': displayInfo}" [style.height]="dialogHeight.toString()+'px'">
     <div class="header">
-        <h3>{{toolInfo.tool_name}}</h3>
+        <h3>{{toolInfo?.tool_name}}</h3>
     </div>
 
     <mat-tab-group (selectedIndexChange)="onTabChanged($event)">
