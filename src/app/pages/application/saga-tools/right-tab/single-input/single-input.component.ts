@@ -24,7 +24,7 @@ export class SingleInputComponent implements OnInit {
   ngOnInit() {
     if (this.inputType.includes("Grid")) {
       this.layerItems = this.layerItems.filter(item => {
-        return item.type == "tif" || item.type == "sgrd";
+        return item.type == "tif" || item.type == "sdat";
       })
     } else if (this.inputType.includes("Shapes")) {
       this.layerItems = this.layerItems.filter(item => {

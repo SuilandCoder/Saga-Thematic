@@ -337,7 +337,7 @@ export class OlMapService {
         let extent: Array<number>;
         if ((geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE || geoserverDataInfo.type === DC_DATA_TYPE.GEOTIFF 
             || geoserverDataInfo.type === DC_DATA_TYPE.SDAT || geoserverDataInfo.type === DC_DATA_TYPE.SHAPEFILE_LIST
-            || geoserverDataInfo.type === DC_DATA_TYPE.GEOTIFF_LIST || geoserverDataInfo.type === DC_DATA_TYPE.SDAT_LIST) && geoserverDataInfo.meta[index]) {
+            || geoserverDataInfo.type === DC_DATA_TYPE.GEOTIFF_LIST || geoserverDataInfo.type === DC_DATA_TYPE.SDAT_LIST) && geoserverDataInfo.meta && geoserverDataInfo.meta[index]) {
             proj = geoserverDataInfo.meta[index].proj;
             // console.log("投影信息：", proj);
             extent = geoserverDataInfo.meta[index].extent;
@@ -369,7 +369,7 @@ export class OlMapService {
 
         //* 已知 proj 和 extent, 设置图层的proj和 extent
         let newProjectionCode;
-        if (proj && proj !== "null") {
+        if (proj && proj!==""&& proj !== "null") {
             newProjectionCode = this.utilService.getProjByWkt(proj);
             newLayer.proj = new WktProjection(newProjectionCode, proj);
         }

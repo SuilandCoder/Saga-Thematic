@@ -1,4 +1,4 @@
-<div class="panel-body layers-list-body" >
+<div class="panel-body layers-list-body scrollbar" [style.height]="layerListHeight.toString()+'px'">
                 <ul [sortablejs]="LayerItems"  [sortablejsOptions]="LayerListOptions">
                 <li class="layer-item" *ngFor="let layer of LayerItems"  
                     [class.active]="SelectedLayerItemId===layer.dataId" 

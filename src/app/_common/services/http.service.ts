@@ -274,6 +274,7 @@ export class HttpService {
                                                                     dataInfo.meta = this.utilService.getTiffMetaObj(dataInfo.meta);
                                                                 }
                                                                 this.userDataService.addToLayer(dataInfo);
+                                                                this.dataTransmissionService.sendLoadUserDataSubject();
                                                             }
                                                         },
                                                         error: e => {

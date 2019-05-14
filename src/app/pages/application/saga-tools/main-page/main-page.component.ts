@@ -22,6 +22,8 @@ export class MainPageComponent implements OnInit {
 
   rightDock = false;
   showUploadList:boolean = false;
+  showToolDialog = false;
+
   constructor(
     private toolService:ToolService,
     private dataTransmissionService:DataTransmissionService,
@@ -61,7 +63,7 @@ export class MainPageComponent implements OnInit {
 
     this.toolService.getModelInfoMessage().subscribe(_=>{ 
       this.right_tag = "des";
-      this.rightOpened = true;
+      // this.rightOpened = true;
       this.rightDock = true;
     })
 
@@ -72,6 +74,15 @@ export class MainPageComponent implements OnInit {
     this.dataTransmissionService.getUploadListControlSubject().subscribe(_=>{
       this.showUploadList = !this.showUploadList;
     })
+
+    this.dataTransmissionService.getToolDialogControlSubject().subscribe(open=>{
+      if(open){
+        this.showToolDialog = open;
+      }else{
+        this.showToolDialog = !this.showToolDialog;
+      } 
+    })
+
   }
 
 

@@ -35,7 +35,7 @@ export class ListInputComponent implements OnInit {
     // console.log("oninit："+this.inputType);
     if (this.inputType.includes("Grid")) {
       this.layerItems = this.layerItems.filter(item => {
-        return item.type == "tif" || item.type == "sgrd";
+        return item.type == "tif" || item.type == "sdat";
       })
     } else if (this.inputType.includes("Shapes")) {
       this.layerItems = this.layerItems.filter(item => {
@@ -132,7 +132,7 @@ export class ListInputDialog {
     let layerItems = this.data.layerItems;
     let type = this.data.type;
     layerItems.forEach(item => {
-      if (type.includes("Grid") && (item.type == "tif" || item.type == "sgrd")) {
+      if (type.includes("Grid") && (item.type == "tif" || item.type == "sdat")) {
         this.list.push({
           key: item.dataId,
           title: item.name,

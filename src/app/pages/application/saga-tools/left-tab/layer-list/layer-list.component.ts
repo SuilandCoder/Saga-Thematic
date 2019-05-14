@@ -34,7 +34,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
   private LayersListHeight: number;
   private CurrentTabIndex: number;
   LayerListOptions: any;
-
+  layerListHeight:number;
   //popup
   private popupContent: Array<DataItem>;
   private nameField: string;
@@ -63,6 +63,10 @@ export class LayerListComponent implements OnInit, AfterViewInit {
       }
     };
 
+    this.layerListHeight = window.innerHeight * 0.9-55;
+    window.addEventListener('resize', () => {
+      this.layerListHeight = window.innerHeight * 0.9-55;
+    })
 
     // let that = this;
     //每次添加数据都会执行
@@ -200,22 +204,28 @@ export class LayerListComponent implements OnInit, AfterViewInit {
 
       let layerNameList = geoserverDataInfo.layerName;
       let metaList = geoserverDataInfo.meta;
+      // console.log("geoserverDataInfo:",geoserverDataInfo);
       layerNameList.forEach((item, index) => {
-        let newItem = new LayerItem(metaList[index]["name"], null, type, geoserverDataInfo.id + "_" + index);
         if (this.olMapService.isDataOnLayer(geoserverDataInfo.id + "_" + index)) {
           return;
         }
-        if ((newItem.type == "shp" || newItem.type == "tif" || newItem.type == "sdat") && metaList[index] && metaList[index].proj) {
-          newItem.proj = metaList[index].proj;
-          if (metaList[index].extent) {
-            newItem.extent = metaList[index].extent;
-          }
-          if (newItem.type == "shp" && metaList[index].fields) {
-            newItem.fields = metaList[index].fields;
+        let layerName = layerNameList.length===1?geoserverDataInfo.fileName:geoserverDataInfo.fileName+"_"+index;
+        let newItem = new LayerItem(layerName, null, type, geoserverDataInfo.id + "_" + index);
+        if(metaList){
+          if ((newItem.type == "shp" || newItem.type == "tif" || newItem.type == "sdat") && metaList[index] && metaList[index].proj) {
+            newItem.proj = metaList[index].proj;
+            if (metaList[index].extent) {
+              newItem.extent = metaList[index].extent;
+            }
+            if (newItem.type == "shp" && metaList[index].fields) {
+              newItem.fields = metaList[index].fields;
+            }
           }
         }
+        
         let res = this.olMapService.addGeoserverLayer(newItem, geoserverDataInfo,index);
         if (res !== 'error') {
+          console.log("LayerItems: ",this.LayerItems)
           this.LayerItems.splice(0, 0, newItem);
           newItem.visible = !newItem.visible;
           newItem.isOnMap = true;
@@ -327,7 +337,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
           this.dataTransmissionService.sendLoadingStateSubject(new LoadingInfo(false));
         })
         break;
-      case "sgrd":
+      case "sdat":
         this.httpService.get_SGRD_ColorMap(currentItem).then(ResponseData => {
           if (ResponseData && ResponseData["code"] !== undefined) {
             if (ResponseData["code"] === 0) {
@@ -530,7 +540,7 @@ export class LayerListComponent implements OnInit, AfterViewInit {
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
             // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));
             break;
-          case "sgrd":
+          case "sdat":
             this.popupContent.push(new DataItem("EXPORT", "Export Data"));
             this.popupContent.push(new DataItem("REMOVE", "Remove"));
             // this.popupContent.push(new DataItem("PROPERTIES", "Properties"));

@@ -11,7 +11,7 @@ export class ToolBarComponent implements OnInit {
   leftOpenState: EventEmitter<any> = new EventEmitter();
   SelectIsActive: boolean = false;
   IdentifyIsActive: boolean = false;
-
+  showSagaInfoDialog:boolean = false;
   leftOpen:boolean = true;
   constructor(private dataTransmissionService: DataTransmissionService) {
    }
@@ -29,6 +29,14 @@ export class ToolBarComponent implements OnInit {
   leftSideToogle(){
     this.leftOpen = !this.leftOpen;
     this.leftOpenState.emit(this.leftOpen);
+  }
+
+  openSagaInfo(){
+    this.showSagaInfoDialog = !this.showSagaInfoDialog;
+  }
+
+  closeDialog(){
+    this.showSagaInfoDialog = false;
   }
 
 }

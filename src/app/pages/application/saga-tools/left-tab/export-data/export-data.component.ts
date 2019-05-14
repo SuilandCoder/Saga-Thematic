@@ -71,7 +71,7 @@ export class ExportDataComponent implements OnInit, AfterViewInit {
         this.ExportLayerItem = layerItem;
         this.dataTransmissionService.sendReqAllSelectedFeaturesSubject();
         this.CurrentExportFeature = this.exportFeatures.length > 0 ? this.exportFeatures[0] : null;
-      } else if (layerItem.type === "tif") {
+      } else if (layerItem.type === "tif" || layerItem.type === "sdat") {
         this.notShp = true;
         this.CurrentExportName = `${layerItem.name}_Export`;
         this.ExportLayerItem = layerItem;
