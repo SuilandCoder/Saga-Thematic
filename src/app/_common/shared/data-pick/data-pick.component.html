@@ -20,9 +20,9 @@
         <div class="search">
           <mat-form-field class="example-form-field">
             <input matInput type="text" placeholder="Search from remote" [(ngModel)]="searchContent">
-            <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="searchContent=''">
+            <!-- <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="searchContent=''">
               <mat-icon>close</mat-icon>
-            </button>
+            </button> -->
           </mat-form-field>
           <button mat-button mat-icon-button (click)="search()">
             <mat-icon _ngcontent-c5="" class="mat-icon material-icons" role="img" style="margin-top: 3px;"
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="upload_room" *ngIf="this.dataPicked.length>0">
-      <button class="btn btn-info" [mat-dialog-close]="this.inputDataIdList" (click)="upload()">upload</button>
+      <button class="btn btn-info" (click)="upload()">upload</button>
     </div>
 
   </div>

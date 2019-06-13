@@ -6,7 +6,6 @@ import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
-import { DataInfo } from '../../data_model';
 import { UtilService } from '../../services';
 
 @Component({
@@ -108,7 +107,7 @@ export class UploadListComponent implements OnInit {
                       }
                     },
                     error:err=>{
-                      this.toast.warning(res.error, "Warning", { timeOut: 2000 });
+                      this.toast.warning(err, "Warning", { timeOut: 2000 });
                       this.loading = false;
                     }
                   });

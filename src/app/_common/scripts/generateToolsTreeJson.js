@@ -21,7 +21,7 @@ const settings = {
   isCollapsedOnInit: true,
 }
 
-generateTreeJson(filePath);
+// generateTreeJson(filePath);
 
 function generateTreeJson(path) {
   fs.readFile(path, (err, data) => {

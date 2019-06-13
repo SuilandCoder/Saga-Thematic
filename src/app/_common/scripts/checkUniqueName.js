@@ -9,7 +9,7 @@ var nameList= [];
 var data = fs.readFileSync(filePath, 'utf-8');
 var data = JSON.parse(data);
 
-parseChild(data)
+// parseChild(data)
 
 function parseChild(data){
     data.forEach(item=>{

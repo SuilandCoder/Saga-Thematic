@@ -4,7 +4,7 @@ var path = require("path");
 var filePath = path.resolve("./src/assets/json/tree_classification.json");
 var result = "./src/assets/json/portalClassification.json";
 
-main(filePath, result);
+// main(filePath, result);
 
 
 function main(filePath, result) {
