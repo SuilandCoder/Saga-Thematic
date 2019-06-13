@@ -342,6 +342,9 @@ export class OlMapService {
             // console.log("投影信息：", proj);
             extent = geoserverDataInfo.meta[index].extent;
             try{
+                // let mapProj = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]';
+                // let lower = proj4(mapProj,proj,[extent[0], extent[1]]);
+                // let upper = proj4(mapProj,proj,[extent[2], extent[3]]);
                 let lower = proj4(proj).inverse([extent[0], extent[1]]);
                 let upper = proj4(proj).inverse([extent[2], extent[3]]);
                 extent = _.concat(lower, upper);
@@ -374,7 +377,7 @@ export class OlMapService {
             newLayer.proj = new WktProjection(newProjectionCode, proj);
         }
 
-        if (extent) {
+        if (extent&& extent[0]<=180) {
             let newView = new ol.View({
                 projection: ol.proj.get('EPSG:4326'),
                 center: ol.extent.getCenter(extent),
@@ -542,7 +545,7 @@ export class OlMapService {
         } else {
 
             if (dataItem.id === "ESRI_SHAPEFILE") {
-                let dataPath = "http://" + window.location.host + this.baseUrl + "/download?ip=" + this.httpService.Ip + "&id=" + layer.dataId + "&filename=" + filename;
+                let dataPath = "http://" + window.location.host + this.baseUrl + "/download?ip=" + this.httpService.SagaIp + "&id=" + layer.dataId + "&filename=" + filename;
                 aLink.href = new URL(dataPath).toString();
             } else if (dataItem.id = "GEOJSON") {
 
@@ -612,6 +615,9 @@ export class OlMapService {
                         let lower = proj4(findLayer.proj).inverse([SourceExtentArray[0], SourceExtentArray[1]]);
                         let upper = proj4(findLayer.proj).inverse([SourceExtentArray[2], SourceExtentArray[3]]);
                         SourceExtentArray = _.concat(lower, upper);
+                        if(SourceExtentArray[0]>180){
+                            return;
+                        }
                     } else {
                         SourceExtentArray = CurrentLayer.getSource().getExtent();
                     }
@@ -622,7 +628,7 @@ export class OlMapService {
                     let index = SourceExtentArray.findIndex(value => {
                         return !Number.isFinite(value);
                     })
-                    if (index !== -1) {
+                    if (index !== -1 ) {
                         SourceExtentArray = null;
                     }
                     if (SourceExtentArray) {

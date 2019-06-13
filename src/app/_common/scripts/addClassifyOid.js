@@ -7,7 +7,7 @@ var filePath = path.resolve("./src/assets/json/tools_tree.json");
 var result = "./src/assets/json/tree_classification.json";
 var http = require("http")
 
-main(filePath, result);
+// main(filePath, result);
 
 //* tree_classification已存在，而且不需要更新了
 var needUpdate = false;

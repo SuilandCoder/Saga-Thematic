@@ -80,7 +80,7 @@ export class _HttpClient {
         withRequestProgress?: boolean,
         headers?:HttpHeaders
     ): Observable<any> {
-        
+        this.headers = this.headers.append("Accept", "*/*");
         return this.resInterceptor(this.http.post(url, body, {
             ...options, 
             headers: this.headers

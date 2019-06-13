@@ -14,7 +14,7 @@ import { UserDataService } from "./user-data.service";
 
 @Injectable()
 export class HttpService {
-    Ip: string; //default ip of model container.
+    // Ip: string; //default ip of model container.
     SagaIp: string;
     preModelRecord:string;
     baseUrl: string;
@@ -26,9 +26,7 @@ export class HttpService {
         private userDataService: UserDataService,
         @Inject('API') public api,
     ) {
-        // this.Ip = '172.21.212.119';
-        this.SagaIp = '172.21.212.75';
-        this.Ip = '172.21.212.75';
+        this.SagaIp = `${this.api.saga_ip}`;
         this.baseUrl = `${this.api.backend}`;
     }
 
@@ -38,7 +36,7 @@ export class HttpService {
             this.http.get(`${this.baseUrl}/info`,
                 {
                     params: {
-                        'ip': this.Ip,
+                        'ip': this.SagaIp,
                         'id': ToolId
                     }
                 }).toPromise().then(data => {
@@ -104,7 +102,7 @@ export class HttpService {
                     setTimeout(() => {
                         this.http.post(`${this.baseUrl}/upload`, fd, {
                             params: {
-                                'ip': this.Ip,
+                                'ip': this.SagaIp,
                             }
                         }).toPromise().then(data => {
 
@@ -148,7 +146,7 @@ export class HttpService {
             this.http.get(`${this.baseUrl}/run`, {
                 params: {
                     'id': modelId,
-                    'ip': this.Ip,
+                    'ip': this.SagaIp,
                     'ac': 'run',
                     'inputdata': inputDataParameter
                 }
@@ -198,7 +196,7 @@ export class HttpService {
                 this.http.get(`${this.baseUrl}/run`, {
                     params: {
                         'id': modelId,
-                        'ip': this.Ip,
+                        'ip': this.SagaIp,
                         'ac': 'run',
                         'inputdata': inputDataParameter
                     }
@@ -310,7 +308,7 @@ export class HttpService {
                     clearInterval(timer);
                 })
 
-            }, 1000);
+            }, 3000);
             resolve('waiting for result...');
 
         })
@@ -327,7 +325,7 @@ export class HttpService {
                 this.http.get(`${this.baseUrl}/getData`, {
                     params: {
                         'id': layerItem.dataId,
-                        'ip': this.Ip,
+                        'ip': this.SagaIp,
                     }
                 }).toPromise().then(data => {
                     resolve(data);
@@ -352,7 +350,7 @@ export class HttpService {
     geojsonToShape(geojson: any, srsStr: string): Promise<any> {
         let fd = new FormData();
         fd.append("geojsonString", JSON.stringify(geojson));
-        fd.append("ip", this.Ip);
+        fd.append("ip", this.SagaIp);
         fd.append('projString', srsStr);
         return new Promise((resolve, reject) => {
             this.http.post(`${this.baseUrl}/json2shp`, fd).toPromise().then(res => {
@@ -449,7 +447,7 @@ export class HttpService {
             if (layerItem.uploaded && layerItem.dataId !== null) {
                 let postData = new FormData();
                 postData.append('id', layerItem.dataId);
-                postData.append('ip', this.Ip);
+                postData.append('ip', this.SagaIp);
 
                 if (colorBand) {
                     postData.append('colorMapping', colorBand)

@@ -136,6 +136,7 @@ export class DataPickComponent {
     this.dataSources = DataSources.LOCAL;
     this.dialogRef.close("on loading");
     this.dataTransmissionService.sendUploadListControlSubject();
+    this.dataTransmissionService.sendToolDialogControlSubject();
   }
 
   getDatas(method:FieldToGetData,content:string){

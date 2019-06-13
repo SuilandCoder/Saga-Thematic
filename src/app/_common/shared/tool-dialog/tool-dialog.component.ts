@@ -26,8 +26,8 @@ export class ToolDialogComponent implements OnInit {
 
   subscription: Subscription;  
   toolDesHeight: number;
-  private descriptionHtml = "";
-  private descriptionPath = "";
+  descriptionHtml = "";
+  descriptionPath = "";
   private path: string = "json/modelInfo/climate_tools.json";
   private id = "9";
   toolInfo;

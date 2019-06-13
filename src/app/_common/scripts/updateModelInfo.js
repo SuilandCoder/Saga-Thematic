@@ -6,7 +6,7 @@ var fs = require("fs");
 var path = require("path");
 var http = require("http")
 var request = require("request");
-var filePath = path.resolve("./src/assets/json/modelInfo");
+var filePath = path.resolve("F:\\workspace\\workspace_saga\\Saga-Thematic\\src\\assets\\json\\modelInfo");
 
 var pathNum = 0;
 
@@ -15,7 +15,7 @@ updateJson_addPath(filePath);
 function updateJson_addPath(filePath) {
   fs.readdir(filePath, (err, files) => {
     if (err) {
-      console.warn("文件读取失败");
+      console.warn(err,"文件读取失败");
     } else {
       files.forEach(filename => {
         var filedir = path.join(filePath, filename);

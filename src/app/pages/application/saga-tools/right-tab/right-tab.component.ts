@@ -28,9 +28,9 @@ export class RightTabComponent implements OnInit {
   private path: string = "json/modelInfo/climate_tools.json";
   private id = "9";
   private descriptionPath = "";
-  private descriptionHtml = "";
+  descriptionHtml = "";
   private userDatas: Array<DataInfo> = [];
-  private newData: DataInfo;
+  newData: DataInfo;
 
   @Input() opened: boolean = false;
   @Input() tag: string = "";
