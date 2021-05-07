@@ -43,7 +43,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
     "jszip": "^3.1.5",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "ng-sidebar": "^8.0.0",
     "ng2-tree": "^2.0.0-rc.11",
     "ngx-bootstrap": "^3.1.2",
